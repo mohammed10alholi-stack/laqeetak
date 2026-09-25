@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#16307F">
+<title>لقيتك! — أداة صور الشخصيات</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400;600;800&family=Lalezar&display=swap" rel="stylesheet">
+<style>
+:root{--board:#1D3A9E;--board-2:#16307F;--ink:#171433;--sun:#FFC83A;--red:#E23D3A;--paper:#E9EEFF;--muted:#B9C4F0;--green:#3E9D5B}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+body{font-family:'Baloo Bhaijaan 2',Tahoma,system-ui,sans-serif;color:#fff;background:var(--board);
+  background-image:radial-gradient(rgba(255,255,255,.08) 1.4px,transparent 1.6px);background-size:18px 18px;
+  padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) 0 env(safe-area-inset-left,0px);-webkit-tap-highlight-color:transparent}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--sun);outline-offset:3px}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--board-2);border-bottom:3px solid var(--ink);padding:12px 14px}
+.bar-in{max-width:640px;margin:0 auto}
+h1{font-family:Lalezar,sans-serif;font-weight:400;font-size:1.9rem;line-height:1.2;color:var(--sun)}
+.prog{display:flex;align-items:center;gap:10px;margin-top:6px}
+.track{flex:1;height:12px;border-radius:99px;background:rgba(255,255,255,.16);border:2px solid var(--ink);overflow:hidden}
+.track i{display:block;height:100%;width:0;background:var(--sun);transition:width .3s}
+.prog b{font-weight:800;min-width:5ch;text-align:left;direction:ltr}
+main{max-width:640px;margin:0 auto;padding:14px 14px calc(110px + env(safe-area-inset-bottom,0px))}
+.help{background:#fff;color:var(--ink);border:3px solid var(--ink);border-radius:16px;box-shadow:0 5px 0 var(--ink);padding:14px 16px;margin-bottom:16px}
+.help summary{font-weight:800;font-size:1.08rem;cursor:pointer}
+.help ol{margin:10px 20px 4px 0}
+.help li{margin-bottom:8px;line-height:1.6}
+.help a{color:var(--board);font-weight:800}
+.filter{display:flex;gap:8px;margin-bottom:14px}
+.filter button{flex:1;padding:8px;border-radius:12px;border:3px solid var(--ink);background:#fff;color:var(--ink);font-weight:800}
+.filter button[aria-pressed="true"]{background:var(--sun)}
+.item{background:#fff;color:var(--ink);border:3px solid var(--ink);border-radius:16px;box-shadow:0 4px 0 var(--ink);margin-bottom:14px;overflow:hidden}
+.item.done{border-color:var(--green);box-shadow:0 4px 0 var(--green)}
+.head{display:flex;gap:12px;padding:12px}
+.thumb{flex:0 0 84px;height:100px;border-radius:12px;border:3px solid var(--ink);background:var(--paper);overflow:hidden;display:flex;align-items:center;justify-content:center;font-family:Lalezar,sans-serif;font-size:2rem;color:#A9B6E8}
+.thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.info{flex:1;min-width:0}
+.name{display:flex;align-items:center;gap:8px;font-weight:800;font-size:1.2rem}
+.num{background:var(--ink);color:#fff;border-radius:8px;padding:0 8px;font-size:.85rem;direction:ltr}
+.ok{color:var(--green);font-size:.9rem}
+.spec{font-size:.88rem;line-height:1.6;color:#454163;margin-top:4px}
+.prompt{direction:ltr;text-align:left;font-size:.78rem;line-height:1.5;background:var(--paper);border-top:2px dashed #C3CCEE;padding:10px 12px;color:#2B2850;-webkit-user-select:all;user-select:all;max-height:7.6em;overflow:auto}
+.btns{display:flex;gap:8px;padding:10px 12px 12px}
+.btn{flex:1;display:block;padding:10px 12px;border-radius:12px;border:3px solid var(--ink);background:var(--sun);color:var(--ink);font-weight:800;font-size:.98rem;box-shadow:0 4px 0 var(--ink);text-align:center}
+.btn:active:not(:disabled){transform:translateY(3px);box-shadow:0 1px 0 var(--ink)}
+.btn:disabled{opacity:.45}
+.btn.white{background:#fff}
+.btn.del{flex:0 0 auto;background:#fff;color:var(--red)}
+.foot{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--board-2);border-top:3px solid var(--ink);padding:12px 14px calc(12px + env(safe-area-inset-bottom,0px))}
+.foot-in{max-width:640px;margin:0 auto}
+.foot .btn{font-size:1.1rem;padding:13px}
+.toast{position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);background:var(--ink);color:#fff;padding:10px 18px;border-radius:12px;font-weight:700;z-index:60;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;max-width:90vw;text-align:center}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+</style>
+</head>
+<body>
+<div class="bar"><div class="bar-in">
+  <h1>صور شخصيات «لقيتك!»</h1>
+  <div class="prog"><div class="track"><i id="progBar"></i></div><b id="progNum">0/48</b></div>
+</div></div>
+
+<main>
+  <details class="help" open>
+    <summary>كيف بتشتغل الأداة؟</summary>
+    <ol>
+      <li>افتح أداة توليد صور مجانية، زي <a href="https://gemini.google.com" target="_blank" rel="noopener">Gemini</a> أو <a href="https://www.bing.com/images/create" target="_blank" rel="noopener">Bing Image Creator</a>.</li>
+      <li>لكل شخصية هون: اضغط «انسخ الوصف»، والصقه بأداة التوليد، ونزّل الصورة اللي بتطلع على جوالك.</li>
+      <li>قبل ما ترفعها، تأكد إنها مطابقة للمواصفات المكتوبة بالعربي (لون العيون، النظارة، اللحية، النمش، الحلق…). إذا في إشي غلط، ولّدها كمان مرة.</li>
+      <li>اضغط «ارفع الصورة» واختارها. الأداة بتقصّها وبتصغّرها وبتحفظها على جهازك، فبتقدر تكمّل على دفعات.</li>
+      <li>لما تخلص كل الشخصيات، اضغط «نزّل ملف الصور». بينزل ملف اسمه faces.js، وهاد بترفعه على GitHub جنب index.html.</li>
+    </ol>
+  </details>
+  <div class="filter">
+    <button type="button" data-f="all" aria-pressed="true">الكل</button>
+    <button type="button" data-f="todo" aria-pressed="false">اللي ما خلصت</button>
+    <button type="button" data-f="done" aria-pressed="false">اللي خلصت</button>
+  </div>
+  <div id="list"></div>
+</main>
+
+<div class="foot"><div class="foot-in">
+  <button class="btn" id="dlBtn" disabled>نزّل ملف الصور (faces.js)</button>
+</div></div>
+<input type="file" id="file" accept="image/*" hidden>
+<div class="toast" id="toast"></div>
+
+<script>
+(() => {
+'use strict';
+const DECK = [{"sex": "m", "skin": "dark", "eyes": "brown", "glasses": "none", "freckles": false, "shirt": "green", "hair": "short", "hairColor": "black", "facial": "none", "cap": false, "earrings": false, "hijab": null, "name": "عمر", "id": 0}, {"sex": "f", "skin": "medium", "eyes": "brown", "glasses": "round", "freckles": false, "shirt": "green", "hair": "long", "facial": "none", "cap": false, "hijab": null, "hairColor": "black", "earrings": true, "name": "شهد", "id": 1}, {"sex": "m", "skin": "light", "eyes": "brown", "glasses": "none", "freckles": false, "shirt": "red", "hair": "short", "hairColor": "grey", "facial": "beard", "cap": false, "earrings": false, "hijab": null, "name": "طارق", "id": 2}, {"sex": "m", "skin": "dark", "eyes": "green", "glasses": "none", "freckles": false, "shirt": "blue", "hair": "short", "hairColor": "grey", "facial": "beard", "cap": false, "earrings": false, "hijab": null, "name": "إياد", "id": 3}, {"sex": "m", "skin": "dark", "eyes": "brown", "glasses": "none", "freckles": false, "shirt": "red", "hair": "short", "hairColor": "black", "facial": "none", "cap": false, "earrings": false, "hijab": null, "name": "أنس", "id": 4}, {"sex": "m", "skin": "light", "eyes": "brown", "glasses": "none", "freckles": true, "shirt": "green", "hair": "bald", "hairColor": "black", "facial": "beard", "cap": false, "earrings": false, "hijab": null, "name": "رامي", "id": 5}, {"sex": "m", "skin": "medium", "eyes": "blue", "glasses": "none", "freckles": false, "shirt": "green", "hair": "curly", "hairColor": "black", "facial": "beard", "cap": false, "earrings": false, "hijab": null, "name": "نادر", "id": 6}, {"sex": "m", "skin": "dark", "eyes": "blue", "glasses": "round", "freckles": false, "shirt": "red", "hair": "short", "hairColor": "black", "facial": "none", "cap": false, "earrings": false, "hijab": null, "name": "فادي", "id": 7}, {"sex": "m", "skin": "medium", "eyes": "brown", "glasses": "round", "freckles": false, "shirt": "blue", "hair": "short", "hairColor": "brown", "facial": "beard", "cap": false, "earrings": false, "hijab": null, "name": "سليم", "id": 8}, {"sex": "m", "skin": "dark", "eyes": "blue", "glasses": "square", "freckles": true, "shirt": "green", "hair": "short", "hairColor": "brown", "facial": "mustache", "cap": true, "earrings": false, "hijab": null, "name": "جمال", "id": 9}, {"sex": "m", "skin": "light", "eyes": "brown", "glasses": "none", "freckles": false, "shirt": "green", "hair": "short", "hairColor": "brown", "facial": "none", "cap": false, "earrings": false, "hijab": null, "name": "ماهر", "id": 10}, {"sex": "f", "skin": "medium", "eyes": "brown", "glasses": "none", "freckles": false, "shirt": "green", "hair": "hijab", "facial": "none", "cap": false, "hijab": "maroon", "hairColor": null, "earrings": false, "name": "دعاء", "id": 11}, {"sex": "m", "skin": "light", "eyes": "blue", "glasses": "none", "freckles": false, "shirt": "yellow", "hair": "bald", "hairColor": "grey", "facial": "none", "cap": false, "earrings": false, "hijab": null, "name": "خالد", "id": 12}, {"sex": "f", "skin": "light", "eyes": "brown", "glasses": "round", "freckles": true, "shirt": "blue", "hair": "hijab", "facial": "none", "cap": false, "hijab": "navy", "hairColor": null, "earrings": false, "name": "لينا", "id": 13}, {"sex": "m", "skin": "light", "eyes": "brown", "glasses": "none", "freckles": false, "shirt": "yellow", "hair": "bald", "hairColor": "black", "facial": "none", "cap": false, "earrings": false, "hijab": null, "name": "حسن", "id": 14}, {"sex": "f", "skin": "medium", "eyes": "blue", "glasses": "round", "freckles": false, "shirt": "green", "hair": "long", "facial": "none", "cap": false, "hijab": null, "hairColor": "brown", "earrings": true, "name": "ريم", "id": 15}, {"sex": "f", "skin": "medium", "eyes": "green", "glasses": "round", "freckles": false, "shirt": "red", "hair": "long", "facial": "none", "cap": false, "hijab": null, "hairColor": "brown", "earrings": true, "name": "سارة", "id": 16}, {"sex": "f", "skin": "light", "eyes": "brown", "glasses": "none", "freckles": false, "shirt": "yellow", "hair": "bun", "facial": "none", "cap": false, "hijab": null, "hairColor": "brown", "earrings": false, "name": "جنى", "id": 17}, {"sex": "f", "skin": "medium", "eyes": "brown", "glasses": "none", "freckles": true, "shirt": "yellow", "hair": "hijab", "facial": "none", "cap": false, "hijab": "teal", "hairColor": null, "earrings": false, "name": "مريم", "id": 18}, {"sex": "m", "skin": "dark", "eyes": "blue", "glasses": "none", "freckles": false, "shirt": "blue", "hair": "curly", "hairColor": "grey", "facial": "none", "cap": false, "earrings": false, "hijab": null, "name": "وسيم", "id": 19}, {"sex": "f", "skin": "light", "eyes": "green", "glasses": "square", "freckles": true, "shirt": "red", "hair": "short", "facial": "none", "cap": false, "hijab": null, "hairColor": "blonde", "earrings": true, "name": "آية", "id": 20}, {"sex": "f", "skin": "medium", "eyes": "blue", "glasses": "square", "freckles": false, "shirt": "red", "hair": "bun", "facial": "none", "cap": false, "hijab": null, "hairColor": "grey", "earrings": false, "name": "رنا", "id": 21}, {"sex": "f", "skin": "dark", "eyes": "green", "glasses": "round", "freckles": false, "shirt": "green", "hair": "hijab", "facial": "none", "cap": false, "hijab": "beige", "hairColor": null, "earrings": false, "name": "بيسان", "id": 22}, {"sex": "f", "skin": "light", "eyes": "brown", "glasses": "none", "freckles": false, "shirt": "red", "hair": "long", "facial": "none", "cap": false, "hijab": null, "hairColor": "brown", "earrings": false, "name": "دانة", "id": 23}, {"sex": "f", "skin": "medium", "eyes": "green", "glasses": "none", "freckles": true, "shirt": "red", "hair": "long", "facial": "none", "cap": false, "hijab": null, "hairColor": "blonde", "earrings": false, "name": "هالة", "id": 24}, {"sex": "f", "skin": "light", "eyes": "brown", "glasses": "square", "freckles": false, "shirt": "yellow", "hair": "hijab", "facial": "none", "cap": false, "hijab": "navy", "hairColor": null, "earrings": false, "name": "رهف", "id": 25}, {"sex": "m", "skin": "medium", "eyes": "green", "glasses": "square", "freckles": true, "shirt": "green", "hair": "curly", "hairColor": "red", "facial": "mustache", "cap": false, "earrings": false, "hijab": null, "name": "علي", "id": 26}, {"sex": "f", "skin": "dark", "eyes": "blue", "glasses": "none", "freckles": true, "shirt": "blue", "hair": "bun", "facial": "none", "cap": false, "hijab": null, "hairColor": "blonde", "earrings": false, "name": "رزان", "id": 27}, {"sex": "m", "skin": "medium", "eyes": "brown", "glasses": "none", "freckles": false, "shirt": "blue", "hair": "short", "hairColor": "grey", "facial": "none", "cap": false, "earrings": false, "hijab": null, "name": "باسل", "id": 28}, {"sex": "f", "skin": "medium", "eyes": "blue", "glasses": "square", "freckles": false, "shirt": "green", "hair": "hijab", "facial": "none", "cap": false, "hijab": "maroon", "hairColor": null, "earrings": false, "name": "سلمى", "id": 29}, {"sex": "m", "skin": "dark", "eyes": "blue", "glasses": "none", "freckles": false, "shirt": "blue", "hair": "curly", "hairColor": "grey", "facial": "mustache", "cap": false, "earrings": false, "hijab": null, "name": "هاني", "id": 30}, {"sex": "f", "skin": "dark", "eyes": "green", "glasses": "none", "freckles": true, "shirt": "yellow", "hair": "short", "facial": "none", "cap": false, "hijab": null, "hairColor": "brown", "earrings": false, "name": "ليلى", "id": 31}, {"sex": "f", "skin": "medium", "eyes": "brown", "glasses": "round", "freckles": false, "shirt": "red", "hair": "hijab", "facial": "none", "cap": false, "hijab": "navy", "hairColor": null, "earrings": false, "name": "هبة", "id": 32}, {"sex": "f", "skin": "light", "eyes": "brown", "glasses": "none", "freckles": false, "shirt": "blue", "hair": "hijab", "facial": "none", "cap": false, "hijab": "maroon", "hairColor": null, "earrings": false, "name": "ياسمين", "id": 33}, {"sex": "m", "skin": "medium", "eyes": "brown", "glasses": "square", "freckles": false, "shirt": "blue", "hair": "curly", "hairColor": "black", "facial": "none", "cap": false, "earrings": false, "hijab": null, "name": "زياد", "id": 34}, {"sex": "f", "skin": "light", "eyes": "brown", "glasses": "none", "freckles": false, "shirt": "green", "hair": "long", "facial": "none", "cap": false, "hijab": null, "hairColor": "red", "earrings": true, "name": "سماح", "id": 35}, {"sex": "m", "skin": "medium", "eyes": "brown", "glasses": "square", "freckles": false, "shirt": "blue", "hair": "short", "hairColor": "red", "facial": "beard", "cap": false, "earrings": false, "hijab": null, "name": "بلال", "id": 36}, {"sex": "m", "skin": "light", "eyes": "brown", "glasses": "square", "freckles": false, "shirt": "blue", "hair": "curly", "hairColor": "brown", "facial": "none", "cap": false, "earrings": false, "hijab": null, "name": "يوسف", "id": 37}, {"sex": "m", "skin": "medium", "eyes": "blue", "glasses": "round", "freckles": false, "shirt": "yellow", "hair": "short", "hairColor": "black", "facial": "mustache", "cap": false, "earrings": false, "hijab": null, "name": "مازن", "id": 38}, {"sex": "m", "skin": "medium", "eyes": "green", "glasses": "round", "freckles": true, "shirt": "blue", "hair": "bald", "hairColor": "black", "facial": "none", "cap": false, "earrings": false, "hijab": null, "name": "محمود", "id": 39}, {"sex": "m", "skin": "medium", "eyes": "blue", "glasses": "none", "freckles": false, "shirt": "red", "hair": "bald", "hairColor": "grey", "facial": "none", "cap": false, "earrings": false, "hijab": null, "name": "أحمد", "id": 40}, {"sex": "m", "skin": "dark", "eyes": "brown", "glasses": "square", "freckles": false, "shirt": "yellow", "hair": "curly", "hairColor": "brown", "facial": "none", "cap": false, "earrings": false, "hijab": null, "name": "كريم", "id": 41}, {"sex": "f", "skin": "dark", "eyes": "green", "glasses": "round", "freckles": false, "shirt": "red", "hair": "hijab", "facial": "none", "cap": false, "hijab": "navy", "hairColor": null, "earrings": false, "name": "منى", "id": 42}, {"sex": "f", "skin": "medium", "eyes": "blue", "glasses": "round", "freckles": true, "shirt": "yellow", "hair": "long", "facial": "none", "cap": false, "hijab": null, "hairColor": "brown", "earrings": true, "name": "نور", "id": 43}, {"sex": "f", "skin": "light", "eyes": "brown", "glasses": "none", "freckles": false, "shirt": "green", "hair": "long", "facial": "none", "cap": false, "hijab": null, "hairColor": "brown", "earrings": false, "name": "تالا", "id": 44}, {"sex": "f", "skin": "dark", "eyes": "brown", "glasses": "round", "freckles": true, "shirt": "yellow", "hair": "hijab", "facial": "none", "cap": false, "hijab": "beige", "hairColor": null, "earrings": false, "name": "لمى", "id": 45}, {"sex": "f", "skin": "light", "eyes": "green", "glasses": "round", "freckles": true, "shirt": "yellow", "hair": "short", "facial": "none", "cap": false, "hijab": null, "hairColor": "grey", "earrings": false, "name": "غدير", "id": 46}, {"sex": "m", "skin": "light", "eyes": "brown", "glasses": "round", "freckles": false, "shirt": "yellow", "hair": "short", "hairColor": "blonde", "facial": "mustache", "cap": true, "earrings": false, "hijab": null, "name": "سامي", "id": 47}];
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let toastT;
+function toast(m){ const t=$('#toast'); t.textContent=m; t.classList.add('on'); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('on'),2200); }
+
+/* ---- prompts (English works best with image tools) ---- */
+function promptFor(c){
+  const skin = {light:'fair', medium:'warm olive-tan', dark:'dark brown'}[c.skin];
+  const older = c.hairColor === 'grey';
+  const who = c.sex === 'm' ? (older ? 'an older man in his sixties' : 'a young adult man') : (older ? 'an older woman in her sixties' : 'a young adult woman');
+  const hc = {black:'black', brown:'brown', blonde:'blonde', red:'ginger red', grey:'grey'}[c.hairColor] || '';
+  const hair = {
+    short: c.sex === 'm' ? `short ${hc} hair` : `a short ${hc} bob haircut`,
+    curly: `curly ${hc} hair`,
+    bald: `a bald head with a little ${hc} hair only on the sides`,
+    long: `long straight ${hc} hair falling past the shoulders`,
+    bun: `${hc} hair tied up in a bun on top of the head`,
+    hijab: `a ${ {navy:'navy blue', maroon:'maroon', beige:'beige', teal:'teal'}[c.hijab] } hijab that fully covers the hair, ears and neck`
+  }[c.hair];
+  const parts = [
+    `${who} with ${skin} skin`,
+    c.hair === 'hijab' ? `wearing ${hair}` : `with ${hair}`,
+    `clearly ${c.eyes} eyes`,
+    {none:'no glasses', round:'round black-framed glasses', square:'rectangular black-framed glasses'}[c.glasses],
+  ];
+  if (c.sex === 'm') parts.push({none:'clean-shaven with no beard and no mustache', mustache:`a ${hc || 'dark'} mustache only, no beard`, beard:`a full ${hc || 'dark'} beard with mustache`}[c.facial]);
+  parts.push(c.freckles ? 'visible freckles across the nose and cheeks' : 'no freckles');
+  if (c.sex === 'f' && c.hair !== 'hijab') parts.push(c.earrings ? 'small gold hoop earrings' : 'no earrings');
+  parts.push(`wearing a plain ${c.shirt} crew-neck t-shirt`);
+  parts.push(c.cap ? 'wearing a plain navy blue baseball cap' : (c.hair === 'hijab' ? 'no hat' : 'no hat'));
+  return `3D animated movie style character portrait with soft clay-like shading, cute and friendly. Head and shoulders, centered, looking straight at the camera with a gentle smile. ${parts.join(', ')}. Plain light lavender-blue background, soft studio lighting, square 1:1 image, no text, only one person.`;
+}
+
+/* ---- Arabic checklist of what the image must show ---- */
+function specFor(c){
+  const f = c.sex === 'f';
+  const s = [];
+  s.push(f ? 'بنت/ست' : 'شب/رجل');
+  s.push({light:'بشرة فاتحة', medium:'بشرة حنطية', dark:'بشرة سمرا'}[c.skin]);
+  const hc = {black:'أسود', brown:'بني', blonde:'أشقر', red:'أحمر', grey:'شايب (رمادي)'}[c.hairColor] || '';
+  s.push({short: f ? `شعر قصير ${hc}` : `شعر قصير ${hc}`, curly:`شعر كيرلي ${hc}`, bald:`أصلع (شعر ${hc} عالجوانب)`, long:`شعر طويل ${hc}`, bun:`شعر ${hc} مربوط كعكة`,
+          hijab:`حجاب ${ {navy:'كحلي', maroon:'خمري', beige:'بيج', teal:'تركوازي'}[c.hijab] }`}[c.hair]);
+  s.push({brown:'عيون بنية', blue:'عيون زرقا', green:'عيون خضرا'}[c.eyes]);
+  s.push({none:'بدون نظارة', round:'نظارة مدوّرة', square:'نظارة مربعة'}[c.glasses]);
+  if (!f) s.push({none:'بدون لحية ولا شنب', mustache:'شنب بس', beard:'لحية وشنب'}[c.facial]);
+  s.push(c.freckles ? 'فيه نمش' : 'بدون نمش');
+  if (f && c.hair !== 'hijab') s.push(c.earrings ? 'حلق ذهبي' : 'بدون حلق');
+  if (c.cap) s.push('طاقية كحلية');
+  s.push({red:'بلوزة حمرا', blue:'بلوزة زرقا', green:'بلوزة خضرا', yellow:'بلوزة صفرا'}[c.shirt]);
+  return s.join(' • ');
+}
+
+/* ---- storage ---- */
+const KEY = id => 'lq-face-' + id;
+function getFace(id){ try { return localStorage.getItem(KEY(id)); } catch(e){ return null; } }
+function setFace(id, data){ try { localStorage.setItem(KEY(id), data); return true; } catch(e){ toast('ما في مساحة كافية بالمتصفح'); return false; } }
+function delFace(id){ try { localStorage.removeItem(KEY(id)); } catch(e){} }
+
+async function toSmallJPEG(file){
+  const url = URL.createObjectURL(file);
+  try {
+    const img = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = url; });
+    const W = 360, H = 432, t = W / H, r = img.naturalWidth / img.naturalHeight;
+    let sx = 0, sy = 0, sw = img.naturalWidth, sh = img.naturalHeight;
+    if (r > t) { sw = sh * t; sx = (img.naturalWidth - sw) / 2; }
+    else { sh = sw / t; sy = (img.naturalHeight - sh) * 0.3; }
+    const cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+    const cx = cv.getContext('2d'); cx.imageSmoothingQuality = 'high';
+    cx.drawImage(img, sx, sy, sw, sh, 0, 0, W, H);
+    return cv.toDataURL('image/jpeg', 0.8);
+  } finally { URL.revokeObjectURL(url); }
+}
+
+/* ---- UI ---- */
+let filter = 'all', targetId = null;
+function render(){
+  const list = $('#list');
+  let done = 0;
+  list.innerHTML = DECK.map(c => {
+    const face = getFace(c.id); if (face) done++;
+    if (filter === 'todo' && face) return '';
+    if (filter === 'done' && !face) return '';
+    return `<article class="item ${face ? 'done' : ''}" data-id="${c.id}">
+      <div class="head">
+        <div class="thumb">${face ? `<img src="${face}" alt="">` : '؟'}</div>
+        <div class="info">
+          <div class="name"><span class="num">${c.id + 1}</span>${esc(c.name)} ${face ? '<span class="ok">✓ جاهزة</span>' : ''}</div>
+          <p class="spec">${esc(specFor(c))}</p>
+        </div>
+      </div>
+      <div class="prompt">${esc(promptFor(c))}</div>
+      <div class="btns">
+        <button class="btn white" data-a="copy">انسخ الوصف</button>
+        <button class="btn" data-a="up">${face ? 'بدّل الصورة' : 'ارفع الصورة'}</button>
+        ${face ? '<button class="btn del" data-a="del" aria-label="احذف الصورة">✕</button>' : ''}
+      </div>
+    </article>`;
+  }).join('') || '<p style="text-align:center;padding:30px;color:#DCE3FF">ما في شي هون.</p>';
+  $('#progNum').textContent = `${done}/${DECK.length}`;
+  $('#progBar').style.width = (done / DECK.length * 100) + '%';
+  const b = $('#dlBtn');
+  b.disabled = done === 0;
+  b.textContent = done === DECK.length ? 'نزّل ملف الصور (faces.js)' : `نزّل ملف الصور (${done} من ${DECK.length})`;
+}
+
+async function copyText(t){
+  try { await navigator.clipboard.writeText(t); return true; }
+  catch(e){ const ta = document.createElement('textarea'); ta.value = t; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select(); let ok=false; try { ok = document.execCommand('copy'); } catch(_){} ta.remove(); return ok; }
+}
+
+document.addEventListener('click', async e => {
+  const f = e.target.closest('[data-f]');
+  if (f) { filter = f.dataset.f; document.querySelectorAll('[data-f]').forEach(b => b.setAttribute('aria-pressed', b === f)); render(); return; }
+  const b = e.target.closest('[data-a]'); if (!b) return;
+  const id = +b.closest('.item').dataset.id;
+  if (b.dataset.a === 'copy') { const ok = await copyText(promptFor(DECK[id])); toast(ok ? 'انتسخ الوصف، الصقه بأداة التوليد' : 'اضغط مطوّلاً على الوصف وانسخه'); }
+  if (b.dataset.a === 'up') { targetId = id; $('#file').value = ''; $('#file').click(); }
+  if (b.dataset.a === 'del') { if (confirm(`تحذف صورة ${DECK[id].name}؟`)) { delFace(id); render(); } }
+});
+
+$('#file').addEventListener('change', async e => {
+  const file = e.target.files && e.target.files[0];
+  if (!file || targetId == null) return;
+  try {
+    const data = await toSmallJPEG(file);
+    if (setFace(targetId, data)) { toast(`انحفظت صورة ${DECK[targetId].name}`); render(); }
+  } catch(err) { toast('ما قدرت أقرأ الصورة، جرّب صورة ثانية'); }
+});
+
+$('#dlBtn').addEventListener('click', () => {
+  const faces = DECK.map(c => getFace(c.id) || null);
+  const n = faces.filter(Boolean).length;
+  if (n < DECK.length && !confirm(`جاهز ${n} من ${DECK.length} بس. الشخصيات اللي ما إلها صورة رح تظهر بالرسم القديم. بدك تنزّل هيك؟`)) return;
+  const js = '/* لقيتك! — صور الشخصيات */\nwindow.LQ_FACES=' + JSON.stringify(faces) + ';\n';
+  const blob = new Blob([js], {type:'text/javascript'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob); a.download = 'faces.js';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+  toast('نزل الملف، ارفعه على GitHub');
+});
+
+render();
+})();
+</script>
+</body>
+</html>
