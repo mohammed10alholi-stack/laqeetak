@@ -1,0 +1,872 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#16307F">
+<meta name="description" content="لعبة خمّن الشخصية للاعبين، كل واحد من جواله. ٤٠ شخصية بفروقات دقيقة، أسئلة محدودة ووقت لكل دور.">
+<title>لقيتك! — خمّن الشخصية</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400;600;800&family=Lalezar&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js"></script>
+<style>
+:root{
+  --board:#1D3A9E; --board-2:#16307F; --ink:#171433; --sun:#FFC83A;
+  --red:#E23D3A; --paper:#E9EEFF; --muted:#B9C4F0;
+  --display:'Lalezar','Baloo Bhaijaan 2',Tahoma,sans-serif;
+  --body:'Baloo Bhaijaan 2',Tahoma,'Segoe UI',system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+html,body{min-height:100%}
+body{
+  font-family:var(--body); color:#fff; background-color:var(--board);
+  background-image:radial-gradient(rgba(255,255,255,.08) 1.4px,transparent 1.6px);
+  background-size:18px 18px;
+  padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) 0 env(safe-area-inset-left,0px);
+  -webkit-tap-highlight-color:transparent;
+}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--sun);outline-offset:3px}
+
+.screen{display:none;min-height:100vh;min-height:100dvh}
+.screen.on{display:flex;flex-direction:column}
+.wrap{width:100%;max-width:460px;margin:0 auto;padding:24px 18px calc(32px + env(safe-area-inset-bottom,0px))}
+
+/* buttons */
+.btn{
+  display:block;width:100%;padding:13px 18px;border-radius:14px;border:3px solid var(--ink);
+  background:var(--sun);color:var(--ink);font-weight:800;font-size:1.12rem;
+  box-shadow:0 5px 0 var(--ink);transition:transform .08s,box-shadow .08s;
+}
+.btn:active:not(:disabled){transform:translateY(4px);box-shadow:0 1px 0 var(--ink)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.white{background:#fff}
+.btn.red{background:var(--red);color:#fff}
+.btn.small{font-size:.95rem;padding:9px 12px}
+.link{background:none;border:0;color:var(--muted);text-decoration:underline;font-weight:600;padding:8px}
+
+/* home */
+.logo{
+  font-family:var(--display);font-weight:400;text-align:center;line-height:1.05;
+  font-size:clamp(4.2rem,22vw,6.2rem);color:var(--sun);
+  text-shadow:3px 3px 0 var(--ink),-3px 3px 0 var(--ink),0 7px 0 var(--ink);
+}
+.tag{text-align:center;color:#DCE3FF;font-size:1.05rem;line-height:1.6;margin:10px auto 22px;max-width:34ch}
+.hero{display:flex;justify-content:center;gap:10px;margin:0 0 26px;pointer-events:none}
+.hero .card{width:74px}
+.hero .card:nth-child(1){transform:rotate(-7deg) translateY(6px)}
+.hero .card:nth-child(3){transform:rotate(7deg) translateY(6px)}
+.field{margin-bottom:14px}
+.field label{display:block;font-weight:800;margin-bottom:6px}
+.inp{
+  width:100%;padding:13px 16px;border-radius:14px;border:3px solid var(--ink);
+  background:#fff;color:var(--ink);font-size:1.15rem;font-weight:600;
+}
+.inp:focus{outline:3px solid var(--sun);outline-offset:2px}
+.or{display:flex;align-items:center;gap:12px;color:var(--muted);margin:20px 0 14px;font-weight:600}
+.or::before,.or::after{content:"";flex:1;height:2px;background:rgba(255,255,255,.18)}
+.join{display:flex;gap:10px}
+.join .inp{flex:1;text-align:center;letter-spacing:.3em;text-transform:uppercase;direction:ltr}
+.join .btn{width:auto;flex:0 0 96px}
+.invite{background:var(--sun);color:var(--ink);border:3px solid var(--ink);border-radius:14px;padding:10px 14px;font-weight:700;margin-bottom:16px}
+
+/* lobby */
+.h2{font-family:var(--display);font-weight:400;font-size:2.1rem;line-height:1.2}
+.code{
+  direction:ltr;text-align:center;font-family:var(--display);font-size:3.4rem;letter-spacing:.18em;
+  background:#fff;color:var(--ink);border:3px solid var(--ink);border-radius:18px;box-shadow:0 6px 0 var(--ink);
+  padding:6px 0 0;margin:14px 0 16px;
+}
+.row{display:flex;gap:10px}
+.row .btn{flex:1}
+.status{margin:22px 0;padding:14px;border-radius:14px;background:rgba(0,0,0,.18);font-weight:600;line-height:1.6}
+.status b{color:var(--sun)}
+.setting{margin-bottom:16px}
+.setting p{font-weight:800;margin-bottom:6px}
+.setting small{font-weight:400;color:var(--muted)}
+.seg{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.seg button{padding:9px 0;border-radius:12px;border:3px solid var(--ink);background:#fff;color:var(--ink);font-weight:800}
+.seg button[aria-pressed="true"]{background:var(--sun)}
+.seg button:disabled{cursor:default;opacity:.8}
+
+/* bars */
+.bar{
+  position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--board-2);
+  border-bottom:3px solid var(--ink);padding:10px 12px;
+}
+.bar-in{max-width:900px;margin:0 auto}
+.bar-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.pill{
+  display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:999px;
+  border:3px solid var(--ink);font-weight:800;background:#fff;color:var(--ink);font-size:1rem;
+}
+.pill.mine{background:var(--sun)}
+.pill.theirs{background:var(--red);color:#fff}
+.secret{display:flex;align-items:center;gap:8px;background:none;border:0;color:var(--muted);font-size:.8rem;font-weight:600}
+.mini{width:42px;height:50px;border-radius:9px;border:3px solid var(--ink);overflow:hidden;background:var(--paper)}
+.mini svg{width:100%;height:100%;display:block}
+.timer{display:flex;align-items:center;gap:8px;margin:9px 0 7px}
+.track{flex:1;height:12px;border-radius:99px;background:rgba(255,255,255,.16);border:2px solid var(--ink);overflow:hidden}
+.track i{display:block;height:100%;width:100%;background:var(--sun);transition:width .2s linear}
+.timer.low .track i{background:var(--red)}
+.timer b{min-width:2ch;text-align:center;font-weight:800;font-size:1.05rem}
+.timer.low b{color:#FF8A86}
+.stats{display:flex;justify-content:space-between;gap:6px;font-size:.82rem;color:var(--muted);font-weight:600}
+.stats b{color:#fff;font-size:.95rem}
+.banner{text-align:center;padding:9px 12px;font-weight:700;font-size:.92rem;line-height:1.5;background:rgba(0,0,0,.2)}
+.banner.alert{background:var(--red)}
+.banner.guess{background:var(--sun);color:var(--ink)}
+.act{
+  position:sticky;bottom:0;z-index:5;background:var(--board-2);border-top:3px solid var(--ink);
+  padding:12px 12px calc(12px + env(safe-area-inset-bottom,0px));
+}
+.act-in{max-width:560px;margin:0 auto;display:flex;gap:10px}
+.act-in .btn{flex:1}
+.wait{flex:1;text-align:center;font-weight:700;color:#DCE3FF;padding:8px 4px;line-height:1.5}
+.pick-head{padding:18px 16px 4px;max-width:900px;margin:0 auto;width:100%}
+.pick-head p{color:#DCE3FF;margin-top:4px;line-height:1.5}
+
+/* board + cards */
+.board{flex:1;padding:12px;width:100%;max-width:900px;margin:0 auto}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+@media (min-width:560px){.grid{grid-template-columns:repeat(5,1fr);gap:10px}}
+@media (min-width:820px){.grid{grid-template-columns:repeat(8,1fr)}}
+.grid.dim .card:not(.sel){opacity:.35}
+.card{
+  display:block;border:0;background:none;padding:0;perspective:600px;aspect-ratio:3/4;width:100%;
+  -webkit-user-select:none;user-select:none;-webkit-touch-callout:none;touch-action:manipulation;
+}
+.card .in{position:relative;display:block;width:100%;height:100%;transform-style:preserve-3d;transition:transform .45s cubic-bezier(.3,1.3,.5,1)}
+.card.down .in{transform:rotateX(180deg)}
+.face,.back{
+  position:absolute;inset:0;border-radius:12px;border:3px solid var(--ink);overflow:hidden;
+  backface-visibility:hidden;-webkit-backface-visibility:hidden;display:flex;flex-direction:column;
+}
+.face{background:#fff;box-shadow:0 3px 0 var(--ink)}
+.face svg{flex:1;min-height:0;width:100%;display:block;background:var(--paper)}
+.nm{display:block;background:var(--sun);color:var(--ink);border-top:3px solid var(--ink);font-weight:800;font-size:.82rem;text-align:center;padding:1px 2px 0;white-space:nowrap;overflow:hidden}
+.back{
+  transform:rotateX(180deg);background-color:var(--red);align-items:center;justify-content:center;
+  background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.08) 0 6px,transparent 6px 12px);
+}
+.back span{font-family:var(--display);font-size:2rem;color:rgba(255,255,255,.55)}
+.card.sel .face{outline:4px solid var(--sun);outline-offset:2px}
+.card.sel .in{transform:scale(1.05)}
+.card.down.sel .in{transform:rotateX(180deg)}
+
+/* modal */
+.modal{position:fixed;inset:0;z-index:50;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(9,14,44,.74)}
+.modal.on{display:flex}
+.sheet{
+  width:100%;max-width:400px;max-height:88vh;overflow:auto;background:#fff;color:var(--ink);
+  border:3px solid var(--ink);border-radius:20px;box-shadow:0 8px 0 var(--ink);padding:22px 20px;
+}
+.sheet .h2{margin-bottom:8px}
+.sheet p{line-height:1.65;margin-bottom:12px}
+.sheet .btn{margin-top:10px}
+.rules li{margin:0 20px 10px 0;line-height:1.65}
+.zoom-face{width:min(66vw,250px);aspect-ratio:68/82;margin:4px auto 10px;border:3px solid var(--ink);border-radius:16px;overflow:hidden;background:var(--paper)}
+.zoom-face svg{width:100%;height:100%;display:block}
+.center{text-align:center}
+.duo{display:flex;justify-content:center;gap:18px;margin:14px 0 6px}
+.duo figure{width:96px;text-align:center;font-size:.85rem;font-weight:700}
+.duo .card{margin-bottom:6px}
+
+.toast{
+  position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);
+  background:var(--ink);color:#fff;padding:10px 18px;border-radius:12px;font-weight:700;z-index:60;
+  opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;max-width:90vw;text-align:center;
+}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+@media (prefers-reduced-motion:reduce){
+  .card .in,.btn,.toast,.track i{transition:none}
+}
+</style>
+</head>
+<body>
+
+<!-- HOME -->
+<section class="screen on" id="home">
+  <div class="wrap">
+    <h1 class="logo">لقيتك!</h1>
+    <p class="tag">خمّن شخصية صاحبك قبل ما يخمّن شخصيتك. ٤٠ شخصية بفروقات دقيقة، أسئلة محدودة، ووقت بيركض.</p>
+    <div class="hero" id="hero"></div>
+    <div class="invite" id="invite" hidden></div>
+    <div class="field">
+      <label for="name">اسمك</label>
+      <input class="inp" id="name" maxlength="16" autocomplete="nickname" placeholder="مثلاً: محمد">
+    </div>
+    <button class="btn" id="createBtn">اعمل غرفة جديدة</button>
+    <div class="or">أو ادخل غرفة صاحبك</div>
+    <div class="join">
+      <input class="inp" id="joinCode" maxlength="5" placeholder="الكود" autocomplete="off" autocapitalize="characters">
+      <button class="btn white" id="joinBtn">ادخل</button>
+    </div>
+    <p class="center" style="margin-top:18px"><button class="link" data-open="rulesM">كيف بنلعب؟</button></p>
+  </div>
+</section>
+
+<!-- LOBBY -->
+<section class="screen" id="lobby">
+  <div class="wrap">
+    <h2 class="h2">الغرفة</h2>
+    <div class="code" id="lobbyCode">…</div>
+    <div class="row" id="shareRow">
+      <button class="btn white small" id="shareBtn">ابعت الرابط</button>
+      <button class="btn white small" id="copyCodeBtn">انسخ الكود</button>
+    </div>
+    <div class="status" id="lobbyStatus">جاري الاتصال…</div>
+    <div class="setting">
+      <p>عدد الأسئلة لكل لاعب <small id="qNote"></small></p>
+      <div class="seg" id="segQ"></div>
+    </div>
+    <div class="setting">
+      <p>وقت كل دور</p>
+      <div class="seg" id="segT"></div>
+    </div>
+    <button class="btn" id="startBtn" disabled>ابدأ اللعب</button>
+    <p class="center" style="margin-top:14px"><button class="link" data-home>رجوع للرئيسية</button></p>
+  </div>
+</section>
+
+<!-- PICK -->
+<section class="screen" id="pick">
+  <div class="pick-head">
+    <h2 class="h2">اختار شخصيتك السرية</h2>
+    <p>هاي اللي لازم يخمّنها خصمك. اضغط مطوّلاً على أي شخصية لتكبّرها وتشوف التفاصيل.</p>
+  </div>
+  <div class="board"><div class="grid" id="pickGrid"></div></div>
+  <div class="act"><div class="act-in">
+    <div id="pickAct" style="display:flex;gap:10px;flex:1">
+      <button class="btn white" id="randBtn" style="flex:0 0 34%">عشوائي</button>
+      <button class="btn" id="lockBtn" disabled>ثبّت اختياري</button>
+    </div>
+    <div class="wait" id="pickWait" hidden></div>
+  </div></div>
+</section>
+
+<!-- GAME -->
+<section class="screen" id="game">
+  <div class="bar"><div class="bar-in">
+    <div class="bar-top">
+      <span class="pill" id="turnPill">…</span>
+      <button class="secret" id="secretBtn" aria-label="شخصيتي السرية">شخصيتك<span class="mini" id="mini"></span></button>
+    </div>
+    <div class="timer" id="timer"><div class="track"><i id="timerBar"></i></div><b id="timerNum">0</b></div>
+    <div class="stats">
+      <span>أسئلتك <b id="myQ">0</b></span>
+      <span>أسئلة خصمك <b id="oppQ">0</b></span>
+      <span>باقي عندك <b id="myLeft">40</b></span>
+      <span>باقي عنده <b id="oppLeft">40</b></span>
+    </div>
+  </div></div>
+  <div class="banner" id="banner"></div>
+  <div class="board"><div class="grid" id="gameGrid"></div></div>
+  <div class="act"><div class="act-in">
+    <div id="mineAct" style="display:flex;gap:10px;flex:1">
+      <button class="btn" id="endBtn">خلصت سؤالي</button>
+      <button class="btn red" id="guessBtn">خمّن</button>
+    </div>
+    <div class="wait" id="waitAct" hidden></div>
+  </div></div>
+</section>
+
+<!-- MODALS -->
+<div class="modal" id="rulesM"><div class="sheet">
+  <h2 class="h2">كيف بنلعب؟</h2>
+  <ol class="rules">
+    <li>كل واحد بيفتح الموقع من جواله. واحد بيعمل غرفة وبيبعت الرابط أو الكود للتاني.</li>
+    <li>كل لاعب بيختار شخصية سرية من ٤٠ شخصية.</li>
+    <li>بالدور، بتسأل خصمك سؤال جوابه «آه» أو «لا» بصوتك (قاعدين مع بعض أو على مكالمة)، وبتقلب الشخصيات اللي ما بتنطبق.</li>
+    <li>بعد ما يجاوبك اضغط «خلصت سؤالي». أسئلة كل لاعب محدودة.</li>
+    <li>كل دور إله وقت. إذا خلص الوقت بينحسب عليك سؤال.</li>
+    <li>بتقدر تخمّن بدورك بأي وقت، بس التخمين الغلط يعني خسارة فورية.</li>
+    <li>إذا خلصت أسئلتك، لازم تخمّن بدورك الجاي.</li>
+    <li>الفروقات دقيقة: لون العيون، شامة، نمش، حلق، نوع النظارة… اضغط مطوّلاً على أي شخصية لتكبّرها.</li>
+  </ol>
+  <button class="btn" data-close>فهمت</button>
+</div></div>
+
+<div class="modal" id="zoomM"><div class="sheet center">
+  <div class="zoom-face" id="zoomFace"></div>
+  <h2 class="h2" id="zoomName"></h2>
+  <button class="btn white" data-close>سكّر</button>
+</div></div>
+
+<div class="modal" id="confirmM"><div class="sheet center">
+  <div class="zoom-face" id="confirmFace"></div>
+  <h2 class="h2" id="confirmTitle"></h2>
+  <p>إذا طلع غلط بتخسر الجولة فوراً.</p>
+  <button class="btn red" id="confirmYes">أيوه، خمّن</button>
+  <button class="btn white" data-close>لا، رجوع</button>
+</div></div>
+
+<div class="modal" id="overM"><div class="sheet center">
+  <h2 class="h2" id="overTitle"></h2>
+  <p id="overReason"></p>
+  <div class="duo" id="overDuo"></div>
+  <button class="btn" id="againBtn">جولة كمان</button>
+  <button class="btn white" id="viewBoardBtn">شوف اللوحة</button>
+  <button class="btn white" data-home>الرئيسية</button>
+</div></div>
+
+<div class="modal" id="lostM"><div class="sheet center">
+  <h2 class="h2">انقطع الاتصال</h2>
+  <p id="lostText"></p>
+  <button class="btn" id="retryBtn">حاول مرة ثانية</button>
+  <button class="btn white" data-home>الرئيسية</button>
+</div></div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(() => {
+'use strict';
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+/* ---------------- Characters ---------------- */
+const MALE = ['أحمد','محمود','يوسف','خالد','عمر','سامي','رامي','باسل','فادي','زياد','مازن','طارق','نادر','وسيم','هاني','إياد','كريم','سليم','جمال','ماهر'];
+const FEMALE = ['سارة','ليلى','نور','هبة','ريم','دانة','لينا','مريم','رنا','سلمى','جنى','هالة','ياسمين','رهف','دعاء','آية','منى','سماح','لمى','تالا'];
+const SKIN = ['#F3D2B3','#DDA878','#A56A45'];
+const HAIR = {black:'#2B2118',brown:'#6B3F22',blonde:'#DDAE4A',red:'#B8492B',grey:'#A7A7A7'};
+const EYES = {brown:'#6B3E1E',blue:'#3F82C8',green:'#4C9B55'};
+const SHIRT = ['#D94A4A','#3B6FD6','#3E9D5B','#E6B42E'];
+const HIJAB = ['#2F3E6B','#7B2E3C','#C8AE86','#2D7B78'];
+
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+
+function buildDeck(){
+  const r = mulberry32(20260926);
+  const pick = a => a[Math.floor(r()*a.length)];
+  const chance = p => r() < p;
+  const seen = new Set();
+  const make = (sex, name) => {
+    let c;
+    for (let tries = 0; tries < 300; tries++) {
+      c = {sex, skin:Math.floor(r()*3), eyes:pick(['brown','brown','blue','green']), shirt:Math.floor(r()*4),
+           glasses:pick(['none','none','round','square']), freckles:chance(.28), mole:chance(.28)};
+      if (sex === 'm') {
+        c.style = pick(['short','short','curly','bald']);
+        c.hair = c.style === 'bald' ? pick(['grey','black']) : pick(['black','black','brown','blonde','red','grey']);
+        c.facial = pick(['none','none','mustache','beard']);
+        c.cap = c.style === 'short' && chance(.35);
+      } else {
+        c.style = pick(['long','long','bob','bun','hijab']);
+        if (c.style === 'hijab') { c.hijab = Math.floor(r()*4); c.hair = null; c.earrings = false; }
+        else { c.hair = pick(['black','brown','brown','blonde','red']); c.earrings = chance(.45); }
+      }
+      const sig = JSON.stringify(c);
+      if (!seen.has(sig)) { seen.add(sig); break; }
+    }
+    c.name = name;
+    return c;
+  };
+  const deck = [...MALE.map(n => make('m', n)), ...FEMALE.map(n => make('f', n))];
+  for (let i = deck.length - 1; i > 0; i--) { const j = Math.floor(r()*(i+1)); [deck[i], deck[j]] = [deck[j], deck[i]]; }
+  deck.forEach((c, i) => c.id = i);
+  return deck;
+}
+const DECK = buildDeck();
+const TOTAL = DECK.length;
+
+function faceSVG(c){
+  const ink = '#171433', sk = SKIN[c.skin], hc = c.hair ? HAIR[c.hair] : HAIR.black, sh = SHIRT[c.shirt];
+  const hj = c.style === 'hijab' ? HIJAB[c.hijab] : null;
+  const st = `stroke="${ink}" stroke-width="1.4" stroke-linejoin="round"`;
+  const o = [];
+  // back layer
+  if (c.style === 'long') o.push(`<path d="M29 46Q26 17 50 17Q74 17 71 46L74 86Q63 90 58 80L42 80Q37 90 26 86Z" fill="${hc}" ${st}/>`);
+  if (c.style === 'bob')  o.push(`<path d="M29 46Q26 17 50 17Q74 17 71 46L73 67Q66 71 63 65L37 65Q34 71 27 67Z" fill="${hc}" ${st}/>`);
+  if (c.style === 'bun')  o.push(`<circle cx="50" cy="19" r="7.5" fill="${hc}" ${st}/>`);
+  if (hj) o.push(`<path d="M26 54Q22 15 50 15Q78 15 74 54Q78 70 80 92L20 92Q22 70 26 54Z" fill="${hj}" ${st}/>`);
+  // body
+  o.push(`<path d="M15 112Q17 80 50 79Q83 80 85 112Z" fill="${sh}" ${st}/>`);
+  if (!hj) o.push(`<path d="M44 64H56V80Q50 84 44 80Z" fill="${sk}" ${st}/>`);
+  o.push(`<path d="M42 80Q50 88 58 80" fill="none" stroke="rgba(0,0,0,.28)" stroke-width="1.4"/>`);
+  if (!hj) o.push(`<ellipse cx="31.5" cy="52" rx="3.6" ry="5.6" fill="${sk}" ${st}/><ellipse cx="68.5" cy="52" rx="3.6" ry="5.6" fill="${sk}" ${st}/>`);
+  if (c.earrings) o.push(`<circle cx="31.5" cy="59.5" r="1.9" fill="#F2C230" stroke="${ink}" stroke-width=".8"/><circle cx="68.5" cy="59.5" r="1.9" fill="#F2C230" stroke="${ink}" stroke-width=".8"/>`);
+  // head
+  o.push(`<ellipse cx="50" cy="50" rx="19" ry="23" fill="${sk}" ${st}/>`);
+  if (c.style === 'bald') o.push(`<ellipse cx="44" cy="32" rx="5" ry="2" fill="#fff" opacity=".35"/>`);
+  // skin marks
+  if (c.freckles) [[38,56],[40.5,58],[36.5,58.6],[62,56],[59.5,58],[63.5,58.6]].forEach(([x,y]) => o.push(`<circle cx="${x}" cy="${y}" r=".75" fill="#9A5230" opacity=".75"/>`));
+  if (c.mole) o.push(`<circle cx="58.6" cy="61.2" r="1" fill="#3B2416"/>`);
+  // facial hair
+  if (c.facial === 'beard') o.push(`<path d="M31 53Q31 77 50 78Q69 77 69 53Q66 67 58 65.5Q50 69 42 65.5Q34 67 31 53Z" fill="${hc}" stroke="${ink}" stroke-width="1"/>`);
+  if (c.facial === 'beard' || c.facial === 'mustache') o.push(`<path d="M42.5 60.5Q46.5 57.5 50 59.5Q53.5 57.5 57.5 60.5Q53.5 62.2 50 61.2Q46.5 62.2 42.5 60.5Z" fill="${hc}"/>`);
+  // front hair / headwear
+  if (c.style === 'short') o.push(`<path d="M30 46Q28 21 50 20.5Q72 21 70 46Q66 32 50 32Q34 32 30 46Z" fill="${hc}" ${st}/>`);
+  if (c.style === 'curly') {
+    o.push(`<path d="M30 46Q28 21 50 20.5Q72 21 70 46Q66 32 50 32Q34 32 30 46Z" fill="${hc}"/>`);
+    [[33,40],[37,31],[45,26],[55,26],[63,31],[67,40]].forEach(([x,y]) => o.push(`<circle cx="${x}" cy="${y}" r="7" fill="${hc}" ${st}/>`));
+  }
+  if (c.style === 'bald') o.push(`<path d="M31 51Q29 41 34 36Q33 44 34.5 52Z" fill="${hc}" ${st}/><path d="M69 51Q71 41 66 36Q67 44 65.5 52Z" fill="${hc}" ${st}/>`);
+  if (c.style === 'long' || c.style === 'bob') o.push(`<path d="M30 46Q28 22 50 22Q72 22 70 46Q64 30 52 31Q44 33 36 36Q32 40 30 46Z" fill="${hc}" ${st}/>`);
+  if (c.style === 'bun') o.push(`<path d="M30 44Q29 24 50 24Q71 24 70 44Q62 31 50 32Q38 31 30 44Z" fill="${hc}" ${st}/>`);
+  if (hj) o.push(`<path d="M31 50Q29 25 50 25Q71 25 69 50Q67 33 50 33Q33 33 31 50Z" fill="${hj}" ${st}/><path d="M31 57Q33 76 50 76Q67 76 69 57L72 76Q61 86 50 86Q39 86 28 76Z" fill="${hj}" ${st}/>`);
+  if (c.cap) o.push(`<path d="M30 40Q30 18 50 18Q70 18 70 40Z" fill="#27336B" ${st}/><path d="M30 40Q50 43 70 39L83 42Q72 47 50 45.5Q36 45 30 42.5Z" fill="#27336B" ${st}/><circle cx="50" cy="18.6" r="1.6" fill="#fff"/>`);
+  // eyes & face
+  const brow = c.style === 'bald' ? '#3A2E26' : hc;
+  [43,57].forEach(x => {
+    o.push(`<ellipse cx="${x}" cy="49" rx="3.4" ry="2.6" fill="#fff" stroke="${ink}" stroke-width=".7"/>`);
+    o.push(`<circle cx="${x}" cy="49" r="2" fill="${EYES[c.eyes]}"/><circle cx="${x}" cy="49" r=".9" fill="#111"/><circle cx="${x+.7}" cy="48.3" r=".45" fill="#fff"/>`);
+  });
+  o.push(`<path d="M39.5 44Q43 42 46.5 43.6M53.5 43.6Q57 42 60.5 44" fill="none" stroke="${brow}" stroke-width="1.5" stroke-linecap="round"/>`);
+  o.push(`<path d="M50 51Q47.5 57 50.8 58" fill="none" stroke="rgba(0,0,0,.3)" stroke-width="1.3" stroke-linecap="round"/>`);
+  o.push(`<path d="M44.5 63Q50 67.5 55.5 63" fill="none" stroke="#8A2F2F" stroke-width="1.6" stroke-linecap="round"/>`);
+  if (c.glasses === 'round') o.push(`<g fill="rgba(255,255,255,.15)" stroke="${ink}" stroke-width="1.5"><circle cx="43" cy="49" r="5"/><circle cx="57" cy="49" r="5"/><path d="M48 48.5Q50 47 52 48.5" fill="none"/></g>`);
+  if (c.glasses === 'square') o.push(`<g fill="rgba(255,255,255,.15)" stroke="${ink}" stroke-width="1.5"><rect x="37.5" y="45" width="11" height="8" rx="1.5"/><rect x="51.5" y="45" width="11" height="8" rx="1.5"/><path d="M48.5 48H51.5" fill="none"/></g>`);
+  return `<svg viewBox="16 12 68 82" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">${o.join('')}</svg>`;
+}
+const SVG = DECK.map(faceSVG);
+
+function makeCard(c){
+  const el = document.createElement('button');
+  el.type = 'button'; el.className = 'card'; el.dataset.id = c.id;
+  el.setAttribute('aria-label', c.name);
+  el.innerHTML = `<span class="in"><span class="face">${SVG[c.id]}<span class="nm">${esc(c.name)}</span></span><span class="back"><span>؟</span></span></span>`;
+  return el;
+}
+
+/* ---------------- UI helpers ---------------- */
+let toastT;
+function toast(msg){ const t = $('#toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('on'), 2400); }
+function openM(id){ $('#'+id).classList.add('on'); }
+function closeM(id){ $('#'+id).classList.remove('on'); }
+function show(id){ document.querySelectorAll('.screen').forEach(s => s.classList.toggle('on', s.id === id)); }
+function buzz(ms){ try { navigator.vibrate && navigator.vibrate(ms); } catch(e){} }
+async function copy(text){
+  try { await navigator.clipboard.writeText(text); return true; }
+  catch(e){ const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select(); try{ document.execCommand('copy'); }catch(_){} ta.remove(); return true; }
+}
+function zoom(id){ $('#zoomFace').innerHTML = SVG[id]; $('#zoomName').textContent = DECK[id].name; openM('zoomM'); }
+
+function bindGrid(grid, onTap){
+  let timer = null, longFired = false, sx = 0, sy = 0;
+  grid.addEventListener('pointerdown', e => {
+    const el = e.target.closest('.card'); if (!el) return;
+    longFired = false; sx = e.clientX; sy = e.clientY;
+    clearTimeout(timer);
+    timer = setTimeout(() => { longFired = true; buzz(15); zoom(+el.dataset.id); }, 450);
+  });
+  grid.addEventListener('pointermove', e => { if (Math.abs(e.clientX-sx) > 8 || Math.abs(e.clientY-sy) > 8) clearTimeout(timer); });
+  ['pointerup','pointercancel'].forEach(ev => grid.addEventListener(ev, () => clearTimeout(timer)));
+  grid.addEventListener('click', e => {
+    const el = e.target.closest('.card'); if (!el) return;
+    if (longFired) { longFired = false; return; }
+    onTap(+el.dataset.id);
+  });
+  grid.addEventListener('contextmenu', e => e.preventDefault());
+}
+
+/* ---------------- State ---------------- */
+const PREFIX = 'laqeetak-v1-';
+const PEER_OPTS = {debug:0, config:{iceServers:[
+  {urls:'stun:stun.l.google.com:19302'},{urls:'stun:stun1.l.google.com:19302'},{urls:'stun:stun.cloudflare.com:3478'}
+]}};
+const Q_OPTS = [6,8,10,12], T_OPTS = [20,30,45,60];
+
+let peer = null, conn = null, role = null, roomCode = '', myName = '', leaving = false, connecting = false;
+let S = null;            // shared game state (host is the authority, guest mirrors)
+let deadline = 0;        // local timestamp when the current turn ends
+let mySecret = null, selected = null, guessMode = false, guessTarget = null;
+let down = new Set(), localRound = 0, lastTurn = null, seenEv = 0, pendingVerify = null, overHidden = false;
+let wakeLock = null;
+
+const other = r => r === 'host' ? 'guest' : 'host';
+const oppName = () => S ? (S.p[other(role)].name || 'خصمك') : 'خصمك';
+function send(m){ if (conn && conn.open) conn.send(m); }
+function act(a, extra = {}){ if (role === 'host') handleAction('host', {a, ...extra}); else send({t:'act', a, ...extra}); }
+
+function freshState(){
+  const q = 8;
+  return {phase:'lobby', round:0, settings:{q, t:30},
+    p:{host:{name:myName, ready:false, q, left:TOTAL}, guest:{name:'', ready:false, q, left:TOTAL}},
+    turn:null, rem:0, winner:null, reason:'', guesser:null, lastGuess:null, secrets:{}, ev:null};
+}
+function resetLocal(){ mySecret = null; selected = null; guessMode = false; guessTarget = null; down = new Set(); lastTurn = null; overHidden = false; }
+
+function broadcast(){
+  if (role !== 'host' || !S) return;
+  S.rem = S.phase === 'play' ? Math.max(0, deadline - Date.now()) : 0;
+  send({t:'state', s:S});
+  render();
+}
+
+/* ---------------- Host logic ---------------- */
+function startPick(){
+  S.phase = 'pick'; S.round++;
+  ['host','guest'].forEach(k => Object.assign(S.p[k], {ready:false, q:S.settings.q, left:TOTAL}));
+  Object.assign(S, {turn:null, winner:null, reason:'', guesser:null, lastGuess:null, secrets:{}});
+  resetLocal(); localRound = S.round;
+}
+function startPlay(){
+  S.phase = 'play';
+  S.turn = Math.random() < .5 ? 'host' : 'guest';
+  deadline = Date.now() + S.settings.t * 1000;
+}
+function nextTurn(){ S.turn = other(S.turn); deadline = Date.now() + S.settings.t * 1000; }
+function endGame(winner, reason, guessId, guesser){
+  Object.assign(S, {phase:'over', winner, reason, lastGuess:guessId ?? null, guesser:guesser ?? null});
+  S.secrets.host = mySecret;
+  send({t:'secret?'});
+}
+function handleAction(who, m){
+  if (!S) return;
+  const me = S.p[who];
+  switch (m.a) {
+    case 'ready':
+      if (S.phase !== 'pick') return;
+      me.ready = true;
+      if (S.p.host.ready && S.p.guest.ready) startPlay();
+      broadcast(); break;
+    case 'end':
+      if (S.phase !== 'play' || S.turn !== who || me.q <= 0) return;
+      me.q--; nextTurn(); broadcast(); break;
+    case 'guess':
+      if (S.phase !== 'play' || S.turn !== who || pendingVerify != null) return;
+      if (who === 'guest') { const ok = m.id === mySecret; endGame(ok ? 'guest' : 'host', ok ? 'guess' : 'wrong', m.id, 'guest'); broadcast(); }
+      else { pendingVerify = m.id; send({t:'verify', id:m.id}); }
+      break;
+    case 'left':
+      me.left = Math.max(0, Math.min(TOTAL, +m.n || 0)); broadcast(); break;
+    case 'reveal':
+      if (S.phase === 'over') { S.secrets.guest = m.id; broadcast(); } break;
+    case 'rematch':
+      if (S.phase === 'over') { startPick(); broadcast(); } break;
+  }
+}
+function hostTick(){
+  if (!S || S.phase !== 'play' || pendingVerify != null || Date.now() < deadline) return;
+  const p = S.turn;
+  S.ev = {n:(S.ev ? S.ev.n : 0) + 1, k:'timeout', who:p};
+  if (S.p[p].q <= 0) endGame(other(p), 'timeout', null, p);
+  else { S.p[p].q--; nextTurn(); }
+  broadcast();
+}
+
+/* ---------------- Networking ---------------- */
+function genCode(){ const a = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789'; let s = ''; for (let i = 0; i < 5; i++) s += a[Math.floor(Math.random()*a.length)]; return s; }
+function inviteLink(){ return location.origin + location.pathname + '?room=' + roomCode; }
+function readName(){
+  const n = $('#name').value.trim();
+  if (!n) { toast('اكتب اسمك أول'); $('#name').focus(); return ''; }
+  try { localStorage.setItem('laqeetak-name', n); } catch(e){}
+  return n;
+}
+function ensurePeerLib(){ if (typeof Peer === 'undefined') { toast('ما قدرت أحمّل مكتبة الاتصال. تأكد من النت وحدّث الصفحة'); return false; } return true; }
+
+function createRoom(isRetry){
+  if (!isRetry) { myName = readName(); if (!myName || !ensurePeerLib()) return; }
+  role = 'host'; leaving = false; connecting = true;
+  const code = genCode();
+  show('lobby'); renderLobby();
+  const p = new Peer(PREFIX + code, PEER_OPTS);
+  peer = p;
+  p.on('open', () => { roomCode = code; connecting = false; S = freshState(); history.replaceState(null, '', location.pathname); render(); });
+  p.on('connection', c => {
+    if (conn && conn.open) { c.on('open', () => { c.send({t:'full'}); setTimeout(() => c.close(), 400); }); return; }
+    attach(c);
+  });
+  p.on('disconnected', () => { if (!leaving) { try { p.reconnect(); } catch(e){} } });
+  p.on('error', e => {
+    if (e.type === 'unavailable-id') { p.destroy(); createRoom(true); return; }
+    netError(e);
+  });
+}
+
+function joinRoom(){
+  const code = $('#joinCode').value.trim().toUpperCase();
+  if (code.length < 5) { toast('الكود من ٥ حروف'); $('#joinCode').focus(); return; }
+  myName = readName(); if (!myName || !ensurePeerLib()) return;
+  role = 'guest'; roomCode = code; leaving = false; connecting = true;
+  show('lobby'); renderLobby();
+  peer = new Peer(PEER_OPTS);
+  peer.on('open', () => attach(peer.connect(PREFIX + code, {reliable:true})));
+  peer.on('disconnected', () => { if (!leaving) { try { peer.reconnect(); } catch(e){} } });
+  peer.on('error', e => {
+    if (e.type === 'peer-unavailable') { toast('ما في غرفة بهالكود، أو صاحبها سكّر الصفحة'); goHome(); return; }
+    netError(e);
+  });
+}
+
+function attach(c){
+  conn = c;
+  c.on('open', () => {
+    closeM('lostM');
+    c.send({t:'hello', name:myName});
+    if (role === 'host') broadcast();
+  });
+  c.on('data', onData);
+  c.on('close', () => onLost(c));
+  c.on('error', () => onLost(c));
+}
+
+function onData(m){
+  if (!m || typeof m !== 'object') return;
+  switch (m.t) {
+    case 'hello':
+      if (role === 'host' && S) { S.p.guest.name = String(m.name || 'ضيف').slice(0, 16); broadcast(); }
+      break;
+    case 'full': toast('الغرفة فيها لاعبين'); goHome(); break;
+    case 'state': if (role === 'guest') applyState(m.s); break;
+    case 'act': if (role === 'host') handleAction('guest', m); break;
+    case 'verify': if (role === 'guest') send({t:'verifyRes', ok:m.id === mySecret}); break;
+    case 'verifyRes':
+      if (role === 'host' && pendingVerify != null) {
+        const id = pendingVerify; pendingVerify = null;
+        endGame(m.ok ? 'host' : 'guest', m.ok ? 'guess' : 'wrong', id, 'host'); broadcast();
+      }
+      break;
+    case 'secret?': if (role === 'guest') send({t:'act', a:'reveal', id:mySecret}); break;
+  }
+}
+
+function applyState(s){
+  connecting = false;
+  if (s.round !== localRound) { resetLocal(); localRound = s.round; }
+  S = s;
+  if (s.phase === 'play') deadline = Date.now() + s.rem;
+  render();
+}
+
+function onLost(c){
+  if (leaving || c !== conn) return;
+  if (role === 'host') {
+    if (S && S.phase === 'lobby') { S.p.guest.name = ''; render(); return; }
+    $('#lostText').textContent = `${oppName()} طلع. خلي الصفحة مفتوحة، ولما يرجع يفتح الرابط بتكمّلوا.`;
+    $('#retryBtn').hidden = true;
+  } else {
+    $('#lostText').textContent = 'تأكد إن صاحبك لسا فاتح الصفحة، وبعدين جرّب مرة ثانية.';
+    $('#retryBtn').hidden = false;
+  }
+  openM('lostM');
+}
+function retry(){
+  if (role !== 'guest' || !peer) return;
+  try { if (peer.disconnected) peer.reconnect(); } catch(e){}
+  attach(peer.connect(PREFIX + roomCode, {reliable:true}));
+  toast('جاري إعادة الاتصال…');
+}
+function netError(e){
+  console.warn(e);
+  const map = {'network':'في مشكلة بالنت', 'server-error':'سيرفر الاتصال مش راد، جرّب كمان شوي', 'browser-incompatible':'المتصفح ما بيدعم الاتصال، جرّب Chrome أو Safari'};
+  toast(map[e.type] || 'صار خطأ بالاتصال');
+  if (connecting) goHome();
+}
+
+function goHome(){
+  leaving = true;
+  try { conn && conn.close(); } catch(e){}
+  try { peer && peer.destroy && peer.destroy(); } catch(e){}
+  peer = null; conn = null; role = null; S = null; roomCode = ''; connecting = false; pendingVerify = null; localRound = 0;
+  resetLocal();
+  document.querySelectorAll('.modal').forEach(m => m.classList.remove('on'));
+  releaseWake();
+  history.replaceState(null, '', location.pathname);
+  $('#invite').hidden = true;
+  show('home');
+}
+
+/* ---------------- Wake lock ---------------- */
+async function holdWake(){ try { if ('wakeLock' in navigator && !wakeLock) { wakeLock = await navigator.wakeLock.request('screen'); wakeLock.addEventListener('release', () => wakeLock = null); } } catch(e){} }
+function releaseWake(){ try { wakeLock && wakeLock.release(); } catch(e){} wakeLock = null; }
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && S && S.phase !== 'lobby') holdWake(); });
+
+/* ---------------- Rendering ---------------- */
+function render(){
+  if (!S) { if (role) { show('lobby'); renderLobby(); } return; }
+  if (S.phase === 'lobby') { show('lobby'); renderLobby(); }
+  else if (S.phase === 'pick') { show('pick'); renderPick(); holdWake(); }
+  else { show('game'); renderGame(); }
+  const showOver = S.phase === 'over' && !overHidden;
+  $('#overM').classList.toggle('on', showOver);
+  if (S.phase === 'over') renderOver();
+  if (S.phase !== 'play') { closeM('confirmM'); }
+  if (S.ev && S.ev.n !== seenEv) {
+    seenEv = S.ev.n;
+    if (S.ev.k === 'timeout' && S.phase === 'play') toast(S.ev.who === role ? 'خلص وقتك، وانحسب عليك سؤال' : `خلص وقت ${oppName()}، وانحسب عليه سؤال`);
+  }
+}
+
+function segHTML(el, opts, cur, unit, key){
+  const host = role === 'host';
+  el.innerHTML = opts.map(v => `<button type="button" data-k="${key}" data-v="${v}" aria-pressed="${v === cur}" ${host ? '' : 'disabled'}>${v}${unit}</button>`).join('');
+}
+function renderLobby(){
+  const host = role === 'host';
+  $('#lobbyCode').textContent = roomCode || '…';
+  $('#shareRow').hidden = !host || !S;
+  const opp = S ? (host ? S.p.guest.name : S.p.host.name) : '';
+  let st;
+  if (!S) st = host ? 'جاري تجهيز الغرفة…' : 'جاري الاتصال بالغرفة…';
+  else if (host) st = opp ? `✓ <b>${esc(opp)}</b> دخل الغرفة. اختاروا الإعدادات وابدأ.` : 'مستنيين صاحبك يدخل… ابعتله الرابط أو الكود.';
+  else st = `✓ دخلت غرفة <b>${esc(opp)}</b>. استنى لحتى يبدأ اللعب.`;
+  $('#lobbyStatus').innerHTML = st;
+  const set = S ? S.settings : {q:8, t:30};
+  segHTML($('#segQ'), Q_OPTS, set.q, '', 'q');
+  segHTML($('#segT'), T_OPTS, set.t, 'ث', 't');
+  $('#qNote').textContent = host ? '' : '(المضيف بيحددها)';
+  $('#startBtn').hidden = !host;
+  $('#startBtn').disabled = !(host && S && opp && conn && conn.open);
+}
+
+function renderPick(){
+  const locked = mySecret != null;
+  const cur = locked ? mySecret : selected;
+  $('#pickGrid').querySelectorAll('.card').forEach(el => el.classList.toggle('sel', +el.dataset.id === cur));
+  $('#pickGrid').classList.toggle('dim', locked);
+  $('#lockBtn').disabled = selected == null;
+  $('#pickAct').hidden = locked;
+  $('#pickWait').hidden = !locked;
+  $('#pickWait').textContent = `تمام! استنى ${oppName()} يختار شخصيته…`;
+}
+
+function renderGame(){
+  const play = S.phase === 'play';
+  const mine = play && S.turn === role;
+  const me = S.p[role], op = S.p[other(role)];
+  if (play && S.turn !== lastTurn) { if (mine && lastTurn !== null) { buzz([60,40,60]); toast('دورك!'); } else if (mine) { buzz(60); } lastTurn = S.turn; }
+  if (!mine) guessMode = false;
+
+  const pill = $('#turnPill');
+  pill.className = 'pill ' + (!play ? '' : mine ? 'mine' : 'theirs');
+  pill.textContent = !play ? 'انتهت الجولة' : mine ? 'دورك تسأل' : `دور ${op.name}`;
+  $('#mini').innerHTML = mySecret != null ? SVG[mySecret] : '';
+  $('#myQ').textContent = `${me.q}/${S.settings.q}`;
+  $('#oppQ').textContent = `${op.q}/${S.settings.q}`;
+  $('#myLeft').textContent = TOTAL - down.size;
+  $('#oppLeft').textContent = op.left;
+  $('#timer').hidden = !play;
+
+  const must = mine && me.q <= 0;
+  if (must) guessMode = true;
+  const b = $('#banner');
+  b.className = 'banner';
+  if (!play) b.textContent = 'انتهت الجولة';
+  else if (must) { b.textContent = 'خلصت أسئلتك. لازم تخمّن هلأ: اختار شخصية.'; b.classList.add('alert'); }
+  else if (guessMode) { b.textContent = 'اختار الشخصية اللي بتخمّنها. التخمين الغلط يعني خسارة.'; b.classList.add('guess'); }
+  else if (mine) b.textContent = 'اسأل سؤالك بصوتك، اقلب الشخصيات اللي ما بتنطبق، وبعدين اضغط «خلصت سؤالي».';
+  else b.textContent = `${op.name} بيسألك هلأ. جاوبه بـ«آه» أو «لا». بتقدر تقلب شخصياتك بأي وقت.`;
+
+  $('#mineAct').hidden = !mine;
+  $('#waitAct').hidden = mine;
+  $('#waitAct').textContent = play ? `استنى ${op.name} يخلّص دوره…` : '';
+  $('#endBtn').hidden = must;
+  $('#guessBtn').textContent = must ? 'اختار شخصية للتخمين' : guessMode ? 'إلغاء التخمين' : 'خمّن';
+  $('#guessBtn').disabled = must;
+
+  $('#gameGrid').querySelectorAll('.card').forEach(el => {
+    const id = +el.dataset.id;
+    el.classList.toggle('down', down.has(id));
+    el.classList.toggle('sel', guessMode && id === guessTarget);
+  });
+}
+
+function miniCard(id, label){
+  const c = id != null ? DECK[id] : null;
+  const inner = c ? `<span class="in"><span class="face">${SVG[id]}<span class="nm">${esc(c.name)}</span></span></span>` : `<span class="in"><span class="back" style="transform:none"><span>؟</span></span></span>`;
+  return `<figure><span class="card" style="pointer-events:none">${inner}</span>${esc(label)}</figure>`;
+}
+function renderOver(){
+  const won = S.winner === role, op = oppName();
+  $('#overTitle').textContent = won ? 'لقيتك! فزت 🎉' : 'خسرت هالمرة 😅';
+  const g = S.lastGuess != null ? DECK[S.lastGuess].name : '';
+  const byMe = S.guesser === role;
+  let r = '';
+  if (S.reason === 'guess') r = byMe ? `عرفت إن شخصية ${op} هي ${g}.` : `${op} عرف إن شخصيتك هي ${g}.`;
+  else if (S.reason === 'wrong') r = byMe ? `خمّنت ${g} وطلع غلط.` : `${op} خمّن ${g} وطلع غلط.`;
+  else if (S.reason === 'timeout') r = won ? `خلص وقت ${op} وما ضلّ عنده أسئلة.` : 'خلص وقتك وما ضلّ عندك أسئلة.';
+  $('#overReason').textContent = r;
+  $('#overDuo').innerHTML = miniCard(mySecret, 'شخصيتك') + miniCard(S.secrets[other(role)], `شخصية ${op}`);
+}
+
+/* ---------------- Events ---------------- */
+function init(){
+  // hero
+  const hero = $('#hero');
+  [DECK[3], DECK[11], DECK[27]].forEach((c, i) => { const el = makeCard(c); el.tabIndex = -1; if (i === 2) el.classList.add('down'); hero.appendChild(el); });
+  // grids
+  DECK.forEach(c => { $('#pickGrid').appendChild(makeCard(c)); $('#gameGrid').appendChild(makeCard(c)); });
+
+  bindGrid($('#pickGrid'), id => { if (mySecret != null) return; selected = id; renderPick(); });
+  bindGrid($('#gameGrid'), id => {
+    if (!S) return;
+    if (S.phase === 'play' && guessMode && S.turn === role) {
+      guessTarget = id; renderGame();
+      $('#confirmFace').innerHTML = SVG[id];
+      $('#confirmTitle').textContent = `متأكد إنها ${DECK[id].name}؟`;
+      openM('confirmM'); return;
+    }
+    if (down.has(id)) down.delete(id); else down.add(id);
+    renderGame();
+    if (S.phase === 'play') act('left', {n:TOTAL - down.size});
+  });
+
+  try { const n = localStorage.getItem('laqeetak-name'); if (n) $('#name').value = n; } catch(e){}
+  const room = new URLSearchParams(location.search).get('room');
+  if (room) {
+    $('#joinCode').value = room.toUpperCase().slice(0, 5);
+    $('#invite').hidden = false;
+    $('#invite').textContent = `وصلتك دعوة لغرفة ${room.toUpperCase()}. اكتب اسمك واضغط «ادخل».`;
+  }
+
+  $('#createBtn').onclick = () => createRoom(false);
+  $('#joinBtn').onclick = joinRoom;
+  $('#joinCode').addEventListener('keydown', e => { if (e.key === 'Enter') joinRoom(); });
+  $('#shareBtn').onclick = async () => {
+    const url = inviteLink();
+    try { if (navigator.share) { await navigator.share({title:'لقيتك!', text:`تعال نلعب «لقيتك!» — كود الغرفة ${roomCode}`, url}); return; } }
+    catch(e){ if (e.name === 'AbortError') return; }
+    await copy(url); toast('انتسخ الرابط، ابعته لصاحبك');
+  };
+  $('#copyCodeBtn').onclick = async () => { await copy(roomCode); toast('انتسخ الكود'); };
+  document.addEventListener('click', e => {
+    const b = e.target.closest('.seg button'); if (!b || role !== 'host' || !S) return;
+    const v = +b.dataset.v;
+    if (b.dataset.k === 'q') { S.settings.q = v; S.p.host.q = v; S.p.guest.q = v; } else S.settings.t = v;
+    broadcast();
+  });
+  $('#startBtn').onclick = () => { if (role === 'host' && S) { startPick(); broadcast(); } };
+
+  $('#randBtn').onclick = () => { if (mySecret != null) return; selected = Math.floor(Math.random()*TOTAL); renderPick(); const el = $(`#pickGrid .card[data-id="${selected}"]`); el && el.scrollIntoView({block:'center', behavior:'smooth'}); };
+  $('#lockBtn').onclick = () => { if (selected == null) return; mySecret = selected; renderPick(); act('ready'); };
+
+  $('#endBtn').onclick = () => { guessMode = false; act('end'); };
+  $('#guessBtn').onclick = () => { guessMode = !guessMode; guessTarget = null; renderGame(); };
+  $('#confirmYes').onclick = () => { if (guessTarget == null) return; closeM('confirmM'); act('guess', {id:guessTarget}); toast('جاري التحقق…'); };
+  $('#secretBtn').onclick = () => { if (mySecret != null) zoom(mySecret); };
+
+  $('#againBtn').onclick = () => act('rematch');
+  $('#viewBoardBtn').onclick = () => { overHidden = true; closeM('overM'); };
+  $('#retryBtn').onclick = retry;
+
+  document.addEventListener('click', e => {
+    const o = e.target.closest('[data-open]'); if (o) openM(o.dataset.open);
+    const c = e.target.closest('[data-close]'); if (c) c.closest('.modal').classList.remove('on');
+    if (e.target.closest('[data-home]')) goHome();
+    if (e.target.classList.contains('modal') && ['rulesM','zoomM','confirmM'].includes(e.target.id)) e.target.classList.remove('on');
+  });
+  // tapping the finished-round pill reopens the result
+  $('#turnPill').onclick = () => { if (S && S.phase === 'over') { overHidden = false; render(); } };
+
+  setInterval(() => {
+    if (role === 'host') hostTick();
+    if (S && S.phase === 'play') {
+      const rem = Math.max(0, deadline - Date.now());
+      $('#timerBar').style.width = (rem / (S.settings.t * 1000) * 100) + '%';
+      $('#timerNum').textContent = Math.ceil(rem / 1000);
+      $('#timer').classList.toggle('low', rem < 10000);
+    }
+  }, 200);
+}
+init();
+})();
+</script>
+</body>
+</html>
