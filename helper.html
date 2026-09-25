@@ -105,8 +105,8 @@ function promptFor(c){
   const who = c.sex === 'm' ? (older ? 'an older man in his sixties' : 'a young adult man') : (older ? 'an older woman in her sixties' : 'a young adult woman');
   const hc = {black:'black', brown:'brown', blonde:'blonde', red:'ginger red', grey:'grey'}[c.hairColor] || '';
   const hair = {
-    short: c.sex === 'm' ? `short ${hc} hair` : `a short ${hc} bob haircut`,
-    curly: `curly ${hc} hair`,
+    short: c.sex === 'm' ? `short straight neatly combed ${hc} hair, not curly` : `a short straight ${hc} bob haircut`,
+    curly: `big voluminous tightly curly ${hc} hair`,
     bald: `a bald head with a little ${hc} hair only on the sides`,
     long: `long straight ${hc} hair falling past the shoulders`,
     bun: `${hc} hair tied up in a bun on top of the head`,
@@ -133,7 +133,7 @@ function specFor(c){
   s.push(f ? 'بنت/ست' : 'شب/رجل');
   s.push({light:'بشرة فاتحة', medium:'بشرة حنطية', dark:'بشرة سمرا'}[c.skin]);
   const hc = {black:'أسود', brown:'بني', blonde:'أشقر', red:'أحمر', grey:'شايب (رمادي)'}[c.hairColor] || '';
-  s.push({short: f ? `شعر قصير ${hc}` : `شعر قصير ${hc}`, curly:`شعر كيرلي ${hc}`, bald:`أصلع (شعر ${hc} عالجوانب)`, long:`شعر طويل ${hc}`, bun:`شعر ${hc} مربوط كعكة`,
+  s.push({short: f ? `شعر قصير ناعم ${hc}` : `شعر قصير ناعم ${hc}`, curly:`شعر كيرلي كثيف ${hc}`, bald:`أصلع (شعر ${hc} عالجوانب)`, long:`شعر طويل ${hc}`, bun:`شعر ${hc} مربوط كعكة`,
           hijab:`حجاب ${ {navy:'كحلي', maroon:'خمري', beige:'بيج', teal:'تركوازي'}[c.hijab] }`}[c.hair]);
   s.push({brown:'عيون بنية', blue:'عيون زرقا', green:'عيون خضرا'}[c.eyes]);
   s.push({none:'بدون نظارة', round:'نظارة مدوّرة', square:'نظارة مربعة'}[c.glasses]);
