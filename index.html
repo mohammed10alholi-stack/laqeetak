@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#16307F">
-<meta name="description" content="لعبة خمّن الشخصية: العب مع صاحبك من جوالين أو ضد الكمبيوتر. ٤٨ شخصية بفروقات دقيقة، ووضع خمّن لاعب الكورة.">
+<meta name="description" content="لعبة خمّن الشخصية: العب مع صاحبك من جوالين أو ضد الكمبيوتر. ٤٨ شخصية بفروقات دقيقة، ووضع خمّن الشي: لاعبين، حيوانات، أكل، ودول.">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="لقيتك!">
@@ -299,6 +299,19 @@ html[lang="en"] .st.small .st-name{font-size:.95rem}
 .rules li.rules-h{list-style:none;font-weight:800;margin-top:14px}
 @media (prefers-reduced-motion:reduce){.deal .st{animation:none}}
 .log b.m{color:#8A6D00}
+.st.it{background-color:var(--c);background-image:repeating-linear-gradient(90deg,rgba(255,255,255,.08) 0 28px,transparent 28px 56px);padding-bottom:18px}
+.st.it::before,.st.it::after{display:none}
+.st-emo{font-size:5.6rem;line-height:1.15;margin-top:4px;filter:drop-shadow(0 4px 0 rgba(23,20,51,.35))}
+.st.mid .st-emo{font-size:4rem}
+.st.small .st-emo{font-size:2.3rem;margin:0}
+.st.small.it .st-top{display:none}
+.st.it .st-name{margin-top:6px}
+.cats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:0 0 16px}
+.cats button{padding:8px 4px;border-radius:12px;border:2.5px solid var(--ink);background:#fff;color:var(--ink);font-weight:800;font-size:.84rem;line-height:1.25}
+.cats button .ce{display:block;font-size:1.5rem;line-height:1.2}
+.cats button[aria-pressed="true"]{background:var(--sun);box-shadow:0 3px 0 var(--ink)}
+.cats button:disabled{cursor:default}
+.cats button:disabled:not([aria-pressed="true"]){opacity:.5}
 @media (prefers-reduced-motion:reduce){.card .in,.btn,.toast,.track i{transition:none}.pill.pop,.cf,.emo-fly,.splash-card,.log.flash{animation:none}.cf{display:none}}
 </style>
 </head>
@@ -350,6 +363,8 @@ html[lang="en"] .st.small .st-name{font-size:.95rem}
     </div>
     <p class="voice-note" id="voiceLobbyNote" hidden></p>
     <div class="gt" id="gtLobby" role="group"></div>
+    <p style="font-weight:800;margin-bottom:8px" id="catLabel" data-i18n="fCat" hidden></p>
+    <div class="cats" id="catPick" role="group" hidden></div>
     <p style="font-weight:800;margin-bottom:8px" data-i18n="level"></p>
     <div class="levels" id="lobbyLevels"></div>
     <div class="custom">
@@ -662,56 +677,56 @@ const QS = [
 ];
 
 Object.assign(STR.ar, {
-  gtFaces:'😀 خمّن الشخصية', gtFacesSub:'لوحة وجوه', gtFoot:'⚽ خمّن اللاعب', gtFootSub:'لاعبين كورة',
-  botFootNote:'«خمّن اللاعب» بتنلعب مع صاحبك بس، كل واحد من جواله.',
-  flvl_easy:'مشاهير', flvl_normal:'عادي', flvl_expert:'خبير', fLvlInfo:'{n} لاعب • {q} سؤال • {time}',
-  fPickTitle:'هاد لاعبك', fPickSub:'خبّيه! {name} لازم يخمّنه، وإنت اللي بتجاوب عن أسئلته. إذا ما بتعرفه، غيّره.',
+  gtFaces:'😀 خمّن الشخصية', gtFacesSub:'لوحة وجوه', gtFoot:'🎯 خمّن الشي', gtFootSub:'لاعبين، حيوانات، وأكثر',
+  botFootNote:'«خمّن الشي» بتنلعب مع صاحبك بس، كل واحد من جواله.', fCat:'القسم',
+  flvl_easy:'سهل', flvl_normal:'عادي', flvl_expert:'خبير', fLvlInfo:'{n} خيار • {q} سؤال • {time}',
+  fPickTitle:'هاد اللي معك 🤫', fPickSub:'خبّيه! {name} لازم يخمّنه، وإنت اللي بتجاوب عن أسئلته. إذا ما بتعرفه، غيّره.',
   fReroll:'🔄 ما بعرفه، غيّره', fReady:'✓ جاهز',
-  fMineLabel:'لاعبك، و{name} بيحاول يخمّنه',
+  fMineLabel:'اللي معك، و{name} بيحاول يخمّنه',
   fMine:'اسأل سؤال جوابه آه أو لا: اكتبه تحت أو احكيه بصوتك، واستنى {name} يجاوب.',
   fWaitAns:'استنى {name} يجاوب على سؤالك…',
   fTheirs:'دور {name} يسأل. لما يسألك بصوته، جاوب من الأزرار تحت.',
   fTheirsQ:'{name} سأل: «{q}» جاوب من الأزرار تحت 👇',
   fTheirsMust:'خلصت أسئلة {name}، ولازم يخمّن هلأ.',
   fMust:'خلصت أسئلتك. لازم تخمّن هلأ: اضغط «خمّن».',
-  fAskPh:'اكتب سؤالك… مثلاً: بلعب بإسبانيا؟', fSend:'ابعت',
+  fAskPh:'اكتب سؤالك… مثلاً: {q}', fSend:'ابعت',
   fYes:'✅ آه', fNo:'❌ لا', fMaybeBtn:'🤷 مش عارف', fMaybe:'مش عارف', fAnswered:'انبعت جوابك',
   fVoiceQ:'سؤال بالصوت 🎤',
-  fHintLine:'💡 مساعدة: {q}', fHNat:'من {c} {f}', fHPos:'مركزه {p}', fHClub:'لعب بـ{c}',
-  fGuessBtn:'⚽ خمّن', fGuessTitle:'مين اللاعب؟', fGuessNote:'اكتب الاسم واختاره من القائمة. التخمين الغلط يعني خسارة.',
-  fSearchPh:'اسم اللاعب', fNoRes:'ما لقيت لاعب بهالاسم بهالمستوى', fTypeName:'اكتب أول حرفين من الاسم',
+  fHintLine:'💡 مساعدة: {q}', fHNat:'من {c} {f}', fHPos:'مركزه {p}', fHClub:'لعب بـ{c}', fHFirst:'أول حرف: {l}', fHCat:'من قسم {c}',
+  fGuessBtn:'🎯 خمّن', fGuessTitle:'شو هو؟', fGuessNote:'اكتب الاسم واختاره من القائمة. التخمين الغلط يعني خسارة.',
+  fSearchPh:'اكتب الاسم', fNoRes:'ما لقيت إشي بهالاسم بهالقسم', fTypeName:'اكتب أول حرفين من الاسم',
   fHist:'الأسئلة ({n})', fHistEmpty:'لسا ما في أسئلة.', fYou:'إنت',
-  fRGuessMe:'عرفت اللاعب: {c} ⚽', fRGuessOpp:'{name} عرف اللاعب: {c}',
+  fRGuessMe:'عرفتها: {c} 🎯', fRGuessOpp:'{name} عرفها: {c}',
   fYouHad:'اللي كنت بتخمّنه', fHeHad:'اللي كان {name} بيخمّنه',
-  st_foot:'خمّن اللاعب', fConfirmTitle:'متأكد إنه {name}؟', fViewBoard:'شوف الأسئلة', fHintCost:'💡 المساعدة بتكشفلك معلومة عن اللاعب (جنسيته، مركزه، أو نادي لعب فيه)، وبتكلّفك سؤالين. مرة وحدة بالجولة. بدك تستخدمها؟',
-  fRulesTitle:'⚽ خمّن اللاعب',
-  fRules:'اختاروا «خمّن اللاعب» من الرئيسية، وكل واحد بيلعب من جواله.|الموقع بيعطي كل واحد لاعب عشوائي، وخصمك لازم يخمّنه. إذا ما بتعرف لاعبك اضغط «غيّره».|بالدور، اسأل سؤال جوابه آه أو لا: اكتبه أو احكيه بصوتك.|خصمك بيجاوب من الأزرار: آه، لا، أو مش عارف. كل جواب بينحسب سؤال.|لما تعرفه اضغط «خمّن» واكتب اسمه. التخمين الغلط يعني خسارة.|«مشاهير» فيه النجوم الكبار بس، و«خبير» فيه لاعبين أصعب.'
+  st_foot:'خمّن الشي', fConfirmTitle:'متأكد إنه {name}؟', fViewBoard:'شوف الأسئلة', fHintCost:'💡 المساعدة بتكشفلك معلومة عن اللي مع خصمك (زي أول حرف أو القسم، وللاعبين الجنسية أو المركز أو نادي)، وبتكلّفك سؤالين. مرة وحدة بالجولة. بدك تستخدمها؟',
+  fRulesTitle:'🎯 خمّن الشي',
+  fRules:'اختاروا «خمّن الشي» من الرئيسية، وكل واحد بيلعب من جواله.|صاحب الغرفة بيختار القسم: لاعبين كورة، حيوانات، أشياء بالبيت، أجهزة كهربائية، أكل، مهن، مواصلات، دول ومدن، أو خلطة من الكل.|الموقع بيعطي كل واحد إشي عشوائي، وخصمك لازم يخمّنه. إذا ما بتعرفه اضغط «غيّره».|بالدور، اسأل سؤال جوابه آه أو لا: اكتبه أو احكيه بصوتك.|خصمك بيجاوب من الأزرار: آه، لا، أو مش عارف. كل جواب بينحسب سؤال.|لما تعرفه اضغط «خمّن» واكتب اسمه. التخمين الغلط يعني خسارة.|بقسم اللاعبين، المستوى السهل فيه النجوم الكبار بس، والخبير فيه لاعبين أصعب.'
 });
 Object.assign(STR.en, {
-  gtFaces:'😀 Guess who', gtFacesSub:'Faces board', gtFoot:'⚽ Guess the player', gtFootSub:'Football stars',
-  botFootNote:'"Guess the player" is played with a friend, each on their own phone.',
-  flvl_easy:'Stars', flvl_normal:'Normal', flvl_expert:'Expert', fLvlInfo:'{n} players • {q} questions • {time}',
-  fPickTitle:'This is your player', fPickSub:"Keep it hidden! {name} has to guess them, and you answer their questions. Don't know them? Swap.",
+  gtFaces:'😀 Guess who', gtFacesSub:'Faces board', gtFoot:'🎯 Guess the thing', gtFootSub:'Players, animals & more',
+  botFootNote:'"Guess the thing" is played with a friend, each on their own phone.', fCat:'Category',
+  flvl_easy:'Easy', flvl_normal:'Normal', flvl_expert:'Expert', fLvlInfo:'{n} options • {q} questions • {time}',
+  fPickTitle:"Here's yours 🤫", fPickSub:"Keep it hidden! {name} has to guess them, and you answer their questions. Don't know them? Swap.",
   fReroll:"🔄 Don't know, swap", fReady:'✓ Ready',
-  fMineLabel:'Your player: {name} is trying to guess them',
+  fMineLabel:'Yours: {name} is trying to guess it',
   fMine:'Ask a yes/no question: type it below or say it out loud, then wait for {name} to answer.',
   fWaitAns:'Waiting for {name} to answer…',
   fTheirs:"{name} is asking. When they ask out loud, answer with the buttons below.",
   fTheirsQ:'{name} asked: "{q}" Answer below 👇',
   fTheirsMust:'{name} is out of questions and must guess now.',
   fMust:"You're out of questions. Tap \"Guess\" now.",
-  fAskPh:'Type a question… e.g. Plays in Spain?', fSend:'Send',
+  fAskPh:'Type a question… e.g. {q}', fSend:'Send',
   fYes:'✅ Yes', fNo:'❌ No', fMaybeBtn:"🤷 Not sure", fMaybe:'Not sure', fAnswered:'Answer sent',
   fVoiceQ:'Asked out loud 🎤',
-  fHintLine:'💡 Hint: {q}', fHNat:'From {c} {f}', fHPos:'Position: {p}', fHClub:'Played for {c}',
-  fGuessBtn:'⚽ Guess', fGuessTitle:'Who is it?', fGuessNote:'Type the name and pick it from the list. A wrong guess loses.',
-  fSearchPh:'Player name', fNoRes:'No player with that name at this level', fTypeName:'Type the first two letters',
+  fHintLine:'💡 Hint: {q}', fHNat:'From {c} {f}', fHPos:'Position: {p}', fHClub:'Played for {c}', fHFirst:'First letter: {l}', fHCat:'Category: {c}',
+  fGuessBtn:'🎯 Guess', fGuessTitle:'What is it?', fGuessNote:'Type the name and pick it from the list. A wrong guess loses.',
+  fSearchPh:'Type the name', fNoRes:'Nothing with that name in this category', fTypeName:'Type the first two letters',
   fHist:'Questions ({n})', fHistEmpty:'No questions yet.', fYou:'You',
-  fRGuessMe:'You got it: {c} ⚽', fRGuessOpp:'{name} got it: {c}',
+  fRGuessMe:'You got it: {c} 🎯', fRGuessOpp:'{name} got it: {c}',
   fYouHad:'Yours to guess', fHeHad:"{name}'s to guess",
-  st_foot:'Guess the player', fConfirmTitle:"Sure it's {name}?", fViewBoard:'See questions', fHintCost:'💡 A hint reveals one fact about the player (nationality, position, or a club) and costs 2 questions. Once per round. Use it?',
-  fRulesTitle:'⚽ Guess the player',
-  fRules:'Pick "Guess the player" on the home screen; each of you plays on your own phone.|The site deals each of you a random player for your opponent to guess. Don\'t know yours? Tap "Swap".|Take turns asking yes/no questions: type them or say them out loud.|Your opponent answers with the buttons: yes, no, or not sure. Every answer uses one question.|Know it? Tap "Guess" and type the name. A wrong guess loses.|"Stars" has only the biggest names; "Expert" adds harder players.'
+  st_foot:'Guess the thing', fConfirmTitle:"Sure it's {name}?", fViewBoard:'See questions', fHintCost:'💡 A hint reveals one fact (like the first letter or category; for players, nationality, position or a club) and costs 2 questions. Once per round. Use it?',
+  fRulesTitle:'🎯 Guess the thing',
+  fRules:'Pick "Guess the thing" on the home screen; each of you plays on your own phone.|The room host picks a category: football players, animals, home stuff, electrical, food, jobs, transport, places, or a mix of all.|The site deals each of you a random one for your opponent to guess. Don\'t know yours? Tap "Swap".|Take turns asking yes/no questions: type them or say them out loud.|Your opponent answers with the buttons: yes, no, or not sure. Every answer uses one question.|Know it? Tap "Guess" and type the name. A wrong guess loses.|In football players, Easy has only the biggest names and Expert adds harder ones.'
 });
 const CTRY = {
   AR:['الأرجنتين','Argentina'], PT:['البرتغال','Portugal'], BR:['البرازيل','Brazil'], FR:['فرنسا','France'], NO:['النرويج','Norway'],
@@ -994,13 +1009,79 @@ const PL = [
  ['هريستو ستويتشكوف','Hristo Stoichkov','BG','fw',3,'barca'],
  ['جورجي هاجي','Gheorghe Hagi','RO','mf',3,'rm barca galatasaray'],
 ];
-const PLN = PL.map(p => normName(p[0] + ' ' + p[1]));
+const CATS = {
+  mix:['خلطة','Mix','🎲','#6B4FD8','بيطير؟','Can it fly?'],
+  foot:['لاعبين كورة','Football players','⚽','#2E8A4C','بلعب بإسبانيا؟','Plays in Spain?'],
+  animals:['حيوانات','Animals','🦁','#D9772B','بعيش بالبحر؟','Lives in the sea?'],
+  home:['أشياء بالبيت','Home stuff','🏠','#8B5CC4','بنلاقيه بالمطبخ؟','Found in the kitchen?'],
+  elec:['أجهزة كهربائية','Electrical','🔌','#2F7FC4','فيه شاشة؟','Has a screen?'],
+  food:['أكل وفواكه','Food','🍎','#D1445F','حلو؟','Is it sweet?'],
+  jobs:['مهن','Jobs','👷','#0E8A8C','بيلبس زي رسمي؟','Wears a uniform?'],
+  trans:['مواصلات','Transport','🚗','#B8841B','بيمشي على عجال؟','Has wheels?'],
+  places:['دول ومدن','Places','🌍','#1C8FB0','بآسيا؟','In Asia?']
+};
+const RAW = {
+ animals:[['أسد','Lion','🦁'],['نمر','Tiger','🐅'],['فهد','Cheetah','🐆'],['فيل','Elephant','🐘'],['زرافة','Giraffe','🦒'],['حمار وحشي','Zebra','🦓'],
+  ['وحيد القرن','Rhino','🦏'],['فرس النهر','Hippo','🦛'],['غوريلا','Gorilla','🦍'],['قرد','Monkey','🐒'],['دب','Bear','🐻'],['باندا','Panda','🐼'],
+  ['كنغر','Kangaroo','🦘'],['كوالا','Koala','🐨'],['ذئب','Wolf','🐺'],['ثعلب','Fox','🦊'],['غزال','Deer','🦌'],['جمل','Camel','🐪'],['حصان','Horse','🐎'],
+  ['بقرة','Cow','🐄'],['خروف','Sheep','🐑'],['ماعز','Goat','🐐'],['أرنب','Rabbit','🐇'],['قطة','Cat','🐈'],['كلب','Dog','🐕'],['فأر','Mouse','🐁'],
+  ['سنجاب','Squirrel','🐿️'],['قنفذ','Hedgehog','🦔'],['خفاش','Bat','🦇'],['دجاجة','Chicken','🐔'],['ديك','Rooster','🐓'],['بطة','Duck','🦆'],['بومة','Owl','🦉'],
+  ['نسر','Eagle','🦅'],['ببغاء','Parrot','🦜'],['بطريق','Penguin','🐧'],['طاووس','Peacock','🦚'],['حمامة','Dove','🕊️'],['فلامنغو','Flamingo','🦩'],
+  ['دلفين','Dolphin','🐬'],['حوت','Whale','🐋'],['قرش','Shark','🦈'],['أخطبوط','Octopus','🐙'],['فقمة','Seal','🦭'],['سمكة','Fish','🐟'],['سلحفاة','Turtle','🐢'],
+  ['تمساح','Crocodile','🐊'],['أفعى','Snake','🐍'],['سحلية','Lizard','🦎'],['ضفدع','Frog','🐸'],['سلطعون','Crab','🦀'],['نحلة','Bee','🐝'],['فراشة','Butterfly','🦋'],
+  ['نملة','Ant','🐜'],['عنكبوت','Spider','🕷️'],['عقرب','Scorpion','🦂'],['حلزون','Snail','🐌'],['دعسوقة','Ladybug','🐞'],['بعوضة','Mosquito','🦟'],
+  ['كسلان','Sloth','🦥'],['ديناصور','Dinosaur','🦖']],
+ home:[['كنبة','Sofa','🛋️'],['سرير','Bed','🛏️'],['كرسي','Chair','🪑'],['مراية','Mirror','🪞'],['مقص','Scissors','✂️'],['صحن','Plate','🍽️'],['فنجان','Cup','☕'],
+  ['ملعقة','Spoon','🥄'],['سكينة','Knife','🔪'],['شوكة','Fork','🍴'],['طنجرة','Pot','🍲'],['مقلاة','Frying pan','🍳'],['إبريق شاي','Teapot','🫖'],['مفتاح','Key','🔑'],
+  ['قفل','Lock','🔒'],['باب','Door','🚪'],['شباك','Window','🪟'],['ساعة حيط','Wall clock','🕰️'],['مكنسة','Broom','🧹'],['سطل','Bucket','🪣'],['صابونة','Soap','🧼'],
+  ['فرشاية أسنان','Toothbrush','🪥'],['شمعة','Candle','🕯️'],['كتاب','Book','📖'],['قلم','Pen','🖊️'],['شنطة','Handbag','👜'],['شمسية','Umbrella','☂️'],
+  ['نظارة','Glasses','👓'],['حذاء رياضة','Sneaker','👟'],['جاكيت','Coat','🧥'],['محارم','Tissues','🧻'],['نبتة','Plant','🪴'],['سلة','Basket','🧺'],
+  ['حبل','Rope','🪢'],['شاكوش','Hammer','🔨'],['مفك','Screwdriver','🪛'],['منشار','Saw','🪚'],['هدية','Gift','🎁'],['بالون','Balloon','🎈'],['دبدوب','Teddy bear','🧸'],
+  ['رضّاعة','Baby bottle','🍼'],['بانيو','Bathtub','🛁'],['دوش','Shower','🚿'],['تواليت','Toilet','🚽'],['سلّم','Ladder','🪜'],['إبرة وخيط','Needle and thread','🪡'],
+  ['دبوس','Pushpin','📌'],['مشبك ورق','Paper clip','📎'],['مخدة','Pillow','🛌'],['طاولة','Table','🏠'],['بطانية','Blanket','🏠'],['سجادة','Carpet','🏠']],
+ elec:[['تلفزيون','TV','📺'],['جوال','Mobile phone','📱'],['لابتوب','Laptop','💻'],['كمبيوتر','Computer','🖥️'],['طابعة','Printer','🖨️'],['كاميرا','Camera','📷'],
+  ['سماعات','Headphones','🎧'],['راديو','Radio','📻'],['مايك','Microphone','🎤'],['ساعة ذكية','Smartwatch','⌚'],['لمبة','Light bulb','💡'],['بطارية','Battery','🔋'],
+  ['بلايستيشن','PlayStation','🎮'],['منبّه','Alarm clock','⏰'],['تلفون أرضي','Landline phone','☎️'],['بيل ضو','Flashlight','🔦'],['سبيكر','Speaker','🔊'],
+  ['بروجكتر','Projector','📽️'],['كاميرا فيديو','Video camera','📹'],['ثلاجة','Fridge','🔌'],['غسالة','Washing machine','🔌'],['مكنسة كهربائية','Vacuum cleaner','🔌'],
+  ['مايكرويف','Microwave','🔌'],['فرن كهربائي','Electric oven','🔌'],['خلاط','Blender','🔌'],['توستر','Toaster','🔌'],['غلاية كهربائية','Electric kettle','🔌'],
+  ['مكواة','Iron','🔌'],['سشوار','Hair dryer','🔌'],['ماكينة حلاقة','Shaver','🔌'],['ماكينة قهوة','Coffee machine','🔌'],['مروحة','Fan','🔌'],['مكيّف','Air conditioner','🔌'],
+  ['دفاية','Heater','🔌'],['جلاية صحون','Dishwasher','🔌'],['ماكينة خياطة','Sewing machine','🔌'],['راوتر','Router','🔌'],['تابلت','Tablet','🔌'],['شاحن','Charger','🔌']],
+ food:[['تفاح','Apple','🍎'],['موز','Banana','🍌'],['برتقال','Orange','🍊'],['ليمون','Lemon','🍋'],['بطيخ','Watermelon','🍉'],['عنب','Grapes','🍇'],['فراولة','Strawberry','🍓'],
+  ['أناناس','Pineapple','🍍'],['مانجا','Mango','🥭'],['دراق','Peach','🍑'],['إجاص','Pear','🍐'],['كرز','Cherries','🍒'],['كيوي','Kiwi','🥝'],['جوز هند','Coconut','🥥'],
+  ['أفوكادو','Avocado','🥑'],['بندورة','Tomato','🍅'],['خيار','Cucumber','🥒'],['جزر','Carrot','🥕'],['بطاطا','Potato','🥔'],['بصل','Onion','🧅'],['ثوم','Garlic','🧄'],
+  ['فلفل حلو','Bell pepper','🫑'],['فلفل حار','Chili','🌶️'],['باذنجان','Eggplant','🍆'],['ذرة','Corn','🌽'],['بروكلي','Broccoli','🥦'],['خس','Lettuce','🥬'],['فطر','Mushroom','🍄'],
+  ['زيتون','Olives','🫒'],['بيض','Eggs','🥚'],['خبز','Bread','🍞'],['جبنة','Cheese','🧀'],['حليب','Milk','🥛'],['عسل','Honey','🍯'],['رز','Rice','🍚'],['شوربة','Soup','🍲'],
+  ['فلافل','Falafel','🧆'],['شاورما','Shawarma','🌯'],['بيتزا','Pizza','🍕'],['برغر','Burger','🍔'],['بطاطا مقلية','Fries','🍟'],['معكرونة','Pasta','🍝'],['سلطة','Salad','🥗'],
+  ['كيك','Cake','🎂'],['بوظة','Ice cream','🍦'],['شوكولاتة','Chocolate','🍫'],['بسكويت','Cookie','🍪'],['دونات','Donut','🍩'],['فشار','Popcorn','🍿'],['مقلوبة','Maqluba','🍲'],
+  ['كنافة','Knafeh','🍰'],['حمص','Hummus','🥣'],['مسخّن','Musakhan','🍗'],['فول','Fava beans','🫘'],['قهوة','Coffee','☕'],['شاي','Tea','🍵'],['عصير','Juice','🧃'],['تمر','Dates','🌴']],
+ jobs:[['دكتور','Doctor','🧑‍⚕️'],['ممرض','Nurse','💉'],['طبيب أسنان','Dentist','🦷'],['صيدلي','Pharmacist','💊'],['فني مختبر','Lab technician','🧪'],['معلم','Teacher','🧑‍🏫'],
+  ['مهندس','Engineer','📐'],['عامل بناء','Builder','👷'],['شرطي','Police officer','👮'],['إطفائي','Firefighter','🧑‍🚒'],['طيار','Pilot','🧑‍✈️'],['رائد فضاء','Astronaut','🧑‍🚀'],
+  ['طباخ','Chef','🧑‍🍳'],['مزارع','Farmer','🧑‍🌾'],['ميكانيكي','Mechanic','🧑‍🔧'],['عالم','Scientist','🧑‍🔬'],['مبرمج','Programmer','🧑‍💻'],['رسام','Painter','🧑‍🎨'],
+  ['مغني','Singer','🧑‍🎤'],['قاضي','Judge','🧑‍⚖️'],['محامي','Lawyer','⚖️'],['صحفي','Journalist','📰'],['مصوّر','Photographer','📸'],['سائق تكسي','Taxi driver','🚕'],
+  ['خبّاز','Baker','🥖'],['حلاق','Barber','💈'],['نجار','Carpenter','🪚'],['كهربائي','Electrician','⚡'],['سبّاك','Plumber','🔧'],['صياد سمك','Fisherman','🎣'],['خياط','Tailor','🧵'],
+  ['تاجر','Shopkeeper','🏪'],['محاسب','Accountant','🧮'],['بيطري','Vet','🐾'],['ساعي بريد','Mail carrier','📮'],['مذيع','Presenter','🎙️'],['لاعب كرة','Footballer','⚽'],
+  ['مدرّب رياضة','Fitness coach','🏋️'],['ممثل','Actor','🎭'],['إمام','Imam','🕌'],['موظف بنك','Bank clerk','🏦'],['قبطان سفينة','Ship captain','⚓'],['حارس','Guard','💂']],
+ trans:[['سيارة','Car','🚗'],['تكسي','Taxi','🚕'],['باص','Bus','🚌'],['شاحنة','Truck','🚚'],['سيارة إسعاف','Ambulance','🚑'],['سيارة إطفاء','Fire engine','🚒'],
+  ['سيارة شرطة','Police car','🚓'],['قطار','Train','🚆'],['مترو','Metro','🚇'],['ترام','Tram','🚊'],['طيارة','Airplane','✈️'],['هليكوبتر','Helicopter','🚁'],['صاروخ','Rocket','🚀'],
+  ['سفينة','Ship','🚢'],['قارب سريع','Speedboat','🚤'],['قارب شراعي','Sailboat','⛵'],['كاياك','Canoe','🛶'],['بسكليت','Bicycle','🚲'],['موتور','Motorcycle','🏍️'],
+  ['سكوتر','Scooter','🛴'],['تراكتور','Tractor','🚜'],['تلفريك','Cable car','🚡'],['سيارة سباق','Race car','🏎️'],['جيب','SUV','🚙'],['توك توك','Tuk-tuk','🛺'],
+  ['كرسي متحرك','Wheelchair','🦽'],['باراشوت','Parachute','🪂'],['زلّاجة','Sled','🛷'],['سكيت بورد','Skateboard','🛹'],['فان','Van','🚐'],['رافعة','Crane','🏗️']],
+ places:[['فلسطين','Palestine','@PS'],['مصر','Egypt','@EG'],['السعودية','Saudi Arabia','@SA'],['الأردن','Jordan','@JO'],['المغرب','Morocco','@MA'],['الجزائر','Algeria','@DZ'],
+  ['تونس','Tunisia','@TN'],['العراق','Iraq','@IQ'],['سوريا','Syria','@SY'],['لبنان','Lebanon','@LB'],['قطر','Qatar','@QA'],['الإمارات','UAE','@AE'],['الكويت','Kuwait','@KW'],
+  ['اليمن','Yemen','@YE'],['تركيا','Turkey','@TR'],['اليابان','Japan','@JP'],['الصين','China','@CN'],['الهند','India','@IN'],['أمريكا','USA','@US'],['البرازيل','Brazil','@BR'],
+  ['فرنسا','France','@FR'],['إسبانيا','Spain','@ES'],['إيطاليا','Italy','@IT'],['ألمانيا','Germany','@DE'],['بريطانيا','UK','@GB'],['روسيا','Russia','@RU'],
+  ['أستراليا','Australia','@AU'],['كندا','Canada','@CA'],['المكسيك','Mexico','@MX'],['الأرجنتين','Argentina','@AR'],
+  ['القدس','Jerusalem','🕌'],['غزة','Gaza','🌊'],['يافا','Jaffa','🍊'],['حيفا','Haifa','⛰️'],['نابلس','Nablus','🧼'],['الخليل','Hebron','🍇'],['مكة','Mecca','🕋'],
+  ['دبي','Dubai','🏙️'],['القاهرة','Cairo','🏜️'],['إسطنبول','Istanbul','🌉'],['باريس','Paris','🗼'],['لندن','London','🎡'],['نيويورك','New York','🗽'],['طوكيو','Tokyo','🗾'],['روما','Rome','🏛️']]
+};
+const IT = PL.map((p, i) => ({c:'foot', n:[p[0], p[1]], pl:i, tier:p[4]}));
+Object.entries(RAW).forEach(([c, arr]) => arr.forEach(([ar, en, e]) => IT.push({c, n:[ar, en], e: e[0] === '@' ? flag(e.slice(1)) : e, tier:1})));
+const ITN = IT.map(x => normName(x.n.join(' ')));
 function normName(s){
   return String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f\u064B-\u065F\u0670\u0640]/g, '')
     .replace(/[أإآٱ]/g, 'ا').replace(/ة/g, 'ه').replace(/ى/g, 'ي').replace(/[’'`\-.()]/g, ' ').replace(/\s+/g, ' ').trim();
 }
-const tierN = k => PL.filter(p => p[4] <= k).length;
-const FLEVELS = { easy:{n:tierN(1), q:20, t:0}, normal:{n:tierN(2), q:15, t:60}, expert:{n:tierN(3), q:12, t:45} };
+const FLEVELS = { easy:{n:0, q:20, t:0}, normal:{n:0, q:15, t:60}, expert:{n:0, q:12, t:45} };
 const FQ_CHOICES = [6,8,10,12,15,20,25,30], FT_CHOICES = [0,30,45,60,90,120];
 const LVL = g => g === 'foot' ? FLEVELS : LEVELS;
 const POS = {gk:['حارس مرمى','Goalkeeper'], df:['مدافع','Defender'], mf:['لاعب وسط','Midfielder'], fw:['مهاجم','Forward']};
@@ -1021,7 +1102,9 @@ let gt = 'faces';
 try { gt = localStorage.getItem('lq-gt') === 'foot' ? 'foot' : 'faces'; } catch(e){}
 const dn = id => DECK[id].n[lang === 'ar' ? 0 : 1];
 const isFoot = () => !!S && S.gt === 'foot';
-const nm = id => isFoot() ? PL[id][lang === 'ar' ? 0 : 1] : dn(id);
+let gcat = 'mix';
+try { gcat = localStorage.getItem('lq-cat') || 'mix'; } catch(e){}
+const nm = id => isFoot() ? IT[id].n[lang === 'ar' ? 0 : 1] : dn(id);
 const qtext = id => QMAP[id][lang];
 
 /* ---------- sound ---------- */
@@ -1248,7 +1331,7 @@ function act(a, extra = {}){ if (role === 'host') handleAction('host', {a, ...ex
 
 function freshState(level = 'normal', g = gt){
   const L = LVL(g)[level];
-  return {phase:'lobby', mode, gt:g, hist:[], fq:null, round:0, level, settings:{...L},
+  return {phase:'lobby', mode, gt:g, cat:gcat, hist:[], fq:null, round:0, level, settings:{...L},
     p:{host:{name:myName, ready:false, q:L.q, left:L.n, hint:false}, guest:{name:'', ready:false, q:L.q, left:L.n, hint:false}},
     turn:null, rem:0, winner:null, reason:'', guesser:null, lastGuess:null, secrets:{}, ev:null, log:null, hint:null};
 }
@@ -1261,9 +1344,10 @@ function broadcast(){
 }
 function pickHint(secret){
   if (S && S.gt === 'foot') {
-    const p = PL[secret]; if (!p) return 'pos:fw';
-    const cl = p[5].split(' ');
-    const opts = ['nat:' + p[2], 'pos:' + p[3], 'club:' + cl[Math.floor(Math.random()*cl.length)]];
+    const x = IT[secret]; if (!x) return 'cat:mix';
+    const opts = S.cat === 'mix' ? ['cat:' + x.c] : [];
+    if (x.c === 'foot') { const p = PL[x.pl], cl = p[5].split(' '); opts.push('nat:' + p[2], 'pos:' + p[3], 'club:' + cl[Math.floor(Math.random()*cl.length)]); }
+    else opts.push('first:' + firstL(x.n[0]) + '|' + firstL(x.n[1]));
     return opts[Math.floor(Math.random()*opts.length)];
   }
   const opts = QS.filter(q => q.id !== 'man' && q.f(DECK[secret]));
@@ -1521,7 +1605,7 @@ function levelButtons(el, current, clickable, g = 'faces'){
   el.innerHTML = Object.entries(LVL(g)).map(([k, L]) => {
     const time = L.t ? t('secs', {s:L.t}) : t('noTimer');
     return `<button type="button" class="lvl" data-lvl="${k}" aria-pressed="${k === current}" ${clickable ? '' : 'disabled'}>
-      <span>${t((foot ? 'flvl_' : 'lvl_') + k)}</span><small>${t(foot ? 'fLvlInfo' : 'lvlInfo', {n:L.n, q:L.q, time})}</small></button>`;
+      <span>${t((foot ? 'flvl_' : 'lvl_') + k)}</span><small>${t(foot ? 'fLvlInfo' : 'lvlInfo', {n:foot ? fPool(S ? S.cat : gcat, k).length : L.n, q:L.q, time})}</small></button>`;
   }).join('');
 }
 function chips(el, opts, cur, key, enabled){
@@ -1712,22 +1796,37 @@ function flag(c){
   if (c === 'WLS') return '\u{1F3F4}\u{E0067}\u{E0062}\u{E0077}\u{E006C}\u{E0073}\u{E007F}';
   return String.fromCodePoint(...[...c].map(ch => 0x1F1E6 + ch.charCodeAt(0) - 65));
 }
+const itemIcon = id => { const x = IT[id]; return x.c === 'foot' ? flag(PL[x.pl][2]) : x.e; };
 function sticker(id, cls = ''){
-  const p = PL[id]; if (!p) return '';
+  const x = IT[id]; if (!x) return '';
+  if (x.c !== 'foot') {
+    const C = CATS[x.c];
+    return `<div class="st it ${cls}" style="--c:${C[3]}"><div class="st-top"><span class="st-pos">${C[2]} ${esc(C[L2()])}</span></div>`
+      + `<div class="st-emo">${x.e}</div><div class="st-name">${esc(x.n[L2()])}</div></div>`;
+  }
+  const p = PL[x.pl];
   const clubs = p[5].split(' ').map(k => `<span>${esc(CLUB[k][L2()])}</span>`).join('');
   return `<div class="st ${cls}"><div class="st-top"><span class="st-flag">${flag(p[2])}</span><span class="st-pos">${esc(POSS[p[3]][L2()])}</span></div>`
     + `<div class="st-name">${esc(p[L2()])}</div><div class="st-meta">${esc(CTRY[p[2]][L2()])} • ${esc(POS[p[3]][L2()])}</div><div class="st-clubs">${clubs}</div></div>`;
 }
-function fPool(){
-  const tier = {easy:1, normal:2, expert:3}[S && S.level] || 3;
-  return PL.map((p, i) => i).filter(i => PL[i][4] <= tier);
+function fPool(cat = S && S.cat, level = S && S.level){
+  const tier = {easy:1, normal:2, expert:3}[level] || 3;
+  cat = CATS[cat] ? cat : 'mix';
+  return IT.map((x, i) => i).filter(i => {
+    const x = IT[i];
+    if (cat === 'mix') return x.c !== 'foot' || x.tier === 1;
+    return x.c === cat && (x.c !== 'foot' || x.tier <= tier);
+  });
 }
+const firstL = s => { s = String(s).trim(); if (/^ال/.test(s) && s.length > 3) s = s.slice(2); return [...s][0].toUpperCase(); };
 const ansLbl = a => a === 'y' ? t('yes') : a === 'n' ? t('no') : t('fMaybe');
 function hintText(h){
   const [k, v] = String(h).split(':');
   if (k === 'nat' && CTRY[v]) return t('fHNat', {c:CTRY[v][L2()], f:flag(v)});
   if (k === 'pos' && POS[v]) return t('fHPos', {p:POS[v][L2()]});
   if (k === 'club' && CLUB[v]) return t('fHClub', {c:CLUB[v][L2()]});
+  if (k === 'first') return t('fHFirst', {l:(v.split('|')[L2()] || '')});
+  if (k === 'cat' && CATS[v]) return t('fHCat', {c:CATS[v][2] + ' ' + CATS[v][L2()]});
   return '';
 }
 function showFootCard(id){
@@ -1742,6 +1841,10 @@ function renderGt(){
   const host = role === 'host' && !!S && S.phase === 'lobby' && S.mode === 'online';
   $('#gtLobby').innerHTML = btns(S ? S.gt : gt);
   $('#gtLobby').querySelectorAll('button').forEach(b => b.disabled = !host);
+  const showCats = !!S && S.gt === 'foot';
+  $('#catLabel').hidden = !showCats; $('#catPick').hidden = !showCats;
+  if (showCats) $('#catPick').innerHTML = Object.entries(CATS).map(([k, C]) =>
+    `<button type="button" data-cat="${k}" aria-pressed="${k === S.cat}" ${host ? '' : 'disabled'}><span class="ce">${C[2]}</span>${esc(C[L2()])}</button>`).join('');
 }
 let dealShown = null, seenFq = '';
 function renderFootPick(){
@@ -1768,7 +1871,7 @@ function renderFootGame(){
   const pill = $('#turnPill');
   pill.classList.toggle('mine', mine); pill.classList.toggle('theirs', play && !mine);
   pill.textContent = !play ? t('roundOver') : mine ? t('yourTurn') : t('theirTurn', {name:op.name});
-  $('#mini').innerHTML = mySecret != null ? `<span class="mini-flag">${flag(PL[mySecret][2])}</span>` : '';
+  $('#mini').innerHTML = mySecret != null ? `<span class="mini-flag" style="background:${CATS[IT[mySecret].c][3]}">${itemIcon(mySecret)}</span>` : '';
   $('#soundBtn').textContent = SND.on ? '🔊' : '🔇';
   $('#myQ').textContent = `${me.q}/${S.settings.q}`;
   $('#oppQ').textContent = `${op.q}/${S.settings.q}`;
@@ -1813,6 +1916,7 @@ function renderFootGame(){
 
   $('#fMine').innerHTML = mySecret != null ? `<p class="fmine-label">${esc(t('fMineLabel', {name:op.name}))}</p>${sticker(mySecret, 'mid')}` : '';
   $('#fAsk').hidden = !mine || must || !!(S.fq && S.fq.by === role);
+  const C = CATS[S.cat] || CATS.mix; $('#fAskInp').placeholder = t('fAskPh', {q:C[4 + L2()]});
   const H = S.hist || [];
   $('#fHistT').textContent = t('fHist', {n:H.length});
   $('#fHist').innerHTML = H.length ? H.slice().reverse().map(h => {
@@ -1829,8 +1933,8 @@ function renderFootResults(){
   const q = normName($('#fSearch').value), box = $('#fRes');
   if (q.replace(/\s/g, '').length < 2) { box.innerHTML = `<p class="empty">${esc(t('fTypeName'))}</p>`; return; }
   const words = q.split(' ');
-  const hits = fPool().filter(i => words.every(w => PLN[i].includes(w))).slice(0, 8);
-  box.innerHTML = hits.length ? hits.map(i => `<button type="button" data-pl="${i}"><span class="fl">${flag(PL[i][2])}</span><span>${esc(PL[i][L2()])}<small>${esc(PL[i][1 - L2()])}</small></span></button>`).join('')
+  const hits = fPool().filter(i => words.every(w => ITN[i].includes(w))).slice(0, 8);
+  box.innerHTML = hits.length ? hits.map(i => `<button type="button" data-pl="${i}"><span class="fl">${itemIcon(i)}</span><span>${esc(IT[i].n[L2()])}<small>${esc(IT[i].n[1 - L2()])}</small></span></button>`).join('')
     : `<p class="empty">${esc(t('fNoRes'))}</p>`;
 }
 function pickFootGuess(id){
@@ -1959,6 +2063,10 @@ function init(){
       gt = v; try { localStorage.setItem('lq-gt', gt); } catch(e){}
       S.gt = v; setLevel(S.level); broadcast();
     }
+  });
+  $('#catPick').addEventListener('click', e => {
+    const b = e.target.closest('[data-cat]'); if (!b || b.disabled || !CATS[b.dataset.cat]) return;
+    if (role === 'host' && S && S.phase === 'lobby' && S.gt === 'foot') { S.cat = gcat = b.dataset.cat; try { localStorage.setItem('lq-cat', gcat); } catch(e){} broadcast(); }
   });
   $('#ansAct').addEventListener('click', e => { const b = e.target.closest('[data-ans]'); if (b) { buzz(20); act('fans', {v:b.dataset.ans}); } });
   $('#fAskBtn').onclick = sendFootQ;
