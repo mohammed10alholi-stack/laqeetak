@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#16307F">
-<meta name="description" content="لعبة خمّن الشخصية: العب مع صاحبك من جوالين أو ضد الكمبيوتر. ٤٨ شخصية بفروقات دقيقة.">
+<meta name="description" content="لعبة خمّن الشخصية: العب مع صاحبك من جوالين أو ضد الكمبيوتر. ٤٨ شخصية بفروقات دقيقة، ووضع خمّن لاعب الكورة.">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="لقيتك!">
@@ -239,6 +239,66 @@ html[lang="en"] .splash-a{font-family:'Baloo Bhaijaan 2',sans-serif;font-weight:
 .log.y{background:#E4F7EA} .log.n{background:#FDE7E6}
 .log.flash{animation:logflash .9s ease-out}
 @keyframes logflash{0%{transform:scaleY(1.35);filter:brightness(1.15)}100%{transform:none}}
+/* ---- football mode ---- */
+.gt{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 0 18px}
+.gt button{padding:10px 8px;border-radius:14px;border:3px solid var(--ink);background:rgba(255,255,255,.12);color:#fff;font-weight:800;font-size:1rem;line-height:1.3}
+.gt button small{display:block;font-weight:600;font-size:.78rem;opacity:.85}
+.gt button[aria-pressed="true"]{background:#fff;color:var(--ink);box-shadow:0 4px 0 var(--ink)}
+.gt button[data-gt="foot"][aria-pressed="true"]{background:var(--green);color:#fff}
+.gt button:disabled{cursor:default}
+.gt button:disabled:not([aria-pressed="true"]){opacity:.5}
+.st{position:relative;border:3px solid var(--ink);border-radius:18px;box-shadow:0 6px 0 var(--ink);overflow:hidden;color:#fff;text-align:center;
+  background:repeating-linear-gradient(90deg,#2E8A4C 0 28px,#35995A 28px 56px);padding:12px 12px 14px}
+.st::before{content:"";position:absolute;left:50%;top:50%;width:118px;height:118px;margin:-59px 0 0 -59px;border:2px solid rgba(255,255,255,.3);border-radius:50%;pointer-events:none}
+.st::after{content:"";position:absolute;left:0;right:0;top:50%;border-top:2px solid rgba(255,255,255,.3);pointer-events:none}
+.st>*{position:relative;z-index:1}
+.st-top{display:flex;justify-content:space-between;align-items:flex-start}
+.st-flag{font-size:3.4rem;line-height:1;filter:drop-shadow(0 3px 0 rgba(23,20,51,.4))}
+.st-pos{background:var(--sun);color:var(--ink);border:2.5px solid var(--ink);border-radius:999px;padding:2px 10px;font-weight:800;font-size:.85rem}
+.st-name{font-family:var(--display);font-size:2.2rem;line-height:1.15;margin:14px 0 4px;color:#fff;text-shadow:2px 2px 0 var(--ink),-2px 2px 0 var(--ink),0 4px 0 var(--ink);overflow-wrap:anywhere}
+html[lang="en"] .st-name{font-family:'Baloo Bhaijaan 2',sans-serif;font-weight:800;font-size:1.8rem}
+.st-meta{font-weight:700;font-size:.92rem;color:#E7F6EC}
+.st-clubs{display:flex;flex-wrap:wrap;justify-content:center;gap:5px;margin-top:12px}
+.st-clubs span{background:#fff;color:var(--ink);border:2px solid var(--ink);border-radius:8px;padding:1px 7px;font-weight:700;font-size:.78rem}
+.st.mid .st-flag{font-size:2.6rem} .st.mid .st-name{font-size:1.75rem;margin-top:6px}
+html[lang="en"] .st.mid .st-name{font-size:1.45rem}
+.st.small{padding:8px 6px;border-radius:14px;box-shadow:0 4px 0 var(--ink)}
+.st.small .st-flag{font-size:2rem} .st.small .st-pos{font-size:.7rem;padding:0 6px}
+.st.small .st-name{font-size:1.1rem;margin:6px 0 0;text-shadow:1px 1px 0 var(--ink),-1px 1px 0 var(--ink),0 2px 0 var(--ink)}
+html[lang="en"] .st.small .st-name{font-size:.95rem}
+.st.small .st-meta,.st.small .st-clubs,.st.small::before,.st.small::after{display:none}
+.deal{flex:1;width:100%;max-width:420px;margin:0 auto;padding:14px 18px 24px}
+.deal .st{animation:dealIn .55s cubic-bezier(.3,1.4,.5,1)}
+@keyframes dealIn{0%{transform:rotateY(90deg) scale(.85)}100%{transform:none}}
+.zoom-face.st-wrap{border:0;background:none;aspect-ratio:auto;overflow:visible;width:min(80vw,300px)}
+#footBoard{max-width:560px}
+.fmine-label{font-weight:700;color:#DCE3FF;margin:0 0 8px;text-align:center;font-size:.92rem}
+.fask{display:flex;gap:8px;margin:16px 0 4px}
+.fask .inp{flex:1;min-width:0;font-size:1rem;padding:11px 14px}
+.fask .btn{width:auto;flex:0 0 auto;padding:11px 18px;font-size:1rem}
+.hist-t{font-weight:800;margin:18px 0 8px}
+.hist{list-style:none;display:grid;gap:6px}
+.hist li{display:flex;align-items:center;gap:8px;background:#fff;color:var(--ink);border:2.5px solid var(--ink);border-radius:12px;padding:7px 10px;font-weight:700;font-size:.9rem}
+.hist li.op{background:var(--paper)}
+.hist li.none{justify-content:center;color:#5A567A;background:rgba(255,255,255,.85)}
+.hist .who{font-size:.72rem;font-weight:800;background:var(--ink);color:#fff;border-radius:999px;padding:1px 8px;flex:0 0 auto;max-width:9ch;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hist .q{flex:1;min-width:0;overflow-wrap:anywhere}
+.hist b{flex:0 0 auto} .hist b.y{color:var(--green)} .hist b.n{color:var(--red)} .hist b.m{color:#8A6D00}
+.ans-act{display:flex;gap:8px;flex:1;min-width:0}
+.ans-act .btn{flex:1;padding:12px 4px}
+.fres{display:grid;gap:6px;margin:12px 0 4px;max-height:44vh;overflow:auto}
+.fres button{display:flex;align-items:center;gap:10px;text-align:start;padding:8px 12px;border-radius:12px;border:2.5px solid var(--ink);background:#fff;color:var(--ink);font-weight:800}
+.fres .fl{font-size:1.6rem;line-height:1;flex:0 0 auto}
+.fres small{display:block;font-weight:600;color:#5A567A;font-size:.78rem}
+.fres .empty{padding:6px 0}
+.duo.foot figure{width:132px}
+.duo.foot .st{margin-bottom:6px}
+.mini-flag{display:flex;align-items:center;justify-content:center;height:100%;font-size:1.6rem;background:var(--green)}
+.splash.m .splash-card{background:#FFF4CF} .splash.m .splash-a{color:#8A6D00} .splash.m .splash-top{background:#8A6D00}
+.log.m{background:#FFF4CF}
+.rules li.rules-h{list-style:none;font-weight:800;margin-top:14px}
+@media (prefers-reduced-motion:reduce){.deal .st{animation:none}}
+.log b.m{color:#8A6D00}
 @media (prefers-reduced-motion:reduce){.card .in,.btn,.toast,.track i{transition:none}.pill.pop,.cf,.emo-fly,.splash-card,.log.flash{animation:none}.cf{display:none}}
 </style>
 </head>
@@ -255,6 +315,7 @@ html[lang="en"] .splash-a{font-family:'Baloo Bhaijaan 2',sans-serif;font-weight:
     <p class="tag" data-i18n="tagline"></p>
     <div class="hero" id="hero"></div>
     <div class="invite" id="invite" hidden></div>
+    <div class="gt" id="gtHome" role="group"></div>
     <div class="field">
       <label for="name" data-i18n="yourName"></label>
       <input class="inp" id="name" maxlength="16" autocomplete="nickname" data-i18n-ph="namePh">
@@ -262,6 +323,7 @@ html[lang="en"] .splash-a{font-family:'Baloo Bhaijaan 2',sans-serif;font-weight:
     <div class="stack">
       <button class="btn" id="createBtn" data-i18n="createRoom"></button>
       <button class="btn green" id="botBtn" data-i18n="playBot"></button>
+      <p class="voice-note center" id="botNote" hidden></p>
     </div>
     <div class="or" data-i18n="orJoin"></div>
     <div class="join">
@@ -287,6 +349,7 @@ html[lang="en"] .splash-a{font-family:'Baloo Bhaijaan 2',sans-serif;font-weight:
       <button class="btn white small" id="spkLobbyBtn" style="flex:0 0 30%"></button>
     </div>
     <p class="voice-note" id="voiceLobbyNote" hidden></p>
+    <div class="gt" id="gtLobby" role="group"></div>
     <p style="font-weight:800;margin-bottom:8px" data-i18n="level"></p>
     <div class="levels" id="lobbyLevels"></div>
     <div class="custom">
@@ -302,10 +365,11 @@ html[lang="en"] .splash-a{font-family:'Baloo Bhaijaan 2',sans-serif;font-weight:
 <!-- PICK -->
 <section class="screen" id="pick">
   <div class="pick-head">
-    <h2 class="h2" data-i18n="pickTitle"></h2>
-    <p data-i18n="pickSub"></p>
+    <h2 class="h2" id="pickH" data-i18n="pickTitle"></h2>
+    <p id="pickP" data-i18n="pickSub"></p>
   </div>
   <div class="board"><div class="grid" id="pickGrid"></div></div>
+  <div class="deal" id="footDeal" hidden></div>
   <div class="act"><div class="act-in">
     <div id="pickAct" style="display:flex;gap:8px;flex:1">
       <button class="btn white" id="randBtn" style="flex:0 0 34%" data-i18n="random"></button>
@@ -341,12 +405,23 @@ html[lang="en"] .splash-a{font-family:'Baloo Bhaijaan 2',sans-serif;font-weight:
   <div class="hintline" id="hintLine" hidden></div>
   <div class="banner" id="banner"></div>
   <div class="board"><div class="grid" id="gameGrid"></div></div>
+  <div class="board" id="footBoard" hidden>
+    <div id="fMine"></div>
+    <div class="fask" id="fAsk"><input class="inp" id="fAskInp" maxlength="140" autocomplete="off" enterkeyhint="send" data-i18n-ph="fAskPh"><button class="btn" id="fAskBtn" data-i18n="fSend"></button></div>
+    <p class="hist-t" id="fHistT"></p>
+    <ol class="hist" id="fHist"></ol>
+  </div>
   <div class="act"><div class="act-in">
     <div id="mineAct" style="display:flex;gap:8px;flex:1">
       <button class="btn" id="endBtn"></button>
       <button class="btn white" id="doneBtn" data-i18n="doneTurn"></button>
       <button class="btn white hint" id="hintBtn">💡</button>
       <button class="btn red" id="guessBtn"></button>
+    </div>
+    <div class="ans-act" id="ansAct" hidden>
+      <button class="btn green" data-ans="y" data-i18n="fYes"></button>
+      <button class="btn red" data-ans="n" data-i18n="fNo"></button>
+      <button class="btn white" data-ans="m" data-i18n="fMaybeBtn"></button>
     </div>
     <div class="wait" id="waitAct" hidden></div>
   </div></div>
@@ -383,6 +458,14 @@ html[lang="en"] .splash-a{font-family:'Baloo Bhaijaan 2',sans-serif;font-weight:
   <p data-i18n="confirmNote"></p>
   <button class="btn red" id="confirmYes" data-i18n="confirmYes"></button>
   <button class="btn white" data-close data-i18n="confirmNo"></button>
+</div></div>
+
+<div class="modal" id="fGuessM"><div class="sheet">
+  <h2 class="h2" data-i18n="fGuessTitle"></h2>
+  <p data-i18n="fGuessNote"></p>
+  <input class="inp" id="fSearch" autocomplete="off" autocorrect="off" spellcheck="false" data-i18n-ph="fSearchPh">
+  <div class="fres" id="fRes"></div>
+  <button class="btn white" data-close data-i18n="cancel"></button>
 </div></div>
 
 <div class="modal" id="askM"><div class="sheet">
@@ -578,6 +661,351 @@ const QS = [
   {id:'sh_yellow', g:'clothes', ar:'بلوزته صفرا؟', en:'Yellow shirt?', f:c=>c.sh==='yellow'},
 ];
 
+Object.assign(STR.ar, {
+  gtFaces:'😀 خمّن الشخصية', gtFacesSub:'لوحة وجوه', gtFoot:'⚽ خمّن اللاعب', gtFootSub:'لاعبين كورة',
+  botFootNote:'«خمّن اللاعب» بتنلعب مع صاحبك بس، كل واحد من جواله.',
+  flvl_easy:'مشاهير', flvl_normal:'عادي', flvl_expert:'خبير', fLvlInfo:'{n} لاعب • {q} سؤال • {time}',
+  fPickTitle:'هاد لاعبك', fPickSub:'خبّيه! {name} لازم يخمّنه، وإنت اللي بتجاوب عن أسئلته. إذا ما بتعرفه، غيّره.',
+  fReroll:'🔄 ما بعرفه، غيّره', fReady:'✓ جاهز',
+  fMineLabel:'لاعبك، و{name} بيحاول يخمّنه',
+  fMine:'اسأل سؤال جوابه آه أو لا: اكتبه تحت أو احكيه بصوتك، واستنى {name} يجاوب.',
+  fWaitAns:'استنى {name} يجاوب على سؤالك…',
+  fTheirs:'دور {name} يسأل. لما يسألك بصوته، جاوب من الأزرار تحت.',
+  fTheirsQ:'{name} سأل: «{q}» جاوب من الأزرار تحت 👇',
+  fTheirsMust:'خلصت أسئلة {name}، ولازم يخمّن هلأ.',
+  fMust:'خلصت أسئلتك. لازم تخمّن هلأ: اضغط «خمّن».',
+  fAskPh:'اكتب سؤالك… مثلاً: بلعب بإسبانيا؟', fSend:'ابعت',
+  fYes:'✅ آه', fNo:'❌ لا', fMaybeBtn:'🤷 مش عارف', fMaybe:'مش عارف', fAnswered:'انبعت جوابك',
+  fVoiceQ:'سؤال بالصوت 🎤',
+  fHintLine:'💡 مساعدة: {q}', fHNat:'من {c} {f}', fHPos:'مركزه {p}', fHClub:'لعب بـ{c}',
+  fGuessBtn:'⚽ خمّن', fGuessTitle:'مين اللاعب؟', fGuessNote:'اكتب الاسم واختاره من القائمة. التخمين الغلط يعني خسارة.',
+  fSearchPh:'اسم اللاعب', fNoRes:'ما لقيت لاعب بهالاسم بهالمستوى', fTypeName:'اكتب أول حرفين من الاسم',
+  fHist:'الأسئلة ({n})', fHistEmpty:'لسا ما في أسئلة.', fYou:'إنت',
+  fRGuessMe:'عرفت اللاعب: {c} ⚽', fRGuessOpp:'{name} عرف اللاعب: {c}',
+  fYouHad:'اللي كنت بتخمّنه', fHeHad:'اللي كان {name} بيخمّنه',
+  st_foot:'خمّن اللاعب', fConfirmTitle:'متأكد إنه {name}؟', fViewBoard:'شوف الأسئلة', fHintCost:'💡 المساعدة بتكشفلك معلومة عن اللاعب (جنسيته، مركزه، أو نادي لعب فيه)، وبتكلّفك سؤالين. مرة وحدة بالجولة. بدك تستخدمها؟',
+  fRulesTitle:'⚽ خمّن اللاعب',
+  fRules:'اختاروا «خمّن اللاعب» من الرئيسية، وكل واحد بيلعب من جواله.|الموقع بيعطي كل واحد لاعب عشوائي، وخصمك لازم يخمّنه. إذا ما بتعرف لاعبك اضغط «غيّره».|بالدور، اسأل سؤال جوابه آه أو لا: اكتبه أو احكيه بصوتك.|خصمك بيجاوب من الأزرار: آه، لا، أو مش عارف. كل جواب بينحسب سؤال.|لما تعرفه اضغط «خمّن» واكتب اسمه. التخمين الغلط يعني خسارة.|«مشاهير» فيه النجوم الكبار بس، و«خبير» فيه لاعبين أصعب.'
+});
+Object.assign(STR.en, {
+  gtFaces:'😀 Guess who', gtFacesSub:'Faces board', gtFoot:'⚽ Guess the player', gtFootSub:'Football stars',
+  botFootNote:'"Guess the player" is played with a friend, each on their own phone.',
+  flvl_easy:'Stars', flvl_normal:'Normal', flvl_expert:'Expert', fLvlInfo:'{n} players • {q} questions • {time}',
+  fPickTitle:'This is your player', fPickSub:"Keep it hidden! {name} has to guess them, and you answer their questions. Don't know them? Swap.",
+  fReroll:"🔄 Don't know, swap", fReady:'✓ Ready',
+  fMineLabel:'Your player: {name} is trying to guess them',
+  fMine:'Ask a yes/no question: type it below or say it out loud, then wait for {name} to answer.',
+  fWaitAns:'Waiting for {name} to answer…',
+  fTheirs:"{name} is asking. When they ask out loud, answer with the buttons below.",
+  fTheirsQ:'{name} asked: "{q}" Answer below 👇',
+  fTheirsMust:'{name} is out of questions and must guess now.',
+  fMust:"You're out of questions. Tap \"Guess\" now.",
+  fAskPh:'Type a question… e.g. Plays in Spain?', fSend:'Send',
+  fYes:'✅ Yes', fNo:'❌ No', fMaybeBtn:"🤷 Not sure", fMaybe:'Not sure', fAnswered:'Answer sent',
+  fVoiceQ:'Asked out loud 🎤',
+  fHintLine:'💡 Hint: {q}', fHNat:'From {c} {f}', fHPos:'Position: {p}', fHClub:'Played for {c}',
+  fGuessBtn:'⚽ Guess', fGuessTitle:'Who is it?', fGuessNote:'Type the name and pick it from the list. A wrong guess loses.',
+  fSearchPh:'Player name', fNoRes:'No player with that name at this level', fTypeName:'Type the first two letters',
+  fHist:'Questions ({n})', fHistEmpty:'No questions yet.', fYou:'You',
+  fRGuessMe:'You got it: {c} ⚽', fRGuessOpp:'{name} got it: {c}',
+  fYouHad:'Yours to guess', fHeHad:"{name}'s to guess",
+  st_foot:'Guess the player', fConfirmTitle:"Sure it's {name}?", fViewBoard:'See questions', fHintCost:'💡 A hint reveals one fact about the player (nationality, position, or a club) and costs 2 questions. Once per round. Use it?',
+  fRulesTitle:'⚽ Guess the player',
+  fRules:'Pick "Guess the player" on the home screen; each of you plays on your own phone.|The site deals each of you a random player for your opponent to guess. Don\'t know yours? Tap "Swap".|Take turns asking yes/no questions: type them or say them out loud.|Your opponent answers with the buttons: yes, no, or not sure. Every answer uses one question.|Know it? Tap "Guess" and type the name. A wrong guess loses.|"Stars" has only the biggest names; "Expert" adds harder players.'
+});
+const CTRY = {
+  AR:['الأرجنتين','Argentina'], PT:['البرتغال','Portugal'], BR:['البرازيل','Brazil'], FR:['فرنسا','France'], NO:['النرويج','Norway'],
+  EG:['مصر','Egypt'], HR:['كرواتيا','Croatia'], PL:['بولندا','Poland'], BE:['بلجيكا','Belgium'], ENG:['إنجلترا','England'],
+  DE:['ألمانيا','Germany'], IT:['إيطاليا','Italy'], ES:['إسبانيا','Spain'], NL:['هولندا','Netherlands'], SE:['السويد','Sweden'],
+  UY:['الأوروغواي','Uruguay'], DZ:['الجزائر','Algeria'], MA:['المغرب','Morocco'], KR:['كوريا الجنوبية','South Korea'], CI:['ساحل العاج','Ivory Coast'],
+  CM:['الكاميرون','Cameroon'], WLS:['ويلز','Wales'], HU:['المجر','Hungary'], US:['أمريكا','USA'], CA:['كندا','Canada'],
+  CO:['كولومبيا','Colombia'], GN:['غينيا','Guinea'], GA:['الغابون','Gabon'], LR:['ليبيريا','Liberia'], NG:['نيجيريا','Nigeria'],
+  GH:['غانا','Ghana'], JP:['اليابان','Japan'], IR:['إيران','Iran'], SI:['سلوفينيا','Slovenia'], SK:['سلوفاكيا','Slovakia'],
+  DK:['الدنمارك','Denmark'], BG:['بلغاريا','Bulgaria'], RO:['رومانيا','Romania'], BA:['البوسنة','Bosnia'], UA:['أوكرانيا','Ukraine'],
+  CZ:['التشيك','Czechia'], TR:['تركيا','Turkey'], GE:['جورجيا','Georgia'], SN:['السنغال','Senegal'], SA:['السعودية','Saudi Arabia'],
+  AE:['الإمارات','UAE'], QA:['قطر','Qatar'], IQ:['العراق','Iraq'], SY:['سوريا','Syria'], JO:['الأردن','Jordan'], PS:['فلسطين','Palestine']
+};
+const CLUB = {
+  barca:['برشلونة','Barcelona'], rm:['ريال مدريد','Real Madrid'], atm:['أتلتيكو مدريد','Atlético Madrid'], sevilla:['إشبيلية','Sevilla'],
+  valencia:['فالنسيا','Valencia'], villarreal:['فياريال','Villarreal'], realsoc:['ريال سوسيداد','Real Sociedad'], athletic:['أتلتيك بلباو','Athletic Bilbao'],
+  mallorca:['مايوركا','Mallorca'], girona:['جيرونا','Girona'], leganes:['ليغانيس','Leganés'],
+  manu:['مانشستر يونايتد','Man United'], mci:['مانشستر سيتي','Man City'], liv:['ليفربول','Liverpool'], chelsea:['تشيلسي','Chelsea'],
+  arsenal:['أرسنال','Arsenal'], tottenham:['توتنهام','Tottenham'], everton:['إيفرتون','Everton'], westham:['وست هام','West Ham'],
+  leicester:['ليستر سيتي','Leicester'], southampton:['ساوثهامبتون','Southampton'], leeds:['ليدز','Leeds'], villa:['أستون فيلا','Aston Villa'],
+  brighton:['برايتون','Brighton'], newcastle:['نيوكاسل','Newcastle'], wba:['وست بروميتش','West Brom'], bolton:['بولتون','Bolton'],
+  birmingham:['برمنغهام','Birmingham'], palace:['كريستال بالاس','Crystal Palace'],
+  bayern:['بايرن ميونخ','Bayern'], bvb:['دورتموند','Dortmund'], leverkusen:['ليفركوزن','Leverkusen'], schalke:['شالكه','Schalke'],
+  wolfsburg:['فولفسبورغ','Wolfsburg'], bremen:['فيردر بريمن','Werder Bremen'], hamburg:['هامبورغ','Hamburg'], hoffenheim:['هوفنهايم','Hoffenheim'],
+  leipzig:['لايبزيغ','Leipzig'], frankfurt:['فرانكفورت','Frankfurt'], gladbach:['مونشنغلادباخ','Gladbach'], stuttgart:['شتوتغارت','Stuttgart'],
+  hertha:['هيرتا برلين','Hertha Berlin'],
+  juve:['يوفنتوس','Juventus'], milan:['ميلان','AC Milan'], inter:['إنتر','Inter'], roma:['روما','Roma'], napoli:['نابولي','Napoli'],
+  lazio:['لاتسيو','Lazio'], fiorentina:['فيورنتينا','Fiorentina'], parma:['بارما','Parma'], atalanta:['أتالانتا','Atalanta'],
+  cagliari:['كالياري','Cagliari'], palermo:['باليرمو','Palermo'],
+  psg:['باريس سان جيرمان','PSG'], monaco:['موناكو','Monaco'], lyon:['ليون','Lyon'], marseille:['مارسيليا','Marseille'], lille:['ليل','Lille'],
+  bordeaux:['بوردو','Bordeaux'], rennes:['رين','Rennes'], lens:['لانس','Lens'], montpellier:['مونبلييه','Montpellier'],
+  ajax:['أياكس','Ajax'], psv:['آيندهوفن','PSV'], celtic:['سلتيك','Celtic'], aberdeen:['أبردين','Aberdeen'], porto:['بورتو','Porto'],
+  benfica:['بنفيكا','Benfica'], sporting:['سبورتينغ لشبونة','Sporting CP'], charleroi:['شارلروا','Charleroi'], basel:['بازل','Basel'],
+  salzburg:['سالزبورغ','Salzburg'], dynamo:['دينامو كييف','Dynamo Kyiv'], honved:['هونفيد','Honvéd'],
+  galatasaray:['غلطة سراي','Galatasaray'], fenerbahce:['فنربخشة','Fenerbahçe'], besiktas:['بشكتاش','Beşiktaş'],
+  nassr:['النصر','Al-Nassr'], hilal:['الهلال','Al-Hilal'], ittihad:['الاتحاد','Al-Ittihad'], ahli:['الأهلي السعودي','Al-Ahli (KSA)'],
+  ahly:['الأهلي المصري','Al Ahly'], zamalek:['الزمالك','Zamalek'], alsadd:['السد','Al Sadd'], duhail:['الدحيل','Al-Duhail'],
+  gharafa:['الغرافة','Al-Gharafa'], alain:['العين','Al Ain'], jazira:['الجزيرة','Al Jazira'],
+  miami:['إنتر ميامي','Inter Miami'], galaxy:['لوس أنجلوس غالاكسي','LA Galaxy'], lafc:['لوس أنجلوس إف سي','LAFC'], cosmos:['نيويورك كوزموس','NY Cosmos'],
+  vissel:['فيسل كوبي','Vissel Kobe'],
+  santos:['سانتوس','Santos'], flamengo:['فلامنغو','Flamengo'], fluminense:['فلومينينسي','Fluminense'], saopaulo:['ساو باولو','São Paulo'],
+  gremio:['غريميو','Grêmio'], palmeiras:['بالميراس','Palmeiras'], boca:['بوكا جونيورز','Boca Juniors'], river:['ريفر بليت','River Plate'],
+  racing:['راسينغ','Racing Club']
+};
+// [arabic name, english name, country, position (gk/df/mf/fw), tier 1-3, notable clubs]
+const PL = [
+ ['ليونيل ميسي','Lionel Messi','AR','fw',1,'barca psg miami'],
+ ['كريستيانو رونالدو','Cristiano Ronaldo','PT','fw',1,'sporting manu rm juve nassr'],
+ ['نيمار','Neymar','BR','fw',1,'santos barca psg hilal'],
+ ['كيليان مبابي','Kylian Mbappé','FR','fw',1,'monaco psg rm'],
+ ['إرلينغ هالاند','Erling Haaland','NO','fw',1,'salzburg bvb mci'],
+ ['محمد صلاح','Mohamed Salah','EG','fw',1,'basel chelsea roma liv'],
+ ['كريم بنزيما','Karim Benzema','FR','fw',1,'lyon rm ittihad'],
+ ['لوكا مودريتش','Luka Modrić','HR','mf',1,'tottenham rm milan'],
+ ['روبرت ليفاندوفسكي','Robert Lewandowski','PL','fw',1,'bvb bayern barca'],
+ ['كيفن دي بروين','Kevin De Bruyne','BE','mf',1,'chelsea wolfsburg mci napoli'],
+ ['فينيسيوس جونيور','Vinícius Júnior','BR','fw',1,'flamengo rm'],
+ ['جود بيلينغهام','Jude Bellingham','ENG','mf',1,'birmingham bvb rm'],
+ ['هاري كين','Harry Kane','ENG','fw',1,'tottenham bayern'],
+ ['زين الدين زيدان','Zinedine Zidane','FR','mf',1,'bordeaux juve rm'],
+ ['رونالدينيو','Ronaldinho','BR','fw',1,'gremio psg barca milan'],
+ ['رونالدو نازاريو','Ronaldo Nazário','BR','fw',1,'psv barca inter rm milan'],
+ ['ديفيد بيكهام','David Beckham','ENG','mf',1,'manu rm galaxy milan'],
+ ['باولو مالديني','Paolo Maldini','IT','df',1,'milan'],
+ ['جانلويجي بوفون','Gianluigi Buffon','IT','gk',1,'parma juve psg'],
+ ['إيكر كاسياس','Iker Casillas','ES','gk',1,'rm porto'],
+ ['سيرجيو راموس','Sergio Ramos','ES','df',1,'sevilla rm psg'],
+ ['أندريس إنييستا','Andrés Iniesta','ES','mf',1,'barca vissel'],
+ ['تشافي هيرنانديز','Xavi Hernández','ES','mf',1,'barca alsadd'],
+ ['أندريا بيرلو','Andrea Pirlo','IT','mf',1,'milan juve'],
+ ['كاكا','Kaká','BR','mf',1,'saopaulo milan rm'],
+ ['تييري هنري','Thierry Henry','FR','fw',1,'monaco juve arsenal barca'],
+ ['واين روني','Wayne Rooney','ENG','fw',1,'everton manu'],
+ ['زلاتان إبراهيموفيتش','Zlatan Ibrahimović','SE','fw',1,'ajax juve inter barca milan psg manu'],
+ ['لويس سواريز','Luis Suárez','UY','fw',1,'ajax liv barca atm miami'],
+ ['رياض محرز','Riyad Mahrez','DZ','fw',1,'leicester mci ahli'],
+ ['أشرف حكيمي','Achraf Hakimi','MA','df',1,'rm bvb inter psg'],
+ ['فيرجيل فان دايك','Virgil van Dijk','NL','df',1,'celtic southampton liv'],
+ ['مانويل نوير','Manuel Neuer','DE','gk',1,'schalke bayern'],
+ ['أنطوان غريزمان','Antoine Griezmann','FR','fw',1,'realsoc atm barca'],
+ ['بول بوغبا','Paul Pogba','FR','mf',1,'manu juve monaco'],
+ ['توني كروس','Toni Kroos','DE','mf',1,'bayern rm'],
+ ['لامين يامال','Lamine Yamal','ES','fw',1,'barca'],
+ ['بيدري','Pedri','ES','mf',1,'barca'],
+ ['سون هيونغ مين','Son Heung-min','KR','fw',1,'hamburg leverkusen tottenham lafc'],
+ ['ديدييه دروغبا','Didier Drogba','CI','fw',1,'marseille chelsea'],
+ ['صامويل إيتو','Samuel Eto\u2019o','CM','fw',1,'mallorca barca inter'],
+ ['ستيفن جيرارد','Steven Gerrard','ENG','mf',1,'liv galaxy'],
+ ['فرانك لامبارد','Frank Lampard','ENG','mf',1,'westham chelsea'],
+ ['فرانشيسكو توتي','Francesco Totti','IT','fw',1,'roma'],
+ ['لويس فيغو','Luís Figo','PT','fw',1,'sporting barca rm inter'],
+ ['كارليس بويول','Carles Puyol','ES','df',1,'barca'],
+ ['مارسيلو','Marcelo','BR','df',1,'fluminense rm'],
+ ['بوكايو ساكا','Bukayo Saka','ENG','fw',1,'arsenal'],
+ ['رودري','Rodri','ES','mf',1,'villarreal atm mci'],
+ ['تيبو كورتوا','Thibaut Courtois','BE','gk',1,'chelsea atm rm'],
+ ['غاريث بيل','Gareth Bale','WLS','fw',1,'southampton tottenham rm'],
+ ['آريين روبن','Arjen Robben','NL','fw',1,'psv chelsea rm bayern'],
+ ['إيدين هازارد','Eden Hazard','BE','fw',1,'lille chelsea rm'],
+ ['سيرجيو أغويرو','Sergio Agüero','AR','fw',1,'atm mci barca'],
+ ['أنخيل دي ماريا','Ángel Di María','AR','fw',1,'benfica rm manu psg juve'],
+ ['محمد أبو تريكة','Mohamed Aboutrika','EG','mf',1,'ahly'],
+ ['ياسين بونو','Yassine Bounou','MA','gk',1,'girona sevilla hilal'],
+ ['ساديو ماني','Sadio Mané','SN','fw',1,'salzburg southampton liv bayern nassr'],
+ ['بيليه','Pelé','BR','fw',1,'santos cosmos'],
+ ['دييغو مارادونا','Diego Maradona','AR','fw',1,'boca barca napoli'],
+ ['عثمان ديمبيلي','Ousmane Dembélé','FR','fw',1,'rennes bvb barca psg'],
+ ['رافينيا','Raphinha','BR','fw',1,'leeds barca'],
+ ['كول بالمر','Cole Palmer','ENG','mf',1,'mci chelsea'],
+ ['جمال موسيالا','Jamal Musiala','DE','mf',1,'bayern'],
+ ['فلوريان فيرتز','Florian Wirtz','DE','mf',1,'leverkusen liv'],
+ ['إنغولو كانتي','N\u2019Golo Kanté','FR','mf',1,'leicester chelsea ittihad'],
+ ['حكيم زياش','Hakim Ziyech','MA','fw',1,'ajax chelsea galatasaray'],
+ ['سالم الدوسري','Salem Al-Dawsari','SA','fw',1,'hilal'],
+ ['عمر عبد الرحمن (عموري)','Omar Abdulrahman','AE','mf',1,'alain'],
+ ['خفيتشا كفاراتسخيليا','Khvicha Kvaratskhelia','GE','fw',1,'napoli psg'],
+
+ ['فيكتور أوسيمين','Victor Osimhen','NG','fw',2,'lille napoli galatasaray'],
+ ['لاوتارو مارتينيز','Lautaro Martínez','AR','fw',2,'racing inter'],
+ ['خوليان ألفاريز','Julián Álvarez','AR','fw',2,'river mci atm'],
+ ['أليسون بيكر','Alisson Becker','BR','gk',2,'roma liv'],
+ ['كاسيميرو','Casemiro','BR','mf',2,'saopaulo rm manu'],
+ ['تياغو سيلفا','Thiago Silva','BR','df',2,'milan psg chelsea fluminense'],
+ ['كافو','Cafu','BR','df',2,'saopaulo roma milan'],
+ ['روبرتو كارلوس','Roberto Carlos','BR','df',2,'inter rm'],
+ ['يوهان كرويف','Johan Cruyff','NL','fw',2,'ajax barca'],
+ ['فرانز بيكنباور','Franz Beckenbauer','DE','df',2,'bayern cosmos'],
+ ['هاكان تشالهان أوغلو','Hakan Çalhanoğlu','TR','mf',2,'leverkusen milan inter'],
+ ['أردا غولر','Arda Güler','TR','mf',2,'fenerbahce rm'],
+ ['مارتن أوديغارد','Martin Ødegaard','NO','mf',2,'rm arsenal'],
+ ['تشابي ألونسو','Xabi Alonso','ES','mf',2,'realsoc liv rm bayern'],
+ ['سيرجيو بوسكيتس','Sergio Busquets','ES','mf',2,'barca miami'],
+ ['جيرارد بيكيه','Gerard Piqué','ES','df',2,'manu barca'],
+ ['دافيد فيا','David Villa','ES','fw',2,'valencia barca atm'],
+ ['فرناندو توريس','Fernando Torres','ES','fw',2,'atm liv chelsea milan'],
+ ['راؤول غونزاليس','Raúl González','ES','fw',2,'rm schalke'],
+ ['مايكل أوين','Michael Owen','ENG','fw',2,'liv rm newcastle manu'],
+ ['جون تيري','John Terry','ENG','df',2,'chelsea'],
+ ['ريو فرديناند','Rio Ferdinand','ENG','df',2,'westham leeds manu'],
+ ['بول سكولز','Paul Scholes','ENG','mf',2,'manu'],
+ ['رايان غيغز','Ryan Giggs','WLS','mf',2,'manu'],
+ ['إريك كانتونا','Eric Cantona','FR','fw',2,'marseille leeds manu'],
+ ['باتريك فييرا','Patrick Vieira','FR','mf',2,'milan arsenal juve inter'],
+ ['أندريه شيفتشينكو','Andriy Shevchenko','UA','fw',2,'dynamo milan chelsea'],
+ ['بافل نيدفيد','Pavel Nedvěd','CZ','mf',2,'lazio juve'],
+ ['ميروسلاف كلوزه','Miroslav Klose','DE','fw',2,'bremen bayern lazio'],
+ ['فيليب لام','Philipp Lahm','DE','df',2,'bayern'],
+ ['باستيان شفاينشتايغر','Bastian Schweinsteiger','DE','mf',2,'bayern manu'],
+ ['مسعود أوزيل','Mesut Özil','DE','mf',2,'schalke bremen rm arsenal fenerbahce'],
+ ['توماس مولر','Thomas Müller','DE','fw',2,'bayern'],
+ ['غابرييل باتيستوتا','Gabriel Batistuta','AR','fw',2,'boca fiorentina roma'],
+ ['خوان رومان ريكيلمي','Juan Román Riquelme','AR','mf',2,'boca barca villarreal'],
+ ['إدينسون كافاني','Edinson Cavani','UY','fw',2,'palermo napoli psg manu boca'],
+ ['راداميل فالكاو','Radamel Falcao','CO','fw',2,'river porto atm monaco'],
+ ['خاميس رودريغيز','James Rodríguez','CO','mf',2,'porto monaco rm bayern'],
+ ['روبن فان بيرسي','Robin van Persie','NL','fw',2,'arsenal manu fenerbahce'],
+ ['ويسلي سنايدر','Wesley Sneijder','NL','mf',2,'ajax rm inter galatasaray'],
+ ['رود فان نيستلروي','Ruud van Nistelrooy','NL','fw',2,'psv manu rm'],
+ ['فرينكي دي يونغ','Frenkie de Jong','NL','mf',2,'ajax barca'],
+ ['عمر مرموش','Omar Marmoush','EG','fw',2,'frankfurt mci'],
+ ['يوسف النصيري','Youssef En-Nesyri','MA','fw',2,'leganes sevilla fenerbahce'],
+ ['سفيان أمرابط','Sofyan Amrabat','MA','mf',2,'fiorentina manu fenerbahce'],
+ ['إبراهيم دياز','Brahim Díaz','MA','mf',2,'mci rm milan'],
+ ['أكرم عفيف','Akram Afif','QA','fw',2,'alsadd'],
+ ['سامي الجابر','Sami Al-Jaber','SA','fw',2,'hilal'],
+ ['ياسر القحطاني','Yasser Al-Qahtani','SA','fw',2,'hilal'],
+ ['يونس محمود','Younis Mahmoud','IQ','fw',2,'gharafa'],
+ ['عمر السومة','Omar Al Somah','SY','fw',2,'ahli'],
+ ['موسى التعمري','Musa Al-Taamari','JO','fw',2,'montpellier rennes'],
+ ['رافائيل فاران','Raphaël Varane','FR','df',2,'lens rm manu'],
+ ['ثيو هيرنانديز','Theo Hernández','FR','df',2,'rm milan hilal'],
+ ['هوغو لوريس','Hugo Lloris','FR','gk',2,'lyon tottenham'],
+ ['يان أوبلاك','Jan Oblak','SI','gk',2,'benfica atm'],
+ ['مارك أندريه تير شتيغن','Marc-André ter Stegen','DE','gk',2,'gladbach barca'],
+ ['جانلويجي دوناروما','Gianluigi Donnarumma','IT','gk',2,'milan psg mci'],
+ ['برونو فرنانديز','Bruno Fernandes','PT','mf',2,'sporting manu'],
+ ['برناردو سيلفا','Bernardo Silva','PT','mf',2,'benfica monaco mci'],
+ ['رافائيل لياو','Rafael Leão','PT','fw',2,'sporting lille milan'],
+ ['بيبي','Pepe','PT','df',2,'porto rm'],
+ ['ماركوس راشفورد','Marcus Rashford','ENG','fw',2,'manu barca'],
+ ['رحيم سترلينغ','Raheem Sterling','ENG','fw',2,'liv mci chelsea'],
+ ['ترينت ألكسندر أرنولد','Trent Alexander-Arnold','ENG','df',2,'liv rm'],
+ ['ديكلان رايس','Declan Rice','ENG','mf',2,'westham arsenal'],
+ ['فيل فودين','Phil Foden','ENG','mf',2,'mci'],
+ ['روميلو لوكاكو','Romelu Lukaku','BE','fw',2,'chelsea everton manu inter napoli'],
+ ['يوشكو غفارديول','Joško Gvardiol','HR','df',2,'leipzig mci'],
+ ['إيفان راكيتيتش','Ivan Rakitić','HR','mf',2,'schalke sevilla barca'],
+ ['نيكو ويليامز','Nico Williams','ES','fw',2,'athletic'],
+ ['ألفارو موراتا','Álvaro Morata','ES','fw',2,'rm juve chelsea atm milan'],
+ ['سيسك فابريغاس','Cesc Fàbregas','ES','mf',2,'arsenal barca chelsea monaco'],
+ ['ديفيد سيلفا','David Silva','ES','mf',2,'valencia mci realsoc'],
+ ['باولو ديبالا','Paulo Dybala','AR','fw',2,'palermo juve roma'],
+ ['أليكسيس ماك أليستر','Alexis Mac Allister','AR','mf',2,'boca brighton liv'],
+ ['إيميليانو مارتينيز','Emiliano Martínez','AR','gk',2,'arsenal villa'],
+ ['إنزو فرنانديز','Enzo Fernández','AR','mf',2,'river benfica chelsea'],
+ ['خافيير ماسكيرانو','Javier Mascherano','AR','mf',2,'river westham liv barca'],
+ ['كارلوس تيفيز','Carlos Tevez','AR','fw',2,'boca westham manu mci juve'],
+ ['رودريغو','Rodrygo','BR','fw',2,'santos rm'],
+ ['روبرتو فيرمينو','Roberto Firmino','BR','fw',2,'hoffenheim liv ahli'],
+ ['فيليب كوتينيو','Philippe Coutinho','BR','mf',2,'inter liv barca bayern villa'],
+ ['ريفالدو','Rivaldo','BR','fw',2,'barca milan'],
+ ['روماريو','Romário','BR','fw',2,'psv barca'],
+ ['فيديريكو فالفيردي','Federico Valverde','UY','mf',2,'rm'],
+ ['داروين نونيز','Darwin Núñez','UY','fw',2,'benfica liv hilal'],
+ ['لويس دياز','Luis Díaz','CO','fw',2,'porto liv bayern'],
+ ['بيير إيميريك أوباميانغ','Pierre-Emerick Aubameyang','GA','fw',2,'bvb arsenal barca chelsea marseille'],
+ ['جورج ويا','George Weah','LR','fw',2,'monaco psg milan chelsea'],
+ ['يايا توريه','Yaya Touré','CI','mf',2,'monaco barca mci'],
+ ['كيم مين جاي','Kim Min-jae','KR','df',2,'fenerbahce napoli bayern'],
+ ['فيكتور غيوكيريس','Viktor Gyökeres','SE','fw',2,'sporting arsenal'],
+ ['ألكسندر إيزاك','Alexander Isak','SE','fw',2,'bvb realsoc newcastle liv'],
+ ['روبرتو باجيو','Roberto Baggio','IT','fw',2,'fiorentina juve milan inter'],
+ ['أليساندرو ديل بييرو','Alessandro Del Piero','IT','fw',2,'juve'],
+ ['فابيو كانافارو','Fabio Cannavaro','IT','df',2,'napoli parma inter juve rm'],
+ ['أنطونيو روديغر','Antonio Rüdiger','DE','df',2,'stuttgart roma chelsea rm'],
+ ['لوروا ساني','Leroy Sané','DE','fw',2,'schalke mci bayern galatasaray'],
+ ['أوريليان تشواميني','Aurélien Tchouaméni','FR','mf',2,'monaco rm'],
+ ['فرانك ريبيري','Franck Ribéry','FR','fw',2,'marseille bayern fiorentina'],
+
+ ['أحمد حسام ميدو','Mido','EG','fw',3,'ajax roma tottenham zamalek'],
+ ['حسام حسن','Hossam Hassan','EG','fw',3,'ahly zamalek'],
+ ['أحمد حسن','Ahmed Hassan','EG','mf',3,'besiktas ahly zamalek'],
+ ['محمد النني','Mohamed Elneny','EG','mf',3,'basel arsenal'],
+ ['أحمد حجازي','Ahmed Hegazi','EG','df',3,'ahly wba ittihad'],
+ ['وسام أبو علي','Wessam Abou Ali','PS','fw',3,'ahly'],
+ ['عدي الدباغ','Oday Dabbagh','PS','fw',3,'charleroi aberdeen'],
+ ['المعز علي','Almoez Ali','QA','fw',3,'duhail'],
+ ['علي مبخوت','Ali Mabkhout','AE','fw',3,'jazira'],
+ ['إسلام سليماني','Islam Slimani','DZ','fw',3,'sporting leicester'],
+ ['إسماعيل بن ناصر','Ismaël Bennacer','DZ','mf',3,'arsenal milan'],
+ ['رابح ماجر','Rabah Madjer','DZ','fw',3,'porto'],
+ ['فيرينتس بوشكاش','Ferenc Puskás','HU','fw',3,'honved rm'],
+ ['أوزيبيو','Eusébio','PT','fw',3,'benfica'],
+ ['زيكو','Zico','BR','mf',3,'flamengo'],
+ ['أدريانو','Adriano','BR','fw',3,'flamengo inter parma'],
+ ['غابرييل جيسوس','Gabriel Jesus','BR','fw',3,'palmeiras mci arsenal'],
+ ['ماركينيوس','Marquinhos','BR','df',3,'roma psg'],
+ ['إيدرسون','Ederson','BR','gk',3,'benfica mci'],
+ ['خافيير زانيتي','Javier Zanetti','AR','df',3,'inter'],
+ ['غونزالو هيغواين','Gonzalo Higuaín','AR','fw',3,'river rm napoli juve'],
+ ['دييغو فورلان','Diego Forlán','UY','fw',3,'manu villarreal atm inter'],
+ ['روبن دياز','Rúben Dias','PT','df',3,'benfica mci'],
+ ['ديكو','Deco','PT','mf',3,'porto barca chelsea'],
+ ['جواو فيليكس','João Félix','PT','fw',3,'benfica atm chelsea barca nassr'],
+ ['جاك غريليش','Jack Grealish','ENG','mf',3,'villa mci everton'],
+ ['جيريمي دوكو','Jérémy Doku','BE','fw',3,'rennes mci'],
+ ['إدين دزيكو','Edin Džeko','BA','fw',3,'wolfsburg mci roma inter fenerbahce'],
+ ['مايكل أوليسيه','Michael Olise','FR','fw',3,'palace bayern'],
+ ['داني أولمو','Dani Olmo','ES','mf',3,'leipzig barca'],
+ ['ويليام صليبا','William Saliba','FR','df',3,'arsenal marseille'],
+ ['مايك مينيان','Mike Maignan','FR','gk',3,'lille milan'],
+ ['إدواردو كامافينغا','Eduardo Camavinga','FR','mf',3,'rennes rm'],
+ ['دافيد تريزيغيه','David Trezeguet','FR','fw',3,'monaco juve'],
+ ['ميكايل بالاك','Michael Ballack','DE','mf',3,'leverkusen bayern chelsea'],
+ ['إيلكاي غوندوغان','İlkay Gündoğan','DE','mf',3,'bvb mci barca galatasaray'],
+ ['ماركو رويس','Marco Reus','DE','fw',3,'gladbach bvb'],
+ ['ماريو غوتزه','Mario Götze','DE','mf',3,'bvb bayern frankfurt'],
+ ['فيليبو إنزاغي','Filippo Inzaghi','IT','fw',3,'parma juve milan'],
+ ['نيكولو باريلا','Nicolò Barella','IT','mf',3,'cagliari inter'],
+ ['جورجيو كيليني','Giorgio Chiellini','IT','df',3,'juve'],
+ ['أليساندرو نيستا','Alessandro Nesta','IT','df',3,'lazio milan'],
+ ['كريستيان بوليسيتش','Christian Pulisic','US','fw',3,'bvb chelsea milan'],
+ ['ألفونسو ديفيز','Alphonso Davies','CA','df',3,'bayern'],
+ ['سيرهو غيراسي','Serhou Guirassy','GN','fw',3,'rennes stuttgart bvb'],
+ ['جاي جاي أوكوتشا','Jay-Jay Okocha','NG','mf',3,'frankfurt psg bolton'],
+ ['نوانكو كانو','Nwankwo Kanu','NG','fw',3,'ajax inter arsenal'],
+ ['أديمولا لوكمان','Ademola Lookman','NG','fw',3,'everton leicester atalanta'],
+ ['مايكل إيسيان','Michael Essien','GH','mf',3,'lyon chelsea rm milan'],
+ ['محمد قدوس','Mohammed Kudus','GH','mf',3,'ajax westham tottenham'],
+ ['تاكيفوسا كوبو','Takefusa Kubo','JP','fw',3,'rm mallorca realsoc'],
+ ['كاورو ميتوما','Kaoru Mitoma','JP','fw',3,'brighton'],
+ ['بارك جي سونغ','Park Ji-sung','KR','mf',3,'psv manu'],
+ ['علي دائي','Ali Daei','IR','fw',3,'bayern hertha'],
+ ['مهدي طارمي','Mehdi Taremi','IR','fw',3,'porto inter'],
+ ['بيتر شمايكل','Peter Schmeichel','DK','gk',3,'manu sporting'],
+ ['مايكل لاودروب','Michael Laudrup','DK','mf',3,'lazio juve barca rm ajax'],
+ ['كريستيان إريكسن','Christian Eriksen','DK','mf',3,'ajax tottenham inter manu'],
+ ['ماريك هامشيك','Marek Hamšík','SK','mf',3,'napoli'],
+ ['فويتشيك شتشيسني','Wojciech Szczęsny','PL','gk',3,'arsenal roma juve barca'],
+ ['هريستو ستويتشكوف','Hristo Stoichkov','BG','fw',3,'barca'],
+ ['جورجي هاجي','Gheorghe Hagi','RO','mf',3,'rm barca galatasaray'],
+];
+const PLN = PL.map(p => normName(p[0] + ' ' + p[1]));
+function normName(s){
+  return String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f\u064B-\u065F\u0670\u0640]/g, '')
+    .replace(/[أإآٱ]/g, 'ا').replace(/ة/g, 'ه').replace(/ى/g, 'ي').replace(/[’'`\-.()]/g, ' ').replace(/\s+/g, ' ').trim();
+}
+const tierN = k => PL.filter(p => p[4] <= k).length;
+const FLEVELS = { easy:{n:tierN(1), q:20, t:0}, normal:{n:tierN(2), q:15, t:60}, expert:{n:tierN(3), q:12, t:45} };
+const FQ_CHOICES = [6,8,10,12,15,20,25,30], FT_CHOICES = [0,30,45,60,90,120];
+const LVL = g => g === 'foot' ? FLEVELS : LEVELS;
+const POS = {gk:['حارس مرمى','Goalkeeper'], df:['مدافع','Defender'], mf:['لاعب وسط','Midfielder'], fw:['مهاجم','Forward']};
+const POSS = {gk:['حارس','GK'], df:['دفاع','DF'], mf:['وسط','MF'], fw:['هجوم','FW']};
+
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const QMAP = Object.fromEntries(QS.map(q => [q.id, q]));
@@ -589,7 +1017,11 @@ let botSetup = {level:'normal', ...LEVELS.normal};
 let lang = 'ar';
 try { lang = localStorage.getItem('lq-lang') || 'ar'; } catch(e){}
 const t = (k, v = {}) => String(STR[lang][k] ?? STR.ar[k] ?? k).replace(/\{(\w+)\}/g, (_, x) => v[x] ?? '');
-const nm = id => DECK[id].n[lang === 'ar' ? 0 : 1];
+let gt = 'faces';
+try { gt = localStorage.getItem('lq-gt') === 'foot' ? 'foot' : 'faces'; } catch(e){}
+const dn = id => DECK[id].n[lang === 'ar' ? 0 : 1];
+const isFoot = () => !!S && S.gt === 'foot';
+const nm = id => isFoot() ? PL[id][lang === 'ar' ? 0 : 1] : dn(id);
 const qtext = id => QMAP[id][lang];
 
 /* ---------- sound ---------- */
@@ -626,9 +1058,10 @@ let splashT;
 function showSplash(top, q, ans, note, ms){
   const sp = $('#splash');
   $('#splashWho').textContent = top; $('#splashQ').textContent = q;
-  $('#splashA').textContent = ans ? '✅ ' + t('yes') : '❌ ' + t('no');
+  const k = ans === 'm' ? 'm' : (ans === true || ans === 'y') ? 'y' : 'n';
+  $('#splashA').textContent = k === 'm' ? '🤷' : k === 'y' ? '✅ ' + t('yes') : '❌ ' + t('no');
   $('#splashNote').textContent = note || ''; $('#splashNote').hidden = !note;
-  sp.className = 'splash ' + (ans ? 'y' : 'n'); sp.hidden = false;
+  sp.className = 'splash ' + k; sp.hidden = false;
   const card = sp.firstElementChild; card.style.animation = 'none'; void card.offsetWidth; card.style.animation = '';
   clearTimeout(splashT); splashT = setTimeout(() => sp.hidden = true, ms || 2600);
 }
@@ -655,11 +1088,11 @@ function confetti(){
 function faceImg(id){ return `<img src="${FACES[id]}" alt="" decoding="async" draggable="false">`; }
 function makeCard(id){
   const el = document.createElement('button');
-  el.type = 'button'; el.className = 'card'; el.dataset.id = id; el.setAttribute('aria-label', nm(id));
-  el.innerHTML = `<span class="in"><span class="face">${faceImg(id)}<span class="nm">${esc(nm(id))}</span></span><span class="back"><span>؟</span></span></span>`;
+  el.type = 'button'; el.className = 'card'; el.dataset.id = id; el.setAttribute('aria-label', dn(id));
+  el.innerHTML = `<span class="in"><span class="face">${faceImg(id)}<span class="nm">${esc(dn(id))}</span></span><span class="back"><span>؟</span></span></span>`;
   return el;
 }
-function zoom(id){ $('#zoomFace').innerHTML = faceImg(id); $('#zoomName').textContent = nm(id); openM('zoomM'); }
+function zoom(id){ $('#zoomFace').classList.remove('st-wrap'); $('#zoomFace').innerHTML = faceImg(id); $('#zoomName').textContent = dn(id); openM('zoomM'); }
 function bindGrid(grid, onTap){
   let timer = null, longFired = false, sx = 0, sy = 0;
   grid.addEventListener('pointerdown', e => {
@@ -683,7 +1116,7 @@ function loadStats(){ try { return JSON.parse(localStorage.getItem('lq-stats')) 
 function saveStats(s){ try { localStorage.setItem('lq-stats', JSON.stringify(s)); } catch(e){} }
 function recordResult(won, used){
   const s = loadStats(), prev = s.streak;
-  const key = S.mode === 'bot' ? 'bot_' + S.level : 'friend';
+  const key = S.gt === 'foot' ? 'foot' : S.mode === 'bot' ? 'bot_' + S.level : 'friend';
   const md = s.modes[key] || (s.modes[key] = {p:0, w:0, q:0});
   s.played++; md.p++;
   let record = false;
@@ -707,7 +1140,7 @@ function openStats(){
     h = `<div class="stat-grid">${cell(s.played,'st_played')}${cell(s.wins,'st_wins')}${cell(Math.round(s.wins/s.played*100)+'%','st_rate')}
       ${cell(s.streak + (s.streak >= 2 ? ' 🔥' : ''),'st_streak', s.streak >= 2)}${cell(s.best,'st_best')}${cell(s.fewest ?? '–','st_fewest')}</div>`;
     const avg = s.wins ? (s.qWin / s.wins).toFixed(1) : '–';
-    const rows = [['friend', t('st_friend')], ...['easy','normal','expert'].map(k => ['bot_' + k, t('st_bot', {lvl:t('lvl_' + k)})])]
+    const rows = [['friend', t('st_friend')], ['foot', t('st_foot')], ...['easy','normal','expert'].map(k => ['bot_' + k, t('st_bot', {lvl:t('lvl_' + k)})])]
       .filter(([k]) => s.modes[k]).map(([k, label]) => `<tr><td>${esc(label)}</td><td>${esc(t('st_wl', {w:s.modes[k].w, p:s.modes[k].p}))}</td></tr>`).join('');
     h += `<table class="modes"><tr><td>${esc(t('st_avg'))}</td><td>${avg}</td></tr>${rows}</table>`;
   }
@@ -813,13 +1246,13 @@ const N = () => S ? S.settings.n : 48;
 function send(m){ if (mode === 'bot') botReceive(m); else if (conn && conn.open) conn.send(m); }
 function act(a, extra = {}){ if (role === 'host') handleAction('host', {a, ...extra}); else send({t:'act', a, ...extra}); }
 
-function freshState(level = 'normal'){
-  const L = LEVELS[level];
-  return {phase:'lobby', mode, round:0, level, settings:{...L},
+function freshState(level = 'normal', g = gt){
+  const L = LVL(g)[level];
+  return {phase:'lobby', mode, gt:g, hist:[], fq:null, round:0, level, settings:{...L},
     p:{host:{name:myName, ready:false, q:L.q, left:L.n, hint:false}, guest:{name:'', ready:false, q:L.q, left:L.n, hint:false}},
     turn:null, rem:0, winner:null, reason:'', guesser:null, lastGuess:null, secrets:{}, ev:null, log:null, hint:null};
 }
-function resetLocal(){ mySecret = null; selected = null; guessMode = false; guessTarget = null; down = new Set(); lastTurn = null; overHidden = false; myAsked = new Map(); pendingVerify = null; pendingHint = false; pendingAsk = null; }
+function resetLocal(){ dealShown = null; seenFq = ''; mySecret = null; selected = null; guessMode = false; guessTarget = null; down = new Set(); lastTurn = null; overHidden = false; myAsked = new Map(); pendingVerify = null; pendingHint = false; pendingAsk = null; }
 function broadcast(){
   if (role !== 'host' || !S) return;
   S.rem = S.phase === 'play' ? Math.max(0, deadline - Date.now()) : 0;
@@ -827,16 +1260,22 @@ function broadcast(){
   render();
 }
 function pickHint(secret){
+  if (S && S.gt === 'foot') {
+    const p = PL[secret]; if (!p) return 'pos:fw';
+    const cl = p[5].split(' ');
+    const opts = ['nat:' + p[2], 'pos:' + p[3], 'club:' + cl[Math.floor(Math.random()*cl.length)]];
+    return opts[Math.floor(Math.random()*opts.length)];
+  }
   const opts = QS.filter(q => q.id !== 'man' && q.f(DECK[secret]));
   return (opts[Math.floor(Math.random()*opts.length)] || QS[0]).id;
 }
 
 /* ---------- host logic ---------- */
-function setLevel(level){ S.level = level; S.settings = {...LEVELS[level]}; ['host','guest'].forEach(k => { S.p[k].q = S.settings.q; S.p[k].left = S.settings.n; }); }
+function setLevel(level){ S.level = level; S.settings = {...LVL(S.gt)[level]}; ['host','guest'].forEach(k => { S.p[k].q = S.settings.q; S.p[k].left = S.settings.n; }); }
 function startPick(){
   S.phase = 'pick'; S.round++;
   ['host','guest'].forEach(k => Object.assign(S.p[k], {ready:false, q:S.settings.q, left:S.settings.n, hint:false}));
-  Object.assign(S, {turn:null, winner:null, reason:'', guesser:null, lastGuess:null, secrets:{}, log:null, hint:null});
+  Object.assign(S, {turn:null, winner:null, reason:'', guesser:null, lastGuess:null, secrets:{}, log:null, hint:null, hist:[], fq:null});
   resetLocal(); localRound = S.round;
 }
 function startPlay(){ S.phase = 'play'; S.turn = Math.random() < .5 ? 'host' : 'guest'; deadline = Date.now() + S.settings.t*1000; }
@@ -875,6 +1314,20 @@ function handleAction(who, m){
       if (who === 'guest') { const ok = m.id === mySecret; endGame(ok ? 'guest' : 'host', ok ? 'guess' : 'wrong', m.id, 'guest'); broadcast(); }
       else { pendingVerify = m.id; send({t:'verify', id:m.id}); }
       break;
+    case 'fq': {
+      if (S.gt !== 'foot' || !myTurn || me.q <= 0) return;
+      const q = String(m.q || '').replace(/\s+/g, ' ').trim().slice(0, 140); if (!q) return;
+      S.fq = {by:who, text:q}; broadcast(); break;
+    }
+    case 'fans': {
+      if (S.gt !== 'foot' || S.phase !== 'play' || S.turn === who || pendingVerify != null || pendingHint) return;
+      const asker = S.turn, v = ['y','n','m'].includes(m.v) ? m.v : null;
+      if (!v || S.p[asker].q <= 0) return;
+      const q = S.fq && S.fq.by === asker ? S.fq.text : '';
+      S.log = {n:(S.log ? S.log.n : 0) + 1, by:asker, q, a:v};
+      (S.hist || (S.hist = [])).push({by:asker, q, a:v}); if (S.hist.length > 80) S.hist.shift();
+      S.fq = null; S.p[asker].q--; nextTurn(); broadcast(); break;
+    }
     case 'left': me.left = Math.max(0, Math.min(N(), +m.n || 0)); broadcast(); break;
     case 'reveal': if (S.phase === 'over') { S.secrets.guest = m.id; broadcast(); } break;
     case 'rematch': if (S.phase === 'over') { startPick(); broadcast(); } break;
@@ -887,7 +1340,7 @@ function finishAsk(who, qid, ans){
 function hostTick(){
   if (!S || S.phase !== 'play' || !S.settings.t || pendingVerify != null || pendingHint || pendingAsk || Date.now() < deadline) return;
   const p = S.turn;
-  S.ev = {n:(S.ev ? S.ev.n : 0) + 1, k:'timeout', who:p};
+  S.ev = {n:(S.ev ? S.ev.n : 0) + 1, k:'timeout', who:p}; S.fq = null;
   if (S.p[p].q <= 0) endGame(other(p), 'timeout', null, p);
   else { S.p[p].q--; nextTurn(); }
   broadcast();
@@ -940,7 +1393,7 @@ function startBot(){
   myName = $('#name').value.trim() || t('you');
   try { if ($('#name').value.trim()) localStorage.setItem('laqeetak-name', myName); } catch(e){}
   mode = 'bot'; role = 'host'; leaving = false; botBusy = false; botPicking = false;
-  S = freshState(botSetup.level); S.p.guest.name = t('computer');
+  S = freshState(botSetup.level, 'faces'); S.p.guest.name = t('computer');
   S.settings.q = botSetup.q; S.settings.t = botSetup.t;
   closeM('botM'); startPick(); broadcast();
 }
@@ -1063,11 +1516,12 @@ function releaseWake(){ try { wakeLock && wakeLock.release(); } catch(e){} wakeL
 document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && S && S.phase !== 'lobby') holdWake(); });
 
 /* ---------- rendering ---------- */
-function levelButtons(el, current, clickable){
-  el.innerHTML = Object.entries(LEVELS).map(([k, L]) => {
+function levelButtons(el, current, clickable, g = 'faces'){
+  const foot = g === 'foot';
+  el.innerHTML = Object.entries(LVL(g)).map(([k, L]) => {
     const time = L.t ? t('secs', {s:L.t}) : t('noTimer');
     return `<button type="button" class="lvl" data-lvl="${k}" aria-pressed="${k === current}" ${clickable ? '' : 'disabled'}>
-      <span>${t('lvl_' + k)}</span><small>${t('lvlInfo', {n:L.n, q:L.q, time})}</small></button>`;
+      <span>${t((foot ? 'flvl_' : 'lvl_') + k)}</span><small>${t(foot ? 'fLvlInfo' : 'lvlInfo', {n:L.n, q:L.q, time})}</small></button>`;
   }).join('');
 }
 function chips(el, opts, cur, key, enabled){
@@ -1080,10 +1534,11 @@ function renderLevels(){
   levelButtons($('#botLevels'), botSetup.level, true);
   chips($('#botQ'), Q_CHOICES, botSetup.q, 'q', true);
   chips($('#botT'), T_CHOICES, botSetup.t, 't', true);
-  const host = role === 'host' && !!S && S.phase === 'lobby', st = S ? S.settings : LEVELS.normal;
-  levelButtons($('#lobbyLevels'), S ? S.level : 'normal', host);
-  chips($('#lobbyQ'), Q_CHOICES, st.q, 'q', host);
-  chips($('#lobbyT'), T_CHOICES, st.t, 't', host);
+  const g = S ? S.gt : gt, foot = g === 'foot';
+  const host = role === 'host' && !!S && S.phase === 'lobby', st = S ? S.settings : LVL(g).normal;
+  levelButtons($('#lobbyLevels'), S ? S.level : 'normal', host, g);
+  chips($('#lobbyQ'), foot ? FQ_CHOICES : Q_CHOICES, st.q, 'q', host);
+  chips($('#lobbyT'), foot ? FT_CHOICES : T_CHOICES, st.t, 't', host);
 }
 function render(){
   if (!S) { if (role) { show('lobby'); renderLobby(); } return; }
@@ -1092,7 +1547,7 @@ function render(){
   else { show('game'); renderGame(); }
   $('#overM').classList.toggle('on', S.phase === 'over' && !overHidden);
   if (S.phase === 'over') renderOver();
-  if (S.phase !== 'play') { closeM('confirmM'); closeM('askM'); }
+  if (S.phase !== 'play') { closeM('confirmM'); closeM('askM'); closeM('fGuessM'); }
   if (S.phase === 'lobby' || S.phase === 'pick') $('#emoBar').hidden = true;
   renderVoice();
   if (S.ev && S.ev.n !== seenEv) {
@@ -1110,7 +1565,7 @@ function renderLobby(){
   else if (host) st = opp ? t('friendIn', {name:esc(opp)}) : esc(t('waitFriend'));
   else st = t('joinedRoom', {name:esc(opp)});
   $('#lobbyStatus').innerHTML = st;
-  renderLevels();
+  renderLevels(); renderGt();
   $('#startBtn').hidden = !host;
   $('#startBtn').disabled = !(host && S && opp && conn && conn.open);
 }
@@ -1119,6 +1574,12 @@ function syncCards(grid){
   grid.querySelectorAll('.card').forEach(el => el.classList.toggle('off', +el.dataset.id >= n));
 }
 function renderPick(){
+  const foot = isFoot();
+  $('#pickGrid').parentElement.hidden = foot; $('#footDeal').hidden = !foot;
+  $('#pickH').textContent = t(foot ? 'fPickTitle' : 'pickTitle'); $('#pickP').textContent = foot ? t('fPickSub', {name:oppName()}) : t('pickSub');
+  $('#randBtn').textContent = t(foot ? 'fReroll' : 'random'); $('#lockBtn').textContent = t(foot ? 'fReady' : 'lock');
+  $('#randBtn').style.flex = foot ? '0 0 50%' : '0 0 34%';
+  if (foot) return renderFootPick();
   const g = $('#pickGrid'); syncCards(g);
   const locked = mySecret != null, cur = locked ? mySecret : selected;
   g.querySelectorAll('.card').forEach(el => el.classList.toggle('sel', +el.dataset.id === cur));
@@ -1128,6 +1589,9 @@ function renderPick(){
   $('#pickWait').textContent = t('waitPick', {name:oppName()});
 }
 function renderGame(){
+  if (isFoot()) return renderFootGame();
+  $('#gameGrid').parentElement.hidden = false; $('#footBoard').hidden = true; $('#ansAct').hidden = true;
+  $('#myLeft').parentElement.hidden = false; $('#oppLeft').parentElement.hidden = false;
   const play = S.phase === 'play', bot = S.mode === 'bot';
   const mine = play && S.turn === role;
   const me = S.p[role], op = S.p[other(role)];
@@ -1221,11 +1685,15 @@ function renderOver(){
   $('#overTitle').textContent = won ? t('won') : t('lost');
   const c = S.lastGuess != null ? nm(S.lastGuess) : '', byMe = S.guesser === role;
   let r = '';
-  if (S.reason === 'guess') r = byMe ? t('rGuessMe', {name:op, c}) : t('rGuessOpp', {name:op, c});
+  const F = S.gt === 'foot';
+  if (S.reason === 'guess') r = byMe ? t(F ? 'fRGuessMe' : 'rGuessMe', {name:op, c}) : t(F ? 'fRGuessOpp' : 'rGuessOpp', {name:op, c});
   else if (S.reason === 'wrong') r = byMe ? t('rWrongMe', {c}) : t('rWrongOpp', {name:op, c});
   else if (S.reason === 'timeout') r = won ? t('rTimeWin', {name:op}) : t('rTimeLose');
   $('#overReason').textContent = r;
-  $('#overDuo').innerHTML = miniCard(mySecret, t('yourChar')) + miniCard(S.secrets[other(role)], t('charOf', {name:op}));
+  $('#overDuo').classList.toggle('foot', F); $('#viewBoardBtn').textContent = t(F ? 'fViewBoard' : 'viewBoard');
+  const fm = (id, label) => `<figure>${id != null ? sticker(id, 'small') : '<div class="st small"><div class="st-name">؟</div></div>'}${esc(label)}</figure>`;
+  $('#overDuo').innerHTML = F ? fm(S.secrets[other(role)], t('fYouHad')) + fm(mySecret, t('fHeHad', {name:op}))
+    : miniCard(mySecret, t('yourChar')) + miniCard(S.secrets[other(role)], t('charOf', {name:op}));
 }
 function openAsk(){
   const groups = ['who','hair','face','clothes'];
@@ -1235,6 +1703,146 @@ function openAsk(){
       return `<button type="button" class="q" data-q="${q.id}" ${done ? 'disabled' : ''}>${esc(q[lang])}${done ? `<span class="ans ${a ? 'y' : 'n'}">${a ? t('yes') : t('no')}</span>` : ''}</button>`;
     }).join('')}</div></div>`).join('');
   openM('askM');
+}
+
+/* ---------- football mode ---------- */
+const L2 = () => lang === 'ar' ? 0 : 1;
+function flag(c){
+  if (c === 'ENG') return '\u{1F3F4}\u{E0067}\u{E0062}\u{E0065}\u{E006E}\u{E0067}\u{E007F}';
+  if (c === 'WLS') return '\u{1F3F4}\u{E0067}\u{E0062}\u{E0077}\u{E006C}\u{E0073}\u{E007F}';
+  return String.fromCodePoint(...[...c].map(ch => 0x1F1E6 + ch.charCodeAt(0) - 65));
+}
+function sticker(id, cls = ''){
+  const p = PL[id]; if (!p) return '';
+  const clubs = p[5].split(' ').map(k => `<span>${esc(CLUB[k][L2()])}</span>`).join('');
+  return `<div class="st ${cls}"><div class="st-top"><span class="st-flag">${flag(p[2])}</span><span class="st-pos">${esc(POSS[p[3]][L2()])}</span></div>`
+    + `<div class="st-name">${esc(p[L2()])}</div><div class="st-meta">${esc(CTRY[p[2]][L2()])} • ${esc(POS[p[3]][L2()])}</div><div class="st-clubs">${clubs}</div></div>`;
+}
+function fPool(){
+  const tier = {easy:1, normal:2, expert:3}[S && S.level] || 3;
+  return PL.map((p, i) => i).filter(i => PL[i][4] <= tier);
+}
+const ansLbl = a => a === 'y' ? t('yes') : a === 'n' ? t('no') : t('fMaybe');
+function hintText(h){
+  const [k, v] = String(h).split(':');
+  if (k === 'nat' && CTRY[v]) return t('fHNat', {c:CTRY[v][L2()], f:flag(v)});
+  if (k === 'pos' && POS[v]) return t('fHPos', {p:POS[v][L2()]});
+  if (k === 'club' && CLUB[v]) return t('fHClub', {c:CLUB[v][L2()]});
+  return '';
+}
+function showFootCard(id){
+  const z = $('#zoomFace'); z.classList.add('st-wrap'); z.innerHTML = sticker(id);
+  $('#zoomName').textContent = ''; openM('zoomM');
+}
+function renderGt(){
+  const btns = g => `<button type="button" data-gt="faces" aria-pressed="${g === 'faces'}">${esc(t('gtFaces'))}<small>${esc(t('gtFacesSub'))}</small></button>`
+    + `<button type="button" data-gt="foot" aria-pressed="${g === 'foot'}">${esc(t('gtFoot'))}<small>${esc(t('gtFootSub'))}</small></button>`;
+  $('#gtHome').innerHTML = btns(gt);
+  $('#botBtn').hidden = gt === 'foot'; $('#botNote').hidden = gt !== 'foot'; $('#botNote').textContent = t('botFootNote');
+  const host = role === 'host' && !!S && S.phase === 'lobby' && S.mode === 'online';
+  $('#gtLobby').innerHTML = btns(S ? S.gt : gt);
+  $('#gtLobby').querySelectorAll('button').forEach(b => b.disabled = !host);
+}
+let dealShown = null, seenFq = '';
+function renderFootPick(){
+  const pool = fPool();
+  if (mySecret == null && (selected == null || !pool.includes(selected))) selected = pool[Math.floor(Math.random()*pool.length)];
+  const cur = mySecret != null ? mySecret : selected;
+  if (cur !== dealShown) { $('#footDeal').innerHTML = sticker(cur, 'big'); dealShown = cur; }
+  const locked = mySecret != null;
+  $('#lockBtn').disabled = selected == null;
+  $('#pickAct').hidden = locked; $('#pickWait').hidden = !locked;
+  $('#pickWait').textContent = t('waitPick', {name:oppName()});
+}
+function renderFootGame(){
+  const play = S.phase === 'play', mine = play && S.turn === role;
+  const me = S.p[role], op = S.p[other(role)];
+  if (play && S.turn !== lastTurn) {
+    if (mine) { sfx.turn(); buzz(lastTurn === null ? 60 : [60,40,60]); if (lastTurn !== null) toast(t('yourTurnToast')); }
+    lastTurn = S.turn; const pl = $('#turnPill'); pl.classList.remove('pop'); void pl.offsetWidth; pl.classList.add('pop');
+  }
+  guessMode = false;
+  const must = mine && me.q <= 0;
+  $('#gameGrid').parentElement.hidden = true; $('#footBoard').hidden = false;
+  $('#myLeft').parentElement.hidden = true; $('#oppLeft').parentElement.hidden = true;
+  const pill = $('#turnPill');
+  pill.classList.toggle('mine', mine); pill.classList.toggle('theirs', play && !mine);
+  pill.textContent = !play ? t('roundOver') : mine ? t('yourTurn') : t('theirTurn', {name:op.name});
+  $('#mini').innerHTML = mySecret != null ? `<span class="mini-flag">${flag(PL[mySecret][2])}</span>` : '';
+  $('#soundBtn').textContent = SND.on ? '🔊' : '🔇';
+  $('#myQ').textContent = `${me.q}/${S.settings.q}`;
+  $('#oppQ').textContent = `${op.q}/${S.settings.q}`;
+  $('#timer').hidden = !play || !S.settings.t;
+
+  const lg = $('#logLine');
+  if (S.log) {
+    const L = S.log, q = L.q || t('fVoiceQ'), a = ansLbl(L.a);
+    lg.innerHTML = L.by === role ? t('youAsked', {q:esc(q), a, c:L.a}) : t('oppAsked', {name:esc(op.name), q:esc(q), a, c:L.a});
+    lg.hidden = false; lg.classList.remove('y', 'n', 'm'); lg.classList.add(L.a);
+    if (L.n !== seenLog) {
+      seenLog = L.n;
+      if (L.by === role) { showSplash(t('splashMe'), q, L.a, '', 2600); setTimeout(() => (L.a === 'y' ? sfx.yes : sfx.no)(), 0); buzz(L.a === 'y' ? [30,40,30] : 140); }
+      else toast(t('fAnswered'));
+      lg.classList.remove('flash'); void lg.offsetWidth; lg.classList.add('flash');
+    }
+  } else lg.hidden = true;
+
+  const hl = $('#hintLine');
+  if (S.hint && S.hint.n !== seenHint) {
+    seenHint = S.hint.n;
+    if (S.hint.by === role) sfx.hint(); else toast(t('hintOpp', {name:op.name}));
+  }
+  if (S.hint && S.hint.by === role) { hl.textContent = t('fHintLine', {q:hintText(S.hint.qid)}); hl.hidden = false; } else hl.hidden = true;
+
+  const theirQ = play && !mine && S.fq && S.fq.by !== role ? S.fq.text : '';
+  if (theirQ) { const key = S.turn + (S.log ? S.log.n : 0) + theirQ; if (key !== seenFq) { seenFq = key; sfx.ask(); buzz([40,30,40]); } }
+  const b = $('#banner'); b.className = 'banner';
+  if (!play) b.textContent = t('roundOver');
+  else if (must) { b.textContent = t('fMust'); b.classList.add('alert'); }
+  else if (mine) b.textContent = S.fq && S.fq.by === role ? t('fWaitAns', {name:op.name}) : t('fMine', {name:op.name});
+  else if (op.q <= 0) b.textContent = t('fTheirsMust', {name:op.name});
+  else if (theirQ) { b.textContent = t('fTheirsQ', {name:op.name, q:theirQ}); b.classList.add('guess'); }
+  else b.textContent = t('fTheirs', {name:op.name});
+
+  const showAns = play && !mine && op.q > 0;
+  $('#mineAct').hidden = !mine; $('#ansAct').hidden = !showAns; $('#waitAct').hidden = mine || showAns;
+  $('#waitAct').textContent = play ? t('waitTurn', {name:op.name}) : '';
+  $('#endBtn').hidden = true; $('#doneBtn').hidden = true;
+  $('#hintBtn').hidden = must; $('#hintBtn').disabled = me.hint || me.q < 2;
+  $('#guessBtn').textContent = t('fGuessBtn'); $('#guessBtn').disabled = false;
+
+  $('#fMine').innerHTML = mySecret != null ? `<p class="fmine-label">${esc(t('fMineLabel', {name:op.name}))}</p>${sticker(mySecret, 'mid')}` : '';
+  $('#fAsk').hidden = !mine || must || !!(S.fq && S.fq.by === role);
+  const H = S.hist || [];
+  $('#fHistT').textContent = t('fHist', {n:H.length});
+  $('#fHist').innerHTML = H.length ? H.slice().reverse().map(h => {
+    const m = h.by === role;
+    return `<li class="${m ? 'me' : 'op'}"><span class="who">${esc(m ? t('fYou') : op.name)}</span><span class="q">${esc(h.q || t('fVoiceQ'))}</span><b class="${h.a}">${esc(ansLbl(h.a))}</b></li>`;
+  }).join('') : `<li class="none">${esc(t('fHistEmpty'))}</li>`;
+}
+function openFootGuess(){
+  if (!S || S.phase !== 'play' || S.turn !== role) return;
+  $('#fSearch').value = ''; renderFootResults(); openM('fGuessM');
+  setTimeout(() => $('#fSearch').focus(), 60);
+}
+function renderFootResults(){
+  const q = normName($('#fSearch').value), box = $('#fRes');
+  if (q.replace(/\s/g, '').length < 2) { box.innerHTML = `<p class="empty">${esc(t('fTypeName'))}</p>`; return; }
+  const words = q.split(' ');
+  const hits = fPool().filter(i => words.every(w => PLN[i].includes(w))).slice(0, 8);
+  box.innerHTML = hits.length ? hits.map(i => `<button type="button" data-pl="${i}"><span class="fl">${flag(PL[i][2])}</span><span>${esc(PL[i][L2()])}<small>${esc(PL[i][1 - L2()])}</small></span></button>`).join('')
+    : `<p class="empty">${esc(t('fNoRes'))}</p>`;
+}
+function pickFootGuess(id){
+  closeM('fGuessM'); guessTarget = id;
+  const cf = $('#confirmFace'); cf.classList.add('st-wrap'); cf.innerHTML = sticker(id, 'mid');
+  $('#confirmTitle').textContent = t('fConfirmTitle', {name:nm(id)});
+  openM('confirmM');
+}
+function sendFootQ(){
+  const inp = $('#fAskInp'), v = inp.value.trim();
+  if (!v || !S || !isFoot()) return;
+  act('fq', {q:v}); inp.value = ''; inp.blur();
 }
 
 /* ---------- language ---------- */
@@ -1248,11 +1856,12 @@ function applyLang(){
   document.querySelectorAll('[data-i18n]').forEach(el => el.textContent = t(el.dataset.i18n));
   document.querySelectorAll('[data-i18n-ph]').forEach(el => el.placeholder = t(el.dataset.i18nPh));
   $('#langBtn').textContent = lang === 'ar' ? 'English' : 'العربية';
-  $('#rulesList').innerHTML = t('rules').split('|').map(r => `<li>${esc(r)}</li>`).join('');
+  $('#rulesList').innerHTML = t('rules').split('|').map(r => `<li>${esc(r)}</li>`).join('')
+    + `<li class="rules-h">${esc(t('fRulesTitle'))}</li>` + t('fRules').split('|').map(r => `<li>${esc(r)}</li>`).join('');
   document.querySelectorAll('.card[data-id]').forEach(el => {
-    const id = +el.dataset.id, n = el.querySelector('.nm'); if (n) n.textContent = nm(id); el.setAttribute('aria-label', nm(id));
+    const id = +el.dataset.id, n = el.querySelector('.nm'); if (n) n.textContent = dn(id); el.setAttribute('aria-label', dn(id));
   });
-  renderLevels(); updateInvite();
+  renderLevels(); renderGt(); updateInvite(); dealShown = null;
   if (S) render();
 }
 
@@ -1274,7 +1883,7 @@ function init(){
     if (!S) return;
     if (S.phase === 'play' && guessMode && S.turn === role) {
       guessTarget = id; renderGame();
-      $('#confirmFace').innerHTML = faceImg(id);
+      $('#confirmFace').classList.remove('st-wrap'); $('#confirmFace').innerHTML = faceImg(id);
       $('#confirmTitle').textContent = t('confirmTitle', {name:nm(id)});
       openM('confirmM'); return;
     }
@@ -1323,7 +1932,8 @@ function init(){
   $('#startBtn').onclick = () => { if (role === 'host' && S) { startPick(); broadcast(); } };
 
   $('#randBtn').onclick = () => {
-    if (mySecret != null) return; selected = Math.floor(Math.random()*N()); sfx.pick(); renderPick();
+    if (mySecret != null) return;
+    if (isFoot()) { const pool = fPool().filter(i => i !== selected); selected = pool[Math.floor(Math.random()*pool.length)]; sfx.flip(); renderPick(); return; } selected = Math.floor(Math.random()*N()); sfx.pick(); renderPick();
     const el = $(`#pickGrid .card[data-id="${selected}"]`); el && el.scrollIntoView({block:'center', behavior:'smooth'});
   };
   $('#lockBtn').onclick = () => { if (selected == null) return; mySecret = selected; renderPick(); act('ready'); };
@@ -1336,11 +1946,25 @@ function init(){
   $('#hintBtn').onclick = () => {
     const me = S && S.p[role]; if (!me) return;
     if (me.hint || me.q < 2) { toast(t('hintNo')); return; }
-    if (confirm(t('hintCost'))) act('hint');
+    if (confirm(t(isFoot() ? 'fHintCost' : 'hintCost'))) act('hint');
   };
-  $('#guessBtn').onclick = () => { guessMode = !guessMode; guessTarget = null; renderGame(); };
+  $('#guessBtn').onclick = () => { if (isFoot()) { openFootGuess(); return; } guessMode = !guessMode; guessTarget = null; renderGame(); };
   $('#confirmYes').onclick = () => { if (guessTarget == null) return; closeM('confirmM'); act('guess', {id:guessTarget}); toast(t('checking')); };
-  $('#secretBtn').onclick = () => { if (mySecret != null) zoom(mySecret); };
+  $('#secretBtn').onclick = () => { if (mySecret == null) return; if (isFoot()) showFootCard(mySecret); else zoom(mySecret); };
+  document.addEventListener('click', e => {
+    const b = e.target.closest('.gt button'); if (!b || b.disabled) return;
+    const v = b.dataset.gt === 'foot' ? 'foot' : 'faces';
+    if (b.closest('#gtHome')) { gt = v; try { localStorage.setItem('lq-gt', gt); } catch(e){} renderGt(); return; }
+    if (role === 'host' && S && S.phase === 'lobby' && S.mode === 'online' && S.gt !== v) {
+      gt = v; try { localStorage.setItem('lq-gt', gt); } catch(e){}
+      S.gt = v; setLevel(S.level); broadcast();
+    }
+  });
+  $('#ansAct').addEventListener('click', e => { const b = e.target.closest('[data-ans]'); if (b) { buzz(20); act('fans', {v:b.dataset.ans}); } });
+  $('#fAskBtn').onclick = sendFootQ;
+  $('#fAskInp').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); sendFootQ(); } });
+  $('#fSearch').addEventListener('input', renderFootResults);
+  $('#fRes').addEventListener('click', e => { const b = e.target.closest('[data-pl]'); if (b) pickFootGuess(+b.dataset.pl); });
   $('#soundBtn').onclick = () => { SND.on = !SND.on; try { localStorage.setItem('lq-sound', SND.on ? '1' : '0'); } catch(e){} if (SND.on) audio(); renderGame(); };
 
   $('#againBtn').onclick = () => act('rematch');
@@ -1359,7 +1983,7 @@ function init(){
     const o = e.target.closest('[data-open]'); if (o) openM(o.dataset.open);
     const c = e.target.closest('[data-close]'); if (c) c.closest('.modal').classList.remove('on');
     if (e.target.closest('[data-home]')) goHome();
-    if (e.target.classList.contains('modal') && ['rulesM','zoomM','confirmM','askM','ansM','botM','iosM','statsM'].includes(e.target.id)) e.target.classList.remove('on');
+    if (e.target.classList.contains('modal') && ['rulesM','zoomM','confirmM','askM','ansM','botM','iosM','statsM','fGuessM'].includes(e.target.id)) e.target.classList.remove('on');
   });
 
   setInterval(() => {
