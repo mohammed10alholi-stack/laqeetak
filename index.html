@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#16307F">
+<meta name="theme-color" content="#0D1130">
 <meta name="description" content="لعبة خمّن الشخصية: العب مع صاحبك من جوالين أو ضد الكمبيوتر. ٤٨ شخصية بفروقات دقيقة، ووضع خمّن الشي: لاعبين، حيوانات، أكل، ودول.">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -19,8 +19,8 @@
 <script src="https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js"></script>
 <style>
 :root{
-  --board:#1D3A9E; --board-2:#16307F; --ink:#171433; --sun:#FFC83A;
-  --red:#E23D3A; --green:#3E9D5B; --paper:#E9EEFF; --muted:#B9C4F0;
+  --board:#131739; --board-2:#0D1130; --ink:#14112B; --sun:#FFD23F; --blue:#2358E0;
+  --red:#E8322E; --green:#2E9E57; --paper:#E9EEFF; --muted:#AEB6E0;
   --display:'Lalezar','Baloo Bhaijaan 2',Tahoma,sans-serif;
   --body:'Baloo Bhaijaan 2',Tahoma,'Segoe UI',system-ui,sans-serif;
 }
@@ -355,6 +355,54 @@ html[lang="en"] .rv-stamp{font-family:'Baloo Bhaijaan 2',sans-serif;font-weight:
 .rv.go .rv-stamp{animation:stamp .55s cubic-bezier(.3,1.7,.5,1) forwards}
 @keyframes stamp{0%{transform:rotate(-7deg) scale(3);opacity:0}100%{transform:rotate(-7deg) scale(1);opacity:1}}
 @media (prefers-reduced-motion:reduce){.cd span,.rv .flip,.deal .flip,.rv.go .rv-stamp{animation:none;opacity:1}.flip .fi{transition:none}}
+
+/* ===== Studio challenge theme ===== */
+body{background-color:var(--board);
+  background-image:radial-gradient(ellipse at 100% 0%,rgba(232,50,46,.5),transparent 55%),radial-gradient(ellipse at 0% 100%,rgba(35,88,224,.6),transparent 60%),radial-gradient(rgba(255,255,255,.07) 1.4px,transparent 1.6px);
+  background-size:100% 100vh,100% 100vh,16px 16px;background-repeat:no-repeat,no-repeat,repeat}
+.logo{color:#fff;transform:rotate(-3deg);margin-top:4px;
+  text-shadow:3px 0 0 var(--red),-3px 0 0 var(--red),0 3px 0 var(--red),0 -3px 0 var(--red),2px 2px 0 var(--red),-2px -2px 0 var(--red),2px -2px 0 var(--red),-2px 2px 0 var(--red),0 8px 0 var(--blue),3px 8px 0 var(--blue),-3px 8px 0 var(--blue),0 11px 0 var(--ink)}
+.tag{color:#D9DEFF}
+.stage{display:grid;grid-template-columns:1fr 58px 1fr;align-items:center;margin:6px 0 22px}
+.side{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;padding:14px 8px 12px;border:3px solid var(--ink);border-radius:16px;box-shadow:0 6px 0 var(--ink);color:#fff;font-weight:800;min-width:0}
+.side.me{background:var(--red);transform:rotate(2deg);animation:sideR .6s cubic-bezier(.3,1.4,.5,1) both}
+.side.op{background:var(--blue);transform:rotate(-2deg);animation:sideL .6s cubic-bezier(.3,1.4,.5,1) .08s both}
+.side .av{font-size:2.7rem;line-height:1.15;filter:drop-shadow(0 3px 0 rgba(0,0,0,.28))}
+.side .av.q{font-family:var(--display);color:rgba(255,255,255,.9)}
+.side b{font-size:1rem;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.side small{font-size:.72rem;font-weight:700;opacity:.85}
+@keyframes sideR{0%{transform:translateX(60px) rotate(8deg);opacity:0}100%{transform:rotate(2deg);opacity:1}}
+@keyframes sideL{0%{transform:translateX(-60px) rotate(-8deg);opacity:0}100%{transform:rotate(-2deg);opacity:1}}
+html[dir="ltr"] .side.me{animation-name:sideL} html[dir="ltr"] .side.op{animation-name:sideR}
+.vs{position:relative;z-index:2;height:118px;margin:0 -16px;display:flex;align-items:center;justify-content:center}
+.vs svg{position:absolute;height:118px;width:auto;filter:drop-shadow(0 4px 0 var(--ink));animation:zap 2.6s ease-in-out infinite}
+.vs span{position:relative;font-family:'Baloo Bhaijaan 2',sans-serif;font-weight:800;font-size:1.25rem;color:var(--ink);background:#fff;border:3px solid var(--ink);border-radius:999px;padding:0 7px;line-height:1.35}
+@keyframes zap{0%,86%,100%{transform:scale(1);filter:drop-shadow(0 4px 0 var(--ink))}90%{transform:scale(1.12) rotate(-4deg);filter:drop-shadow(0 4px 0 var(--ink)) drop-shadow(0 0 14px #FFD23F)}}
+.stage.lob{margin:4px 0 18px}
+.stage.lob .side .av{font-size:2.1rem}
+.stage.lob .vs,.stage.lob .vs svg{height:92px}
+#botBtn{background:var(--blue);color:#fff}
+.gt button[data-gt="faces"][aria-pressed="true"]{background:var(--red);color:#fff}
+.gt button[data-gt="foot"][aria-pressed="true"]{background:var(--blue);color:#fff}
+.sheet{background:linear-gradient(90deg,var(--blue) 50%,var(--red) 50%) top/100% 9px no-repeat,#fff;padding-top:26px}
+.code{background:linear-gradient(90deg,var(--blue) 50%,var(--red) 50%) bottom/100% 7px no-repeat,#fff}
+.bar{background:var(--board-2);border-bottom:0;box-shadow:0 3px 0 var(--ink)}
+.bar::after,.act::before{content:"";position:absolute;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--blue) 50%,var(--red) 50%)}
+.bar::after{bottom:0}
+.act{background:var(--board-2);border-top:0}
+.act::before{top:0}
+.pill.mine{background:var(--red);color:#fff}
+.pill.theirs{background:var(--blue);color:#fff}
+.banner{background:rgba(255,255,255,.07)}
+.scoreline{gap:6px;align-items:center}
+.scoreline .sc{display:inline-flex;align-items:center;gap:6px;min-width:0;max-width:42%;padding:2px 9px;border:2.5px solid var(--ink);border-radius:10px;color:#fff;font-size:.8rem;box-shadow:0 2px 0 var(--ink)}
+.scoreline .sc.me{background:var(--red)} .scoreline .sc.op{background:var(--blue)}
+.scoreline .sc b{color:#fff;font-size:1.3rem}
+.scoreline .nmx{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.scoreline i{font-style:normal;font-weight:800;color:var(--sun);font-size:.85rem}
+.cd{background:linear-gradient(115deg,rgba(232,50,46,.9) 50%,rgba(35,88,224,.9) 50%)}
+.card .back{background-color:var(--red)}
+@media (prefers-reduced-motion:reduce){.side.me,.side.op,.vs svg{animation:none}}
 @media (prefers-reduced-motion:reduce){.card .in,.btn,.toast,.track i{transition:none}.pill.pop,.cf,.emo-fly,.splash-card,.log.flash{animation:none}.cf{display:none}}
 </style>
 </head>
@@ -369,7 +417,8 @@ html[lang="en"] .rv-stamp{font-family:'Baloo Bhaijaan 2',sans-serif;font-weight:
     </div>
     <h1 class="logo" data-i18n="title"></h1>
     <p class="tag" data-i18n="tagline"></p>
-    <div class="hero" id="hero"></div>
+    <div class="hero" id="hero" hidden></div>
+    <div class="stage" id="homeStage" aria-hidden="true"></div>
     <div class="invite" id="invite" hidden></div>
     <div class="gt" id="gtHome" role="group"></div>
     <div class="field">
@@ -400,6 +449,7 @@ html[lang="en"] .rv-stamp{font-family:'Baloo Bhaijaan 2',sans-serif;font-weight:
       <button class="btn white small" id="shareBtn" data-i18n="shareLink"></button>
       <button class="btn white small" id="copyCodeBtn" data-i18n="copyCode"></button>
     </div>
+    <div class="stage lob" id="lobbyStage" aria-hidden="true"></div>
     <div class="status" id="lobbyStatus"></div>
     <div class="row voice-lobby" id="voiceLobby" hidden>
       <button class="btn green small" id="micLobbyBtn"></button>
@@ -1154,6 +1204,19 @@ const QQ = {
  places:[['دولة؟','A country?'],['مدينة؟','A city?'],['عربية؟','Arab?'],['بآسيا؟','In Asia?'],['بأوروبا؟','In Europe?'],['بأفريقيا؟','In Africa?'],['على البحر؟','On the sea?'],['بفلسطين؟','In Palestine?'],['عاصمة؟','A capital?']]
 };
 
+Object.assign(STR.ar, {opponent:'خصمك', waiting:'بنستنى…', youTag:'إنت'});
+Object.assign(STR.en, {opponent:'Opponent', waiting:'Waiting…', youTag:'You'});
+const BOLT = '<svg viewBox="0 0 60 100" aria-hidden="true"><polygon points="40,2 8,57 29,57 17,98 54,39 32,39 47,2" fill="#FFD23F" stroke="#14112B" stroke-width="4" stroke-linejoin="round"/></svg>';
+function setStage(el, me, op){
+  const tag = me.name !== t('you') ? t('youTag') : '';
+  const fill = (cls, p, tg) => { const d = el.querySelector('.side.' + cls); d.querySelector('.av').textContent = p.av; d.querySelector('.av').classList.toggle('q', !!p.q); d.querySelector('b').textContent = p.name; const sm = d.querySelector('small'); sm.textContent = tg; sm.hidden = !tg; };
+  if (!el.querySelector('.side')) el.innerHTML = `<div class="side me"><span class="av"></span><b></b><small></small></div><div class="vs">${BOLT}<span>VS</span></div><div class="side op"><span class="av"></span><b></b><small hidden></small></div>`;
+  fill('me', me, tag); fill('op', op, '');
+}
+function renderHomeStage(){
+  setStage($('#homeStage'), {av:myAv, name:($('#name').value.trim() || t('you'))}, {av:'❓', name:t('opponent')});
+}
+
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const QMAP = Object.fromEntries(QS.map(q => [q.id, q]));
@@ -1760,6 +1823,8 @@ function renderLobby(){
   else if (host) st = opp ? t('friendIn', {name:esc(oppL)}) : esc(t('waitFriend'));
   else st = t('joinedRoom', {name:esc(oppL)});
   $('#lobbyStatus').innerHTML = st;
+  const meP = S ? S.p[role] : null;
+  setStage($('#lobbyStage'), {av:(meP && meP.av) || myAv, name:myName || t('you')}, oppP && opp ? {av:oppP.av || '🙂', name:opp} : {av:'⏳', name:t('waiting')});
   renderLevels(); renderGt();
   $('#startBtn').hidden = !host;
   $('#startBtn').disabled = !(host && S && opp && conn && conn.open);
@@ -1786,7 +1851,7 @@ function renderPick(){
 
 function renderScore(){
   const sc = S.score || {host:0, guest:0}, me = S.p[role], op = S.p[other(role)];
-  $('#scoreLine').innerHTML = `<span>${esc(me.av || '')} ${esc(t('you'))}</span><b>${sc[role] || 0}</b><span>–</span><b>${sc[other(role)] || 0}</b><span>${esc(op.av || '')} ${esc(op.name || t('guest'))}</span><span class="to">(${esc(t('firstTo', {n:S.target || 3}))})</span>`;
+  $('#scoreLine').innerHTML = `<span class="sc me">${esc(me.av || '')} <span class="nmx">${esc(t('you'))}</span> <b>${sc[role] || 0}</b></span><i>VS</i><span class="sc op"><b>${sc[other(role)] || 0}</b> <span class="nmx">${esc(op.name || t('guest'))}</span> ${esc(op.av || '')}</span><span class="to">${esc(t('firstTo', {n:S.target || 3}))}</span>`;
 }
 function renderGame(){
   renderScore();
@@ -2091,7 +2156,7 @@ function applyLang(){
   document.querySelectorAll('.card[data-id]').forEach(el => {
     const id = +el.dataset.id, n = el.querySelector('.nm'); if (n) n.textContent = dn(id); el.setAttribute('aria-label', dn(id));
   });
-  renderLevels(); renderGt(); updateInvite(); dealShown = null;
+  renderLevels(); renderGt(); renderHomeStage(); updateInvite(); dealShown = null;
   if (S) render();
 }
 
@@ -2233,7 +2298,8 @@ function init(){
 
   const renderAvs = () => { $('#avs').innerHTML = AVS.map(a => `<button type="button" data-av="${a}" aria-pressed="${a === myAv}">${a}</button>`).join(''); };
   renderAvs();
-  $('#avs').addEventListener('click', e => { const b = e.target.closest('[data-av]'); if (!b) return; myAv = avOk(b.dataset.av); try { localStorage.setItem('lq-av', myAv); } catch(e){} sfx.pick(); renderAvs(); });
+  $('#avs').addEventListener('click', e => { const b = e.target.closest('[data-av]'); if (!b) return; myAv = avOk(b.dataset.av); try { localStorage.setItem('lq-av', myAv); } catch(e){} sfx.pick(); renderAvs(); renderHomeStage(); });
+  $('#name').addEventListener('input', renderHomeStage);
   $('#fQuick').addEventListener('click', e => { const b = e.target.closest('[data-qq]'); if (b && S && isFoot()) act('fq', {q:b.dataset.qq}); });
   setTimeout(() => FACES.forEach(src => { const im = new Image(); im.src = src; }), 1200);
   applyLang();
