@@ -403,6 +403,8 @@ html[dir="ltr"] .side.me{animation-name:sideL} html[dir="ltr"] .side.op{animatio
 .cd{background:linear-gradient(115deg,rgba(232,50,46,.9) 50%,rgba(35,88,224,.9) 50%)}
 .card .back{background-color:var(--red)}
 @media (prefers-reduced-motion:reduce){.side.me,.side.op,.vs svg{animation:none}}
+.qchips .qlab{flex:0 0 auto;align-self:center;font-weight:800;font-size:.8rem;color:var(--sun)}
+.qchips .qdone{font-weight:800;font-size:.9rem;color:var(--sun);padding:4px 2px}
 @media (prefers-reduced-motion:reduce){.card .in,.btn,.toast,.track i{transition:none}.pill.pop,.cf,.emo-fly,.splash-card,.log.flash{animation:none}.cf{display:none}}
 </style>
 </head>
@@ -1176,6 +1178,273 @@ const RAW = {
 const IT = PL.map((p, i) => ({c:'foot', n:[p[0], p[1]], pl:i, tier:p[4]}));
 Object.entries(RAW).forEach(([c, arr]) => arr.forEach(([ar, en, e]) => IT.push({c, n:[ar, en], e: e[0] === '@' ? flag(e.slice(1)) : e, tier:1})));
 const ITN = IT.map(x => normName(x.n.join(' ')));
+const TAGS = {
+ 'Lion':'meat a_big africa dangerous fur legs4','Tiger':'meat a_big dangerous pattern fur legs4','Cheetah':'meat africa pattern fur legs4',
+ 'Elephant':'plant a_big africa legs4','Giraffe':'plant a_big africa pattern legs4 fur','Zebra':'plant a_big africa pattern legs4 fur',
+ 'Rhino':'plant a_big africa dangerous legs4','Hippo':'plant a_big africa a_water dangerous legs4','Gorilla':'plant a_big africa fur',
+ 'Monkey':'plant fur','Bear':'meat a_big dangerous fur legs4','Panda':'plant a_big fur legs4','Kangaroo':'plant fur','Koala':'plant fur',
+ 'Wolf':'meat dangerous fur legs4','Fox':'meat fur legs4','Deer':'plant fur legs4','Camel':'plant a_big africa fur legs4 farm',
+ 'Horse':'plant a_big fur legs4 farm','Cow':'plant a_big fur legs4 farm','Sheep':'plant fur legs4 farm','Goat':'plant fur legs4 farm',
+ 'Rabbit':'plant fur legs4 pet farm','Cat':'meat fur legs4 pet','Dog':'meat fur legs4 pet','Mouse':'plant a_small fur legs4',
+ 'Squirrel':'plant a_small fur legs4','Hedgehog':'a_small legs4 night','Bat':'fly a_small fur night','Chicken':'bird plant farm',
+ 'Rooster':'bird plant farm','Duck':'bird fly a_water plant farm','Owl':'bird fly meat a_small night','Eagle':'bird fly meat',
+ 'Parrot':'bird fly plant pet a_small','Penguin':'bird a_water sea meat','Peacock':'bird plant pattern','Dove':'bird fly plant a_small pet',
+ 'Flamingo':'bird fly a_water','Dolphin':'a_water sea meat a_big','Whale':'a_water sea a_big','Shark':'a_water sea meat a_big dangerous',
+ 'Octopus':'a_water sea meat','Seal':'a_water sea meat fur','Fish':'a_water a_small pet','Turtle':'a_water legs4 pet',
+ 'Crocodile':'a_water meat a_big dangerous africa legs4','Snake':'meat dangerous pattern','Lizard':'a_small legs4 meat',
+ 'Frog':'a_water a_small legs4 meat','Crab':'a_water sea a_small','Bee':'insect fly a_small plant pattern','Butterfly':'insect fly a_small plant',
+ 'Ant':'insect a_small','Spider':'a_small meat','Scorpion':'a_small meat dangerous','Snail':'a_small plant','Ladybug':'insect fly a_small pattern',
+ 'Mosquito':'insect fly a_small dangerous night','Sloth':'plant fur legs4','Dinosaur':'a_big ext meat dangerous',
+
+ 'Sofa':'furniture sit h_big cloth','Bed':'furniture bedroom h_big wood','Chair':'furniture sit wood','Mirror':'glass bath bedroom wall',
+ 'Scissors':'tool sharp metal hand office','Plate':'kitchen eat hand','Cup':'kitchen eat hand','Spoon':'kitchen eat metal hand',
+ 'Knife':'kitchen eat metal sharp hand','Fork':'kitchen eat metal sharp hand','Pot':'kitchen eat metal water','Frying pan':'kitchen eat metal',
+ 'Teapot':'kitchen eat water','Key':'metal hand outside','Lock':'metal hand open','Door':'h_big wood open','Window':'glass h_big open',
+ 'Wall clock':'wall','Broom':'clean','Bucket':'clean water store','Soap':'clean bath water hand','Toothbrush':'clean bath water hand',
+ 'Candle':'fire hand','Book':'paper hand open office','Pen':'hand office','Handbag':'open outside store','Umbrella':'outside open',
+ 'Glasses':'wear outside glass hand','Sneaker':'wear outside','Coat':'wear outside cloth','Tissues':'paper bath clean','Plant':'alive water',
+ 'Basket':'store','Rope':'tool','Hammer':'tool metal hand','Screwdriver':'tool metal hand','Saw':'tool metal sharp','Gift':'paper kids',
+ 'Balloon':'kids hand','Teddy bear':'kids cloth bedroom hand','Baby bottle':'kids kitchen eat hand','Bathtub':'bath water h_big',
+ 'Shower':'bath water','Toilet':'bath water','Ladder':'tool h_big','Needle and thread':'tool sharp metal hand','Pushpin':'sharp metal hand office',
+ 'Paper clip':'metal hand office','Pillow':'bedroom cloth','Table':'furniture h_big wood','Blanket':'bedroom cloth','Carpet':'cloth h_big',
+
+ 'TV':'screen sound e_big internet play wall','Mobile phone':'screen hand sound internet battery photo talk','Laptop':'screen sound internet battery office',
+ 'Computer':'screen sound internet office','Printer':'office','Camera':'screen hand battery photo','Headphones':'sound wear','Radio':'sound',
+ 'Microphone':'hand talk','Smartwatch':'screen wear internet battery','Light bulb':'light','Battery':'hand battery','PlayStation':'play internet',
+ 'Alarm clock':'sound','Landline phone':'talk sound','Flashlight':'light hand battery','Speaker':'sound','Projector':'light office',
+ 'Video camera':'screen hand battery photo','Fridge':'kitchen cool e_big','Washing machine':'clean e_big water clothes','Vacuum cleaner':'clean wind',
+ 'Microwave':'kitchen heat','Electric oven':'kitchen heat e_big','Blender':'kitchen','Toaster':'kitchen heat','Electric kettle':'kitchen heat water',
+ 'Iron':'heat hand clothes','Hair dryer':'heat hand wind personal','Shaver':'hand personal battery','Coffee machine':'kitchen heat water',
+ 'Fan':'cool wind','Air conditioner':'cool wind e_big wall','Heater':'heat','Dishwasher':'kitchen clean water e_big','Sewing machine':'clothes',
+ 'Router':'internet','Tablet':'screen hand internet battery photo','Charger':'hand',
+
+ 'Apple':'fruit sweet red tree','Banana':'fruit sweet yellow tree','Orange':'fruit sweet tree','Lemon':'fruit sour yellow tree',
+ 'Watermelon':'fruit sweet red f_big','Grapes':'fruit sweet','Strawberry':'fruit sweet red','Pineapple':'fruit sweet yellow f_big',
+ 'Mango':'fruit sweet tree','Peach':'fruit sweet tree','Pear':'fruit sweet tree','Cherries':'fruit sweet red tree','Kiwi':'fruit green',
+ 'Coconut':'fruit tree f_big','Avocado':'fruit green tree','Tomato':'veg red','Cucumber':'veg green','Carrot':'veg ground','Potato':'veg ground',
+ 'Onion':'veg ground','Garlic':'veg ground','Bell pepper':'veg green','Chili':'veg red','Eggplant':'veg','Corn':'veg yellow','Broccoli':'veg green',
+ 'Lettuce':'veg green','Mushroom':'veg','Olives':'green tree breakfast','Eggs':'animal breakfast','Bread':'dough breakfast bake',
+ 'Cheese':'animal breakfast','Milk':'drink animal breakfast','Honey':'sweet animal breakfast','Rice':'hot','Soup':'dish hot',
+ 'Falafel':'dish arab fast hot breakfast','Shawarma':'dish arab fast hot meatf dough','Pizza':'dish fast hot dough bake f_big',
+ 'Burger':'dish fast hot meatf dough','Fries':'fast hot snack','Pasta':'dish hot dough','Salad':'dish cold green','Cake':'sweet bake dough f_big',
+ 'Ice cream':'sweet cold','Chocolate':'sweet snack','Cookie':'sweet bake dough snack','Donut':'sweet dough snack','Popcorn':'snack',
+ 'Maqluba':'dish arab hot meatf','Knafeh':'sweet arab hot bake dough','Hummus':'arab breakfast','Musakhan':'dish arab hot meatf bake dough',
+ 'Fava beans':'arab breakfast hot','Coffee':'drink hot','Tea':'drink hot breakfast','Juice':'drink cold sweet','Dates':'fruit sweet tree arab',
+
+ 'Doctor':'uniform hospital health study','Nurse':'uniform hospital health','Dentist':'health study','Pharmacist':'health study sell science',
+ 'Lab technician':'health hospital science uniform','Teacher':'kids study','Engineer':'build study office','Builder':'build outdoors tools uniform danger',
+ 'Police officer':'uniform law outdoors danger','Firefighter':'uniform outdoors danger','Pilot':'uniform j_air drive study',
+ 'Astronaut':'uniform j_air science danger study','Chef':'foodj uniform','Farmer':'foodj outdoors animals tools','Mechanic':'build tools',
+ 'Scientist':'science study','Programmer':'computer office study','Painter':'art','Singer':'art media','Judge':'law study',
+ 'Lawyer':'law study office','Journalist':'media office','Photographer':'art media','Taxi driver':'drive','Baker':'foodj sell',
+ 'Barber':'tools','Carpenter':'build tools','Electrician':'build tools','Plumber':'build tools','Fisherman':'foodj j_sea outdoors animals',
+ 'Tailor':'tools clothes','Shopkeeper':'sell','Accountant':'office computer study','Vet':'health animals study','Mail carrier':'uniform outdoors',
+ 'Presenter':'media','Footballer':'sport media uniform outdoors','Fitness coach':'sport','Actor':'art media','Imam':'religion',
+ 'Bank clerk':'office','Ship captain':'uniform j_sea drive','Guard':'uniform law danger',
+
+ 'Car':'wheels engine self road','Taxi':'wheels engine public road','Bus':'wheels engine many public road','Truck':'wheels engine goods road work',
+ 'Ambulance':'wheels engine emergency road','Fire engine':'wheels engine emergency road','Police car':'wheels engine emergency road',
+ 'Train':'engine many public rails fast','Metro':'engine many public rails','Tram':'engine many public rails','Airplane':'fly engine many fast',
+ 'Helicopter':'fly engine','Rocket':'fly engine fast space','Ship':'t_water engine many goods','Speedboat':'t_water engine',
+ 'Sailboat':'t_water sport','Canoe':'t_water human self sport','Bicycle':'wheels human self two sport','Motorcycle':'wheels engine self two road',
+ 'Scooter':'wheels human self two','Tractor':'wheels engine work','Cable car':'engine','Race car':'wheels engine self fast sport road',
+ 'SUV':'wheels engine self road','Tuk-tuk':'wheels engine road','Wheelchair':'wheels human self','Parachute':'fly human sport',
+ 'Sled':'human sport self','Skateboard':'wheels human self sport','Van':'wheels engine road goods','Crane':'engine work',
+
+ 'Palestine':'country arab asia pal','Egypt':'country arab africa desert','Saudi Arabia':'country arab asia desert gulf p_big',
+ 'Jordan':'country arab asia desert','Morocco':'country arab africa','Algeria':'country arab africa desert p_big','Tunisia':'country arab africa',
+ 'Iraq':'country arab asia desert','Syria':'country arab asia','Lebanon':'country arab asia','Qatar':'country arab asia desert gulf',
+ 'UAE':'country arab asia desert gulf','Kuwait':'country arab asia desert gulf','Yemen':'country arab asia desert','Turkey':'country asia europe',
+ 'Japan':'country asia island','China':'country asia p_big','India':'country asia p_big','USA':'country america p_big english',
+ 'Brazil':'country america p_big south','France':'country europe','Spain':'country europe spanish','Italy':'country europe',
+ 'Germany':'country europe','UK':'country europe english island','Russia':'country europe asia p_big',
+ 'Australia':'country p_big english island south desert','Canada':'country america p_big english','Mexico':'country america spanish',
+ 'Argentina':'country america p_big spanish south','Jerusalem':'city arab asia pal holy capital','Gaza':'city arab asia pal coast',
+ 'Jaffa':'city arab asia pal coast','Haifa':'city arab asia pal coast','Nablus':'city arab asia pal','Hebron':'city arab asia pal holy',
+ 'Mecca':'city arab asia holy desert','Dubai':'city arab asia coast desert gulf','Cairo':'city arab africa capital',
+ 'Istanbul':'city europe asia coast','Paris':'city europe capital','London':'city europe capital english','New York':'city america coast english',
+ 'Tokyo':'city asia capital coast','Rome':'city europe capital'
+};
+const ALLC = 'mix foot animals home elec food jobs trans places';
+const QBANK = [
+ ['cat_animals','حيوان؟','An animal?',ALLC],['cat_foot','لاعب كرة؟','A football player?',ALLC],['cat_jobs','مهنة؟','A job?',ALLC],
+ ['cat_food','أكل أو شرب؟','Food or drink?',ALLC],['cat_home','غرض من البيت؟','A home item?',ALLC],['cat_elec','جهاز كهربائي؟','An electrical device?',ALLC],
+ ['cat_trans','وسيلة مواصلات؟','A vehicle?',ALLC],['cat_places','دولة أو مدينة؟','A country or city?',ALLC],
+ ['alive','كائن حي؟','A living thing?',ALLC],['person','إنسان؟','A person?',ALLC],
+ ['bird','طير؟','A bird?','animals'],['insect','حشرة؟','An insect?','animals'],['fly','بيطير؟','Can it fly?','animals trans'],
+ ['a_water','بعيش بالمي أو بيسبح كثير؟','Lives in or near water?','animals'],['sea','بعيش بالبحر؟','Lives in the sea?','animals'],
+ ['a_big','أكبر من الإنسان؟','Bigger than a person?','animals'],['a_small','أصغر من القطة؟','Smaller than a cat?','animals'],
+ ['meat','بياكل لحمة؟','Eats meat?','animals'],['plant','بياكل نباتات؟','Eats plants?','animals'],['pet','حيوان أليف؟','A pet?','animals'],
+ ['farm','بنربّيه بالمزرعة؟','Raised on farms?','animals'],['legs4','إله أربع رجلين؟','Has four legs?','animals'],
+ ['africa','بعيش بأفريقيا؟','Lives in Africa?','animals'],['dangerous','خطير على الإنسان؟','Dangerous to people?','animals'],
+ ['pattern','جلده مخطط أو منقّط؟','Striped or spotted?','animals'],['fur','جسمه مغطّى بفرو أو صوف؟','Covered in fur or wool?','animals'],
+ ['night','بيصحى بالليل؟','Active at night?','animals'],['ext','منقرض؟','Extinct?','animals'],
+ ['kitchen','بنلاقيه بالمطبخ؟','Found in the kitchen?','home elec'],['bath','بالحمام؟','In the bathroom?','home'],
+ ['bedroom','بغرفة النوم؟','In the bedroom?','home'],['furniture','أثاث؟','Furniture?','home'],['sit','بنقعد عليه؟','Do we sit on it?','home'],
+ ['wear','بنلبسه؟','Do we wear it?','home elec'],['tool','عدّة أو أداة شغل؟','A tool?','home'],['sharp','حاد وممكن يجرح؟','Sharp?','home'],
+ ['metal','مصنوع من حديد أو معدن؟','Made of metal?','home'],['cloth','مصنوع من قماش؟','Made of fabric?','home'],['glass','فيه زجاج؟','Has glass?','home'],
+ ['clean','للتنظيف أو الغسيل؟','For cleaning or washing?','home elec'],['h_big','أكبر من الكرسي؟','Bigger than a chair?','home'],
+ ['hand','بينمسك بإيد وحدة؟','Held in one hand?','home elec'],['kids','للأطفال؟','For kids?','home'],['paper','مصنوع من ورق؟','Made of paper?','home'],
+ ['eat','بنستعمله للأكل أو الشرب؟','Used for eating or drinking?','home'],['water','بنستعمل معه مي؟','Used with water?','home elec'],
+ ['open','بينفتح وبيتسكّر؟','Opens and closes?','home'],['outside','بناخده معنا برّا البيت؟','Taken outside the house?','home'],
+ ['wood','مصنوع من خشب؟','Made of wood?','home'],['fire','إله علاقة بالنار أو الضو؟','Related to fire or light?','home'],
+ ['office','بنستعمله بالمكتب أو المدرسة؟','Used at the office or school?','home elec'],['store','لشيل أو تخزين الأغراض؟','For carrying or storing things?','home'],
+ ['wall','بنعلّقه على الحيط؟','Hung on the wall?','home elec'],
+ ['screen','فيه شاشة؟','Has a screen?','elec'],['sound','بيطلع صوت؟','Makes sound?','elec'],['heat','بيسخّن؟','Heats things?','elec'],
+ ['cool','بيبرّد؟','Cools things?','elec'],['e_big','أكبر من المايكرويف؟','Bigger than a microwave?','elec'],['internet','بيتصل بالإنترنت؟','Connects to the internet?','elec'],
+ ['battery','بيشتغل على بطارية؟','Runs on a battery?','elec'],['personal','للشعر أو العناية بالشكل؟','For hair or grooming?','elec'],
+ ['photo','بيصوّر؟','Takes photos?','elec'],['play','للعب والتسلية؟','For games and fun?','elec'],['light','بيضوّي؟','Gives light?','elec'],
+ ['talk','بنحكي فيه؟','Do we talk into it?','elec'],['wind','بيطلع أو بيسحب هوا؟','Blows or sucks air?','elec'],['clothes','إله علاقة بالملابس؟','Related to clothes?','elec jobs'],
+ ['fruit','فاكهة؟','A fruit?','food'],['veg','خضرة؟','A vegetable?','food'],['sweet','حلو؟','Sweet?','food'],['sour','حامض؟','Sour?','food'],
+ ['dish','طبخة أو وجبة؟','A dish or meal?','food'],['arab','أكلة عربية أو فلسطينية؟','An Arab or Palestinian dish?','food'],['fast','أكل سريع؟','Fast food?','food'],
+ ['drink','مشروب؟','A drink?','food'],['hot','بينوكل سخن؟','Eaten hot?','food'],['cold','بينوكل بارد؟','Eaten cold?','food'],['red','لونه أحمر؟','Is it red?','food'],
+ ['green','لونه أخضر؟','Is it green?','food'],['yellow','لونه أصفر؟','Is it yellow?','food'],['tree','بيطلع على شجرة؟','Grows on a tree?','food'],
+ ['ground','بيطلع تحت الأرض؟','Grows underground?','food'],['animal','من الحيوان، زي الحليب والبيض؟','From an animal, like milk or eggs?','food'],
+ ['meatf','فيه لحمة أو جاج؟','Has meat or chicken?','food'],['bake','بينخبز بالفرن؟','Baked in the oven?','food'],['dough','فيه عجين أو خبز؟','Has dough or bread?','food'],
+ ['breakfast','بنوكله عالفطور؟','Eaten at breakfast?','food'],['f_big','أكبر من كف الإيد؟','Bigger than a palm?','food'],['snack','تسالي؟','A snack?','food'],
+ ['uniform','بيلبس زي رسمي؟','Wears a uniform?','jobs'],['hospital','بيشتغل بالمستشفى؟','Works in a hospital?','jobs'],['health','إله علاقة بالصحة؟','Health-related?','jobs'],
+ ['outdoors','بيشتغل برّا؟','Works outdoors?','jobs'],['tools','بيستعمل عدّة؟','Uses tools?','jobs'],['drive','بيسوق أو بيقود مركبة؟','Drives or pilots a vehicle?','jobs'],
+ ['kidsj','بيشتغل مع الأطفال؟','Works with kids?','jobs'],['art','فنّان؟','An artist?','jobs'],['officej','بيشتغل بمكتب؟','Works in an office?','jobs'],
+ ['foodj','إله علاقة بالأكل؟','Related to food?','jobs'],['law','إله علاقة بالقانون أو الأمن؟','Related to law or security?','jobs'],
+ ['j_air','شغله بالجو؟','Works in the air?','jobs'],['j_sea','شغله بالبحر؟','Works at sea?','jobs'],['animals','بيتعامل مع حيوانات؟','Works with animals?','jobs'],
+ ['build','بيبني أو بيصلّح أشياء؟','Builds or fixes things?','jobs'],['media','بيطلع على التلفزيون أو السوشال ميديا؟','Appears on TV or social media?','jobs'],
+ ['computer','بيشتغل على الكمبيوتر كثير؟','Works on a computer a lot?','jobs'],['study','بدها دراسة جامعية؟','Needs a university degree?','jobs'],
+ ['sport','إله علاقة بالرياضة؟','Related to sports?','jobs trans'],['religion','إله علاقة بالدين؟','Related to religion?','jobs'],
+ ['sell','بيبيع أشياء؟','Sells things?','jobs'],['science','بيشتغل بمختبر أو علوم؟','Works in a lab or science?','jobs'],['danger','شغله خطير؟','Is the job dangerous?','jobs'],
+ ['wheels','إله عجال؟','Has wheels?','trans'],['t_water','بيمشي على المي؟','Goes on water?','trans'],['engine','إله موتور؟','Has an engine?','trans'],
+ ['many','بيوسع أكثر من ١٠ ناس؟','Fits more than 10 people?','trans'],['emergency','للطوارئ؟','For emergencies?','trans'],
+ ['self','بتسوقه أو بتحرّكه إنت بنفسك؟','Do you drive or move it yourself?','trans'],['rails','بيمشي على سكة؟','Runs on rails?','trans'],
+ ['human','بيمشي بدون موتور؟','Moves without an engine?','trans'],['two','إله عجلين بس؟','Has only two wheels?','trans'],['goods','لنقل البضايع؟','For carrying goods?','trans'],
+ ['public','مواصلات عامة؟','Public transport?','trans'],['fastt','أسرع من السيارة بكثير؟','Much faster than a car?','trans'],['space','بيروح عالفضاء؟','Goes to space?','trans'],
+ ['work','للشغل أو البناء؟','For work or construction?','trans'],['road','بيمشي بالشارع؟','Drives on the road?','trans'],
+ ['country','دولة؟','A country?','places'],['city','مدينة؟','A city?','places'],['arabp','عربية؟','Arab?','places'],['asia','بآسيا؟','In Asia?','places'],
+ ['europe','بأوروبا؟','In Europe?','places'],['africap','بأفريقيا؟','In Africa?','places'],['america','بالأمريكيتين؟','In the Americas?','places'],
+ ['pal','بفلسطين؟','In Palestine?','places'],['holy','مكان مقدّس؟','A holy place?','places'],['capital','عاصمة؟','A capital?','places'],
+ ['coast','مدينة على البحر؟','A city by the sea?','places'],['p_big','دولة كبيرة كثير بالمساحة؟','A very large country?','places'],
+ ['desert','فيها صحرا كثير؟','Lots of desert?','places'],['gulf','خليجية؟','In the Gulf?','places'],['english','بيحكوا فيها إنجليزي؟','English-speaking?','places'],
+ ['spanish','بيحكوا فيها إسباني؟','Spanish-speaking?','places'],['island','جزيرة أو جزر؟','An island or islands?','places'],
+ ['south','بالنص الجنوبي من الكرة الأرضية؟','In the Southern Hemisphere?','places'],
+ ['gk','حارس مرمى؟','A goalkeeper?','foot'],['df','مدافع؟','A defender?','foot'],['mf','لاعب وسط؟','A midfielder?','foot'],['fw','مهاجم أو جناح؟','A forward or winger?','foot'],
+ ['c_eu','من أوروبا؟','From Europe?','foot'],['c_sa','من أمريكا الجنوبية؟','From South America?','foot'],['c_af','من أفريقيا؟','From Africa?','foot'],
+ ['c_as','من آسيا؟','From Asia?','foot'],['c_na','من أمريكا الشمالية؟','From North America?','foot'],['f_arab','لاعب عربي؟','An Arab player?','foot'],
+ ['n_BR','برازيلي؟','Brazilian?','foot'],['n_AR','أرجنتيني؟','Argentine?','foot'],['n_FR','فرنسي؟','French?','foot'],['n_ES','إسباني؟','Spanish?','foot'],
+ ['n_ENG','إنجليزي؟','English?','foot'],['n_PT','برتغالي؟','Portuguese?','foot'],['n_DE','ألماني؟','German?','foot'],['n_IT','إيطالي؟','Italian?','foot'],
+ ['n_NL','هولندي؟','Dutch?','foot'],['n_BE','بلجيكي؟','Belgian?','foot'],['n_UY','من الأوروغواي؟','Uruguayan?','foot'],['n_MA','مغربي؟','Moroccan?','foot'],
+ ['n_EG','مصري؟','Egyptian?','foot'],['n_SA','سعودي؟','Saudi?','foot'],
+ ['l_es','لعب بالدوري الإسباني؟','Played in Spain?','foot'],['l_en','لعب بالدوري الإنجليزي؟','Played in England?','foot'],['l_it','لعب بالدوري الإيطالي؟','Played in Italy?','foot'],
+ ['l_de','لعب بالدوري الألماني؟','Played in Germany?','foot'],['l_fr','لعب بالدوري الفرنسي؟','Played in France?','foot'],['l_pt','لعب بالبرتغال؟','Played in Portugal?','foot'],
+ ['l_nl','لعب بهولندا؟','Played in the Netherlands?','foot'],['l_tr','لعب بتركيا؟','Played in Turkey?','foot'],['l_sa','لعب بالدوري السعودي؟','Played in Saudi Arabia?','foot'],
+ ['l_arab','لعب بدوري عربي؟','Played in an Arab league?','foot'],['l_us','لعب بأمريكا؟','Played in the USA?','foot'],['l_sam','لعب بأمريكا الجنوبية؟','Played in South America?','foot'],
+ ['k_rm','لعب بريال مدريد؟','Played for Real Madrid?','foot'],['k_barca','لعب ببرشلونة؟','Played for Barcelona?','foot'],['k_atm','لعب بأتلتيكو مدريد؟','Played for Atlético?','foot'],
+ ['k_manu','لعب بمانشستر يونايتد؟','Played for Man United?','foot'],['k_mci','لعب بمانشستر سيتي؟','Played for Man City?','foot'],['k_liv','لعب بليفربول؟','Played for Liverpool?','foot'],
+ ['k_chelsea','لعب بتشيلسي؟','Played for Chelsea?','foot'],['k_arsenal','لعب بأرسنال؟','Played for Arsenal?','foot'],['k_tottenham','لعب بتوتنهام؟','Played for Tottenham?','foot'],
+ ['k_bayern','لعب ببايرن ميونخ؟','Played for Bayern?','foot'],['k_bvb','لعب بدورتموند؟','Played for Dortmund?','foot'],['k_juve','لعب بيوفنتوس؟','Played for Juventus?','foot'],
+ ['k_milan','لعب بميلان؟','Played for AC Milan?','foot'],['k_inter','لعب بالإنتر؟','Played for Inter?','foot'],['k_roma','لعب بروما؟','Played for Roma?','foot'],
+ ['k_napoli','لعب بنابولي؟','Played for Napoli?','foot'],['k_psg','لعب بباريس سان جيرمان؟','Played for PSG?','foot'],
+ ['k_many','لعب بأكثر من ٣ أندية مشهورة؟','Played for more than 3 big clubs?','foot'],['k_one','لعب بنادي واحد مشهور بس؟','Only one big club?','foot']
+];
+const CLUBL = {es:'barca rm atm sevilla valencia villarreal realsoc athletic mallorca girona leganes', en:'manu mci liv chelsea arsenal tottenham everton westham leicester southampton leeds villa brighton newcastle wba bolton birmingham palace',
+  de:'bayern bvb leverkusen schalke wolfsburg bremen hamburg hoffenheim leipzig frankfurt gladbach stuttgart hertha', it:'juve milan inter roma napoli lazio fiorentina parma atalanta cagliari palermo',
+  fr:'psg monaco lyon marseille lille bordeaux rennes lens montpellier', pt:'porto benfica sporting', nl:'ajax psv', tr:'galatasaray fenerbahce besiktas',
+  sa:'nassr hilal ittihad ahli', arab:'nassr hilal ittihad ahli ahly zamalek alsadd duhail gharafa alain jazira', us:'miami galaxy lafc cosmos',
+  sam:'santos flamengo fluminense saopaulo gremio palmeiras boca river racing'};
+const CONT = {eu:'PT FR NO HR PL BE ENG DE IT ES NL SE WLS HU SI SK DK BG RO BA UA CZ GE TR', sa:'AR BR UY CO', af:'EG DZ MA CI CM GN GA LR NG GH SN',
+  as:'KR JP IR SA AE QA IQ SY JO PS', na:'US CA'};
+const ARABN = 'EG DZ MA SA AE QA IQ SY JO PS';
+const QM = {}; QBANK.forEach(q => QM[q[0]] = {id:q[0], ar:q[1], en:q[2], cats:q[3].split(' ')});
+IT.forEach(x => {
+  const t = new Set(['cat_' + x.c]);
+  if (x.c === 'foot') {
+    const p = PL[x.pl], cl = p[5].split(' ');
+    t.add(p[3]); t.add('n_' + p[2]); t.add('alive'); t.add('person');
+    Object.entries(CONT).forEach(([k, v]) => { if (v.split(' ').includes(p[2])) t.add('c_' + k); });
+    if (ARABN.split(' ').includes(p[2])) t.add('f_arab');
+    Object.entries(CLUBL).forEach(([k, v]) => { const L = v.split(' '); if (cl.some(c => L.includes(c))) t.add('l_' + k); });
+    cl.forEach(c => t.add('k_' + c));
+    if (cl.length > 3) t.add('k_many'); if (cl.length === 1) t.add('k_one');
+  } else {
+    (TAGS[x.n[1]] || '').split(' ').filter(Boolean).forEach(g => t.add(
+      x.c === 'places' && g === 'arab' ? 'arabp' : x.c === 'places' && g === 'africa' ? 'africap' : x.c === 'jobs' && g === 'kids' ? 'kidsj'
+      : x.c === 'jobs' && g === 'office' ? 'officej' : x.c === 'trans' && g === 'fast' ? 'fastt' : g));
+    if (x.c === 'animals' || x.c === 'jobs' || x.n[1] === 'Plant') t.add('alive');
+    if (x.c === 'jobs') t.add('person');
+  }
+  x.t = t;
+});
+function fSmart(){
+  const pool = fPool(), H = (S.hist || []).filter(h => h.by === role && h.qid && QM[h.qid]);
+  const known = H.filter(h => h.a === 'y' || h.a === 'n'), asked = new Set(H.map(h => h.qid));
+  let min = Infinity, cands = [];
+  pool.forEach(i => {
+    let mis = 0; known.forEach(h => { if (IT[i].t.has(h.qid) !== (h.a === 'y')) mis++; });
+    if (mis < min) { min = mis; cands = [i]; } else if (mis === min) cands.push(i);
+  });
+  const cats = [...new Set(cands.map(i => IT[i].c))], n = cands.length;
+  const scored = QBANK.map(q => QM[q[0]]).filter(q => !asked.has(q.id) && cats.every(c => q.cats.includes(c)))
+    .map(q => { const y = cands.filter(i => IT[i].t.has(q.id)).length; return {q, s:Math.min(y, n - y)}; }).filter(o => o.s > 0);
+  let qs;
+  if (S.level === 'easy') qs = scored.sort((a, b) => b.s - a.s).slice(0, 6).map(o => o.q);
+  else {
+    let pick = scored.filter(o => o.s >= Math.max(1, n * .12)); if (pick.length < 4) pick = scored;
+    let a = ((S.round || 0) * 997 + H.length * 31 + (role === 'host' ? 7 : 13)) >>> 0;
+    const rnd = () => { a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+    pick = pick.map(o => [rnd(), o]).sort((x, y) => x[0] - y[0]).map(x => x[1]);
+    qs = pick.slice(0, S.level === 'expert' ? 4 : 6).map(o => o.q);
+  }
+  return {n, qs};
+}
+const XTAGS = {
+ horns:'Rhino Deer Cow Goat Sheep', milk:'Cow Sheep Goat Camel', climb:'Monkey Koala Sloth Squirrel Cat', jump:'Kangaroo Frog Rabbit',
+ bark:'Dog', a_talk:'Parrot', ride:'Horse Camel', neck:'Giraffe Flamingo', wool:'Sheep',
+ eggs:'Chicken Duck Owl Eagle Parrot Penguin Peacock Dove Flamingo Turtle Crocodile Snake Lizard Frog Dinosaur',
+ drinkh:'Cup Baby bottle', cut:'Knife Scissors Saw', teeth:'Toothbrush', hit:'Hammer', bathe:'Shower Bathtub', cover:'Blanket',
+ video:'Video camera Mobile phone Tablet', wake:'Alarm clock', bt:'Speaker Headphones Smartwatch', bread:'Toaster', coffeem:'Coffee machine',
+ small_fruit:'Cherries Grapes Strawberry Olives', orange_c:'Orange Mango Peach Carrot', spicy:'Chili', leaf:'Lettuce', smell:'Onion Garlic',
+ purple:'Eggplant Grapes', hen:'Eggs', salad:'Cucumber Tomato Lettuce Bell pepper Onion Carrot',
+ cars:'Mechanic', woodj:'Carpenter', elecj:'Electrician', waterj:'Plumber', money:'Accountant Bank clerk', singj:'Singer', actj:'Actor',
+ bigveh:'SUV Bus Truck Van', firev:'Fire engine', patients:'Ambulance', under:'Metro',
+ border:'Jordan Egypt Syria Lebanon', rivers:'Iraq Syria', snow:'Canada Russia', eiffel:'France Paris', boot:'Italy', gazastrip:'Gaza', oranges:'Jaffa',
+ billion:'China India', cheese:'France Italy', aus:'Kangaroo Koala', citrus:'Orange Lemon', tropical:'Mango Pineapple Coconut Banana', fuzzy:'Peach Kiwi',
+ pickle:'Cucumber Olives', atlantic:'Morocco USA Brazil Canada Mexico Argentina UK France Spain', wc_host:'Qatar Brazil Germany France Italy Spain USA Mexico Argentina Japan Russia UK Canada',
+ khalifa:'UAE Dubai', wall_c:'China'
+};
+QBANK.push(
+ ['horns','إله قرون؟','Has horns?','animals'],['milk','بنشرب حليبه؟','Do we drink its milk?','animals'],['climb','بيطلع على الشجر؟','Climbs trees?','animals'],
+ ['jump','بينطّ؟','Does it hop?','animals'],['bark','بينبح؟','Does it bark?','animals'],['a_talk','بيقلّد الكلام؟','Can it mimic speech?','animals'],
+ ['ride','بنركب عليه؟','Can we ride it?','animals'],['neck','رقبته طويلة؟','Has a long neck?','animals'],['wool','بناخد منه صوف؟','Gives us wool?','animals'],
+ ['eggs','بيبيض؟','Lays eggs?','animals'],
+ ['drinkh','بنشرب فيه؟','Do we drink from it?','home'],['cut','بنقطّع فيه؟','Used for cutting?','home'],['teeth','للأسنان؟','For teeth?','home'],
+ ['hit','بندق فيه؟','Used for hammering?','home'],['bathe','بنتحمّم فيه؟','Do we bathe in it?','home'],['cover','بنتغطّى فيه؟','Do we cover up with it?','home'],
+ ['video','بيصوّر فيديو؟','Records video?','elec'],['wake','بيصحّي من النوم؟','Wakes you up?','elec'],['bt','بيوصل بالجوال بلوتوث؟','Connects to a phone by Bluetooth?','elec'],
+ ['bread','بيحمّص خبز؟','Toasts bread?','elec'],['coffeem','بيعمل قهوة؟','Makes coffee?','elec'],
+ ['small_fruit','صغير وبينوكل حبّات؟','Small and eaten in pieces?','food'],['orange_c','لونه برتقالي؟','Is it orange?','food'],['spicy','حار؟','Spicy?','food'],
+ ['leaf','بينوكل ورقه؟','Do we eat its leaves?','food'],['smell','ريحته قوية؟','Strong smell?','food'],['purple','لونه بنفسجي؟','Is it purple?','food'],
+ ['hen','من الجاج؟','From chickens?','food'],['salad','بنحطّه بالسلطة؟','Goes in a salad?','food'],
+ ['cars','بيصلّح سيارات؟','Fixes cars?','jobs'],['woodj','بيشتغل بالخشب؟','Works with wood?','jobs'],['elecj','بيشتغل بالكهربا؟','Works with electricity?','jobs'],
+ ['waterj','بيصلّح مواسير المي؟','Fixes water pipes?','jobs'],['money','بيشتغل بالأرقام والفلوس؟','Works with numbers and money?','jobs'],
+ ['singj','بيغنّي؟','Sings?','jobs'],['actj','بيمثّل؟','Acts?','jobs'],
+ ['bigveh','أكبر من السيارة العادية؟','Bigger than a normal car?','trans'],['firev','بيطفّي نار؟','Puts out fires?','trans'],
+ ['patients','بينقل مرضى؟','Carries patients?','trans'],['under','بيمشي تحت الأرض؟','Runs underground?','trans'],
+ ['border','على حدود فلسطين؟','Borders Palestine?','places'],['rivers','بيمرّ فيها دجلة أو الفرات؟','Crossed by the Tigris or Euphrates?','places'],
+ ['snow','فيها برد وثلج كثير؟','Very cold and snowy?','places'],['eiffel','فيها برج إيفل؟','Has the Eiffel Tower?','places'],
+ ['boot','شكلها على الخريطة زي الجزمة؟','Shaped like a boot on the map?','places'],['gazastrip','بقطاع غزة؟','In the Gaza Strip?','places'],
+ ['oranges','مشهورة بالبرتقال؟','Famous for oranges?','places'],['billion','سكانها أكثر من مليار؟','More than a billion people?','places'],
+ ['cheese','مشهورة بالأجبان؟','Famous for cheese?','places'],
+ ['aus','بعيش بأستراليا؟','Lives in Australia?','animals'],['citrus','من الحمضيات؟','A citrus fruit?','food'],['tropical','فاكهة استوائية؟','A tropical fruit?','food'],
+ ['fuzzy','قشرته فيها زغب؟','Fuzzy skin?','food'],['pickle','بنعمل منه مخلل؟','Do we pickle it?','food'],['atlantic','على المحيط الأطلسي؟','On the Atlantic Ocean?','places'],
+ ['wc_host','استضافت كأس العالم؟','Hosted a World Cup?','places'],['khalifa','فيها برج خليفة؟','Has the Burj Khalifa?','places'],['wall_c','فيها سور عظيم؟','Has a great wall?','places']
+);
+QBANK.forEach(q => { if (!QM[q[0]]) QM[q[0]] = {id:q[0], ar:q[1], en:q[2], cats:q[3].split(' ')}; });
+const MULTI = ['Coffee machine','Electric kettle','Wall clock','Baby bottle','Video camera','Mobile phone','Alarm clock','Bell pepper','Bank clerk','Fire engine'];
+function XNAMES(str){ let s = ' ' + str + ' '; const out = []; MULTI.forEach(m => { if (s.includes(' ' + m + ' ')) { out.push(m); s = s.replace(' ' + m + ' ', ' '); } }); return out.concat(s.trim().split(/\s+/).filter(Boolean)); }
+const byEn = {}; IT.forEach(x => { if (x.c !== 'foot') byEn[x.c + '|' + x.n[1]] = x; });
+Object.entries(XTAGS).forEach(([tag, names]) => {
+  const cats = QM[tag].cats;
+  IT.forEach(x => { if (cats.includes(x.c) && x.c !== 'foot' && XNAMES(names).includes(x.n[1])) x.t.add(tag); });
+});
+Object.assign(STR.ar, {fQDone:'🎯 ما ضل أسئلة مقترحة، جرّب تخمّن!', fCardSays:'(حسب البطاقة: {a})', fSug:'💡 مقترح:'});
+Object.assign(STR.en, {fQDone:'🎯 No more suggestions — try guessing!', fCardSays:'(Card says: {a})', fSug:'💡 Try:'});
+
 function normName(s){
   return String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f\u064B-\u065F\u0670\u0640]/g, '')
     .replace(/[أإآٱ]/g, 'ا').replace(/ة/g, 'ه').replace(/ى/g, 'ي').replace(/[’'`\-.()]/g, ' ').replace(/\s+/g, ' ').trim();
@@ -1534,7 +1803,7 @@ function handleAction(who, m){
     case 'fq': {
       if (S.gt !== 'foot' || !myTurn || me.q <= 0) return;
       const q = String(m.q || '').replace(/\s+/g, ' ').trim().slice(0, 140); if (!q) return;
-      S.fq = {by:who, text:q}; broadcast(); break;
+      S.fq = {by:who, text:q, qid:(typeof m.qid === 'string' && QM[m.qid]) ? m.qid : null}; broadcast(); break;
     }
     case 'fans': {
       if (S.gt !== 'foot' || S.phase !== 'play' || S.turn === who || pendingVerify != null || pendingHint) return;
@@ -1542,7 +1811,7 @@ function handleAction(who, m){
       if (!v || S.p[asker].q <= 0) return;
       const q = S.fq && S.fq.by === asker ? S.fq.text : '';
       S.log = {n:(S.log ? S.log.n : 0) + 1, by:asker, q, a:v};
-      (S.hist || (S.hist = [])).push({by:asker, q, a:v}); if (S.hist.length > 80) S.hist.shift();
+      (S.hist || (S.hist = [])).push({by:asker, q, a:v, qid:(S.fq && S.fq.by === asker && S.fq.qid) || null}); if (S.hist.length > 80) S.hist.shift();
       S.fq = null; S.p[asker].q--; nextTurn(); broadcast(); break;
     }
     case 'left': me.left = Math.max(0, Math.min(N(), +m.n || 0)); broadcast(); break;
@@ -2088,7 +2357,7 @@ function renderFootGame(){
   else if (must) { b.textContent = t('fMust'); b.classList.add('alert'); }
   else if (mine) b.textContent = S.fq && S.fq.by === role ? t('fWaitAns', {name:op.name}) : t('fMine', {name:op.name});
   else if (op.q <= 0) b.textContent = t('fTheirsMust', {name:op.name});
-  else if (theirQ) { b.textContent = t('fTheirsQ', {name:op.name, q:theirQ}); b.classList.add('guess'); }
+  else if (theirQ) { b.textContent = t('fTheirsQ', {name:op.name, q:theirQ}) + (S.fq.qid && QM[S.fq.qid] && mySecret != null ? ' ' + t('fCardSays', {a:IT[mySecret].t.has(S.fq.qid) ? t('yes') : t('no')}) : ''); b.classList.add('guess'); }
   else b.textContent = t('fTheirs', {name:op.name});
 
   const showAns = play && !mine && op.q > 0;
@@ -2103,10 +2372,12 @@ function renderFootGame(){
   const C = CATS[S.cat] || CATS.mix; $('#fAskInp').placeholder = t('fAskPh', {q:C[4 + L2()]});
   const qb = $('#fQuick'); qb.hidden = $('#fAsk').hidden;
   if (!qb.hidden) {
-    const used = new Set((S.hist || []).filter(h => h.by === role).map(h => h.q));
-    const list = (QQ[S.cat] || QQ.mix).map(p => p[L2()]).filter(q => !used.has(q));
-    const key = S.cat + lang + list.join('|');
-    if (qb.dataset.key !== key) { qb.dataset.key = key; qb.innerHTML = list.map(q => `<button type="button" data-qq="${esc(q)}">${esc(q)}</button>`).join(''); qb.scrollLeft = 0; }
+    const list = fSmart().qs, k = L2() ? 'en' : 'ar';
+    const key = S.cat + S.level + lang + list.map(q => q.id).join('|');
+    if (qb.dataset.key !== key) { qb.dataset.key = key;
+      qb.innerHTML = list.length ? `<span class="qlab">${esc(t('fSug'))}</span>` + list.map(q => `<button type="button" data-qq="${esc(q[k])}" data-qid="${q.id}">${esc(q[k])}</button>`).join('')
+        : `<span class="qdone">${esc(t('fQDone'))}</span>`;
+      qb.scrollLeft = 0; }
   }
   const H = S.hist || [];
   $('#fHistT').textContent = t('fHist', {n:H.length});
@@ -2300,7 +2571,7 @@ function init(){
   renderAvs();
   $('#avs').addEventListener('click', e => { const b = e.target.closest('[data-av]'); if (!b) return; myAv = avOk(b.dataset.av); try { localStorage.setItem('lq-av', myAv); } catch(e){} sfx.pick(); renderAvs(); renderHomeStage(); });
   $('#name').addEventListener('input', renderHomeStage);
-  $('#fQuick').addEventListener('click', e => { const b = e.target.closest('[data-qq]'); if (b && S && isFoot()) act('fq', {q:b.dataset.qq}); });
+  $('#fQuick').addEventListener('click', e => { const b = e.target.closest('[data-qq]'); if (b && S && isFoot()) act('fq', {q:b.dataset.qq, qid:b.dataset.qid}); });
   setTimeout(() => FACES.forEach(src => { const im = new Image(); im.src = src; }), 1200);
   applyLang();
 }
