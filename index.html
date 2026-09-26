@@ -213,7 +213,33 @@ html[lang="en"] .stat b{font-family:'Baloo Bhaijaan 2',sans-serif;font-weight:80
 .voiceline{text-align:center;padding:6px 12px;font-weight:700;font-size:.86rem;background:#DFF5E6;color:var(--ink);border-bottom:3px solid var(--ink)}
 .voice-lobby{margin:-6px 0 8px}
 .voice-note{font-size:.88rem;color:#DCE3FF;margin:0 0 16px;line-height:1.5}
-@media (prefers-reduced-motion:reduce){.card .in,.btn,.toast,.track i{transition:none}.pill.pop,.cf,.emo-fly{animation:none}.cf{display:none}}
+.custom{margin-top:14px;background:rgba(0,0,0,.16);border-radius:14px;padding:12px}
+.sheet .custom{background:var(--paper);border:2.5px solid var(--ink)}
+.clabel{font-weight:800;font-size:.92rem;margin:0 0 6px}
+.clabel+.chips{margin-bottom:12px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips button{min-width:46px;padding:7px 10px;border-radius:10px;border:2.5px solid var(--ink);background:#fff;color:var(--ink);font-weight:800;font-size:.92rem}
+.chips button[aria-pressed="true"]{background:var(--sun);box-shadow:0 3px 0 var(--ink)}
+.chips button:disabled{cursor:default}
+.chips button:disabled:not([aria-pressed="true"]){opacity:.5}
+.cnote{font-size:.8rem;line-height:1.5;margin:2px 0 0;opacity:.8}
+.sheet .levels .lvl{box-shadow:0 3px 0 var(--ink)}
+.splash{position:fixed;inset:0;z-index:55;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(9,14,44,.6)}
+.splash[hidden]{display:none}
+.splash-card{width:100%;max-width:340px;background:#fff;color:var(--ink);border:4px solid var(--ink);border-radius:24px;box-shadow:0 10px 0 var(--ink);
+  overflow:hidden;text-align:center;animation:splashIn .45s cubic-bezier(.3,1.5,.5,1)}
+.splash-top{padding:8px 12px;font-weight:800;color:#fff;background:var(--ink)}
+.splash-q{font-weight:800;font-size:1.3rem;line-height:1.4;padding:14px 16px 0;margin:0}
+.splash-a{font-family:var(--display);font-size:4.6rem;line-height:1.15;padding:6px 0 0}
+html[lang="en"] .splash-a{font-family:'Baloo Bhaijaan 2',sans-serif;font-weight:800}
+.splash-note{font-weight:700;font-size:.9rem;padding:0 16px 16px;margin:0;color:#5A567A}
+.splash.y .splash-card{background:#E4F7EA} .splash.y .splash-a{color:var(--green)} .splash.y .splash-top{background:var(--green)}
+.splash.n .splash-card{background:#FDE7E6} .splash.n .splash-a{color:var(--red)} .splash.n .splash-top{background:var(--red)}
+@keyframes splashIn{0%{transform:scale(.4) rotate(-6deg);opacity:0}100%{transform:none;opacity:1}}
+.log.y{background:#E4F7EA} .log.n{background:#FDE7E6}
+.log.flash{animation:logflash .9s ease-out}
+@keyframes logflash{0%{transform:scaleY(1.35);filter:brightness(1.15)}100%{transform:none}}
+@media (prefers-reduced-motion:reduce){.card .in,.btn,.toast,.track i{transition:none}.pill.pop,.cf,.emo-fly,.splash-card,.log.flash{animation:none}.cf{display:none}}
 </style>
 </head>
 <body>
@@ -263,6 +289,11 @@ html[lang="en"] .stat b{font-family:'Baloo Bhaijaan 2',sans-serif;font-weight:80
     <p class="voice-note" id="voiceLobbyNote" hidden></p>
     <p style="font-weight:800;margin-bottom:8px" data-i18n="level"></p>
     <div class="levels" id="lobbyLevels"></div>
+    <div class="custom">
+      <p class="clabel" data-i18n="qCount"></p><div class="chips" id="lobbyQ"></div>
+      <p class="clabel" data-i18n="turnTime"></p><div class="chips" id="lobbyT"></div>
+      <p class="cnote" data-i18n="customNote"></p>
+    </div>
     <button class="btn" id="startBtn" style="margin-top:18px" disabled data-i18n="start"></button>
     <p class="center" style="margin-top:12px"><button class="link" data-home data-i18n="backHome"></button></p>
   </div>
@@ -331,6 +362,12 @@ html[lang="en"] .stat b{font-family:'Baloo Bhaijaan 2',sans-serif;font-weight:80
 <div class="modal" id="botM"><div class="sheet">
   <h2 class="h2" data-i18n="chooseLevel"></h2>
   <div class="levels" id="botLevels"></div>
+  <div class="custom">
+      <p class="clabel" data-i18n="qCount"></p><div class="chips" id="botQ"></div>
+      <p class="clabel" data-i18n="turnTime"></p><div class="chips" id="botT"></div>
+      <p class="cnote" data-i18n="customNote"></p>
+    </div>
+  <button class="btn" id="botStartBtn" data-i18n="start"></button>
   <button class="btn white" data-close data-i18n="cancel"></button>
 </div></div>
 
@@ -354,11 +391,11 @@ html[lang="en"] .stat b{font-family:'Baloo Bhaijaan 2',sans-serif;font-weight:80
   <button class="btn white" data-close data-i18n="cancel"></button>
 </div></div>
 
-<div class="modal" id="ansM"><div class="sheet center">
-  <p id="ansQ" style="font-weight:700;margin-bottom:0"></p>
-  <div class="big-ans" id="ansA"></div>
-  <p id="ansNote"></p>
-  <button class="btn" data-close data-i18n="ok"></button>
+<div class="splash" id="splash" hidden><div class="splash-card">
+  <div class="splash-top" id="splashWho"></div>
+  <p class="splash-q" id="splashQ"></p>
+  <div class="splash-a" id="splashA"></div>
+  <p class="splash-note" id="splashNote"></p>
 </div></div>
 
 <div class="modal" id="overM"><div class="sheet center">
@@ -408,6 +445,8 @@ ar: {
   orJoin:'أو ادخل غرفة صاحبك', code:'الكود', join:'ادخل', howTo:'كيف بنلعب؟', install:'📲 ثبّت اللعبة',
   iosInstall:'بـ Safari اضغط زر المشاركة ⬆️ تحت، بعدين «إضافة إلى الشاشة الرئيسية». هيك بتصير اللعبة أيقونة على جوالك.',
   room:'الغرفة', shareLink:'ابعت الرابط', copyCode:'انسخ الكود', level:'المستوى',
+  qCount:'عدد الأسئلة لكل لاعب', turnTime:'وقت كل دور', secShort:'{s}ث', offShort:'بدون', customNote:'المستوى بيحدد عدد الشخصيات، والأسئلة والوقت بتغيّرهم على كيفك.',
+  splashMe:'سألت 🙋', splashOpp:'{name} سأل 🤔', splashNoteOpp:'الجواب انبعت لـ{name} تلقائياً',
   lvl_easy:'سهل', lvl_normal:'عادي', lvl_expert:'خبير', lvlInfo:'{n} شخصية • {q} أسئلة • {time}', noTimer:'بدون وقت', secs:'{s} ثانية',
   start:'ابدأ اللعب', backHome:'رجوع للرئيسية', preparing:'جاري تجهيز الغرفة…', connecting:'جاري الاتصال بالغرفة…',
   waitFriend:'مستنيين صاحبك يدخل… ابعتله الرابط أو الكود.', friendIn:'✓ <b>{name}</b> دخل الغرفة. اختار المستوى وابدأ.',
@@ -461,6 +500,8 @@ en: {
   orJoin:"or join a friend's room", code:'Code', join:'Join', howTo:'How to play', install:'📲 Install',
   iosInstall:'In Safari, tap the Share button ⬆️, then "Add to Home Screen". The game will get its own icon.',
   room:'Room', shareLink:'Send link', copyCode:'Copy code', level:'Level',
+  qCount:'Questions per player', turnTime:'Time per turn', secShort:'{s}s', offShort:'Off', customNote:'The level sets how many characters; set questions and time however you like.',
+  splashMe:'You asked 🙋', splashOpp:'{name} asked 🤔', splashNoteOpp:'The answer was sent to {name} automatically',
   lvl_easy:'Easy', lvl_normal:'Normal', lvl_expert:'Expert', lvlInfo:'{n} characters • {q} questions • {time}', noTimer:'no timer', secs:'{s}s',
   start:'Start', backHome:'Back to home', preparing:'Setting up the room…', connecting:'Connecting to the room…',
   waitFriend:'Waiting for your friend… send them the link or code.', friendIn:'✓ <b>{name}</b> joined. Pick a level and start.',
@@ -541,6 +582,8 @@ const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const QMAP = Object.fromEntries(QS.map(q => [q.id, q]));
 const LEVELS = { easy:{n:24, q:12, t:0}, normal:{n:36, q:8, t:45}, expert:{n:48, q:6, t:30} };
+const Q_CHOICES = [4,6,8,10,12,15,20], T_CHOICES = [0,15,20,30,45,60,90];
+let botSetup = {level:'normal', ...LEVELS.normal};
 
 /* ---------- language ---------- */
 let lang = 'ar';
@@ -579,6 +622,16 @@ const sfx = {
 document.addEventListener('pointerdown', () => { if (SND.on) audio(); }, {once:true});
 
 /* ---------- ui helpers ---------- */
+let splashT;
+function showSplash(top, q, ans, note, ms){
+  const sp = $('#splash');
+  $('#splashWho').textContent = top; $('#splashQ').textContent = q;
+  $('#splashA').textContent = ans ? '✅ ' + t('yes') : '❌ ' + t('no');
+  $('#splashNote').textContent = note || ''; $('#splashNote').hidden = !note;
+  sp.className = 'splash ' + (ans ? 'y' : 'n'); sp.hidden = false;
+  const card = sp.firstElementChild; card.style.animation = 'none'; void card.offsetWidth; card.style.animation = '';
+  clearTimeout(splashT); splashT = setTimeout(() => sp.hidden = true, ms || 2600);
+}
 let toastT;
 function toast(m){ const el = $('#toast'); el.textContent = m; el.classList.add('on'); clearTimeout(toastT); toastT = setTimeout(() => el.classList.remove('on'), 2400); }
 const openM = id => $('#'+id).classList.add('on');
@@ -883,11 +936,12 @@ function botMove(){
   if (ans && botCands.size <= 3 && Math.random() < .6) botEmo('😏', 900);
   handleAction('guest', {a:'ask', qid:q.id});
 }
-function startBot(level){
+function startBot(){
   myName = $('#name').value.trim() || t('you');
   try { if ($('#name').value.trim()) localStorage.setItem('laqeetak-name', myName); } catch(e){}
   mode = 'bot'; role = 'host'; leaving = false; botBusy = false; botPicking = false;
-  S = freshState(level); S.p.guest.name = t('computer');
+  S = freshState(botSetup.level); S.p.guest.name = t('computer');
+  S.settings.q = botSetup.q; S.settings.t = botSetup.t;
   closeM('botM'); startPick(); broadcast();
 }
 
@@ -995,7 +1049,7 @@ function goHome(){
   seenOver = 0; seenLog = 0; seenHint = 0; seenEv = 0; overNote = '';
   resetLocal();
   document.querySelectorAll('.modal').forEach(m => m.classList.remove('on'));
-  $('#emoBar').hidden = true;
+  $('#emoBar').hidden = true; $('#splash').hidden = true;
   stopVoice(); renderVoice();
   releaseWake();
   history.replaceState(null, '', location.pathname);
@@ -1016,9 +1070,20 @@ function levelButtons(el, current, clickable){
       <span>${t('lvl_' + k)}</span><small>${t('lvlInfo', {n:L.n, q:L.q, time})}</small></button>`;
   }).join('');
 }
+function chips(el, opts, cur, key, enabled){
+  el.innerHTML = opts.map(v => {
+    const label = key === 't' ? (v ? t('secShort', {s:v}) : t('offShort')) : v;
+    return `<button type="button" data-k="${key}" data-v="${v}" aria-pressed="${v === cur}" ${enabled ? '' : 'disabled'}>${label}</button>`;
+  }).join('');
+}
 function renderLevels(){
-  levelButtons($('#botLevels'), null, true);
-  levelButtons($('#lobbyLevels'), S ? S.level : 'normal', role === 'host' && !!S);
+  levelButtons($('#botLevels'), botSetup.level, true);
+  chips($('#botQ'), Q_CHOICES, botSetup.q, 'q', true);
+  chips($('#botT'), T_CHOICES, botSetup.t, 't', true);
+  const host = role === 'host' && !!S && S.phase === 'lobby', st = S ? S.settings : LEVELS.normal;
+  levelButtons($('#lobbyLevels'), S ? S.level : 'normal', host);
+  chips($('#lobbyQ'), Q_CHOICES, st.q, 'q', host);
+  chips($('#lobbyT'), T_CHOICES, st.t, 't', host);
 }
 function render(){
   if (!S) { if (role) { show('lobby'); renderLobby(); } return; }
@@ -1092,15 +1157,17 @@ function renderGame(){
     lg.innerHTML = L.by === role ? t('youAsked', {q:esc(qtext(L.qid)), a, c})
       : bot ? t('botAsked', {q:esc(qtext(L.qid)), a, c}) : t('oppAsked', {name:esc(op.name), q:esc(qtext(L.qid)), a, c});
     lg.hidden = false;
+    lg.classList.toggle('y', !!L.ans); lg.classList.toggle('n', !L.ans);
     if (L.n !== seenLog) {
       seenLog = L.n;
-      if (L.by === role) {
-        myAsked.set(L.qid, L.ans);
-        $('#ansQ').textContent = qtext(L.qid);
-        $('#ansA').textContent = a; $('#ansA').className = 'big-ans ' + c;
-        $('#ansNote').textContent = t('ansNote');
-        openM('ansM'); (L.ans ? sfx.yes : sfx.no)();
-      } else sfx.ask();
+      const mineQ = L.by === role;
+      if (mineQ) myAsked.set(L.qid, L.ans);
+      showSplash(mineQ ? t('splashMe') : t('splashOpp', {name:op.name}), qtext(L.qid), L.ans,
+        mineQ ? t('ansNote') : (bot ? '' : t('splashNoteOpp', {name:op.name})), mineQ ? 2800 : 2300);
+      if (!mineQ) sfx.ask();
+      setTimeout(() => (L.ans ? sfx.yes : sfx.no)(), mineQ ? 0 : 180);
+      buzz(L.ans ? [30,40,30] : 140);
+      lg.classList.remove('flash'); void lg.offsetWidth; lg.classList.add('flash');
     }
   } else lg.hidden = true;
 
@@ -1239,9 +1306,20 @@ function init(){
   $('#copyCodeBtn').onclick = async () => { await copy(roomCode); toast(t('codeCopied')); };
   document.addEventListener('click', e => {
     const lv = e.target.closest('.lvl'); if (!lv || lv.disabled) return;
-    if (lv.closest('#botLevels')) startBot(lv.dataset.lvl);
+    if (lv.closest('#botLevels')) { botSetup = {level:lv.dataset.lvl, ...LEVELS[lv.dataset.lvl]}; renderLevels(); }
     else if (role === 'host' && S && S.phase === 'lobby') { setLevel(lv.dataset.lvl); broadcast(); }
   });
+  document.addEventListener('click', e => {
+    const b = e.target.closest('.chips button'); if (!b || b.disabled) return;
+    const v = +b.dataset.v, k = b.dataset.k;
+    if (b.closest('#botQ, #botT')) { botSetup[k] = v; renderLevels(); return; }
+    if (role === 'host' && S && S.phase === 'lobby') {
+      S.settings[k] = v;
+      if (k === 'q') { S.p.host.q = v; S.p.guest.q = v; }
+      broadcast();
+    }
+  });
+  $('#botStartBtn').onclick = () => startBot();
   $('#startBtn').onclick = () => { if (role === 'host' && S) { startPick(); broadcast(); } };
 
   $('#randBtn').onclick = () => {
@@ -1269,6 +1347,7 @@ function init(){
   $('#viewBoardBtn').onclick = () => { overHidden = true; closeM('overM'); };
   $('#turnPill').onclick = () => { if (S && S.phase === 'over') { overHidden = false; render(); } };
   $('#retryBtn').onclick = retry;
+  $('#splash').onclick = () => { clearTimeout(splashT); $('#splash').hidden = true; };
   $('#statsBtn').onclick = openStats;
   $('#statsReset').onclick = () => { if (confirm(t('statsResetQ'))) { try { localStorage.removeItem('lq-stats'); } catch(e){} openStats(); } };
   $('#emoBar').innerHTML = EMOS.map(e => `<button type="button" data-emo="${e}" aria-label="${e}">${e}</button>`).join('');
