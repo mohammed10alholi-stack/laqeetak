@@ -410,10 +410,56 @@ html[dir="ltr"] .side.me{animation-name:sideL} html[dir="ltr"] .side.op{animatio
 @media (prefers-reduced-motion:reduce){.side.me,.side.op,.vs svg{animation:none}}
 .qchips .qlab{flex:0 0 auto;align-self:center;font-weight:800;font-size:.8rem;color:var(--sun)}
 .qchips .qdone{font-weight:800;font-size:.9rem;color:var(--sun);padding:4px 2px}
+
+/* ===== motion pack ===== */
+.screen{position:relative;z-index:1}
+.screen.enter{animation:scrIn .42s cubic-bezier(.2,.9,.3,1.12) backwards}
+@keyframes scrIn{0%{opacity:0;transform:translateY(22px) scale(.985)}100%{opacity:1;transform:none}}
+.spots{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;opacity:0;transition:opacity .8s}
+body[data-scr="home"] .spots,body[data-scr="lobby"] .spots{opacity:1}
+.spots i{position:absolute;width:115vmax;height:115vmax;border-radius:50%;will-change:transform;animation:drift 16s ease-in-out infinite alternate;animation-play-state:paused}
+body[data-scr="home"] .spots i,body[data-scr="lobby"] .spots i{animation-play-state:running}
+.spots i:first-child{top:-70vmax;right:-55vmax;background:radial-gradient(closest-side,rgba(232,50,46,.42),rgba(232,50,46,0))}
+.spots i:last-child{bottom:-75vmax;left:-55vmax;background:radial-gradient(closest-side,rgba(35,88,224,.5),rgba(35,88,224,0));animation-duration:19s;animation-direction:alternate-reverse}
+@keyframes drift{0%{transform:translate(0,0)}100%{transform:translate(-14vmax,16vmax)}}
+.logo{will-change:transform;animation:logoBob 4.2s ease-in-out infinite}
+@keyframes logoBob{0%,100%{transform:rotate(-3deg) translateY(0)}50%{transform:rotate(-1.5deg) translateY(-6px) scale(1.02)}}
+#createBtn{position:relative;overflow:hidden}
+#createBtn::after{content:"";position:absolute;top:-20%;bottom:-20%;left:0;width:38%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.65),transparent);transform:translateX(-160%) skewX(-18deg);animation:shine 3.6s ease-in-out 1.2s infinite;pointer-events:none}
+@keyframes shine{0%{transform:translateX(-160%) skewX(-18deg)}35%,100%{transform:translateX(420%) skewX(-18deg)}}
+.vs svg{animation:zap2 2.6s ease-in-out infinite;filter:drop-shadow(0 4px 0 var(--ink))}
+.vs::before{content:"";position:absolute;width:120px;height:120px;border-radius:50%;background:radial-gradient(closest-side,rgba(255,210,63,.75),rgba(255,210,63,0));opacity:0;animation:zapGlow 2.6s ease-in-out infinite}
+@keyframes zap2{0%,84%,100%{transform:scale(1)}90%{transform:scale(1.13) rotate(-5deg)}95%{transform:scale(.97)}}
+@keyframes zapGlow{0%,84%,100%{opacity:0;transform:scale(.6)}90%{opacity:1;transform:scale(1.1)}}
+.track i{transform-origin:100% 50%;transition:transform .2s linear,background-color .3s;will-change:transform}
+html[dir="ltr"] .track i{transform-origin:0 50%}
+.timer.low #timerNum{animation:tPulse .5s ease-in-out infinite alternate;display:inline-block;color:#FF8A80}
+@keyframes tPulse{to{transform:scale(1.22)}}
+.grid .card{transition:transform .14s}
+.grid .card:active{transform:scale(.93)}
+.grid.dealing .card{animation:cardIn .55s cubic-bezier(.25,1.45,.5,1) backwards;animation-delay:calc(var(--d,0ms) + var(--i,0) * 20ms)}
+@keyframes cardIn{0%{opacity:0;transform:translateY(-46px) rotate(-10deg) scale(.45)}100%{opacity:1;transform:none}}
+.card .back{transition:filter .3s}
+.bump{display:inline-block;animation:bump .38s cubic-bezier(.3,1.8,.5,1)}
+@keyframes bump{0%{transform:scale(1)}40%{transform:scale(1.45)}100%{transform:scale(1)}}
+.modal.on{animation:mFade .22s ease-out}
+.modal.on .sheet{animation:sheetIn .36s cubic-bezier(.2,1.35,.4,1)}
+@keyframes mFade{from{background-color:rgba(9,14,44,0)}}
+@keyframes sheetIn{0%{opacity:0;transform:translateY(40px) scale(.94)}100%{opacity:1;transform:none}}
+.sweep{position:fixed;left:0;right:0;top:38%;z-index:56;pointer-events:none;display:flex;align-items:center;justify-content:center;height:84px;
+  background:linear-gradient(90deg,var(--blue) 0 6%,var(--red) 6% 94%,var(--blue) 94%);border-top:4px solid var(--ink);border-bottom:4px solid var(--ink);
+  transform:skewY(-4deg);animation:sweepIn 1.15s cubic-bezier(.6,0,.3,1) forwards}
+.sweep b{font-family:var(--display);font-weight:400;font-size:2.7rem;color:#fff;text-shadow:3px 3px 0 var(--ink),-2px 2px 0 var(--ink);animation:sweepTxt 1.15s cubic-bezier(.6,0,.3,1) forwards}
+html[lang="en"] .sweep b{font-family:'Baloo Bhaijaan 2',sans-serif;font-weight:800}
+@keyframes sweepIn{0%{clip-path:inset(0 100% 0 0)}22%,74%{clip-path:inset(0 0 0 0)}100%{clip-path:inset(0 0 0 100%)}}
+@keyframes sweepTxt{0%{transform:translateX(120px);opacity:0}25%{transform:translateX(0);opacity:1}72%{transform:translateX(-10px);opacity:1}100%{transform:translateX(-140px);opacity:0}}
+.fx{position:fixed;inset:0;width:100%;height:100%;z-index:70;pointer-events:none}
+@media (prefers-reduced-motion:reduce){.screen.enter,.spots i,.logo,#createBtn::after,.vs svg,.vs::before,.grid.dealing .card,.bump,.modal.on,.modal.on .sheet,.timer.low #timerNum{animation:none}.sweep{display:none}}
 @media (prefers-reduced-motion:reduce){.card .in,.btn,.toast,.track i{transition:none}.pill.pop,.cf,.emo-fly,.splash-card,.log.flash{animation:none}.cf{display:none}}
 </style>
 </head>
 <body>
+<div class="spots" aria-hidden="true"><i></i><i></i></div>
 <!-- HOME -->
 <section class="screen on" id="home">
   <div class="wrap">
@@ -1559,21 +1605,65 @@ let toastT;
 function toast(m){ const el = $('#toast'); el.textContent = m; el.classList.add('on'); clearTimeout(toastT); toastT = setTimeout(() => el.classList.remove('on'), 2400); }
 const openM = id => $('#'+id).classList.add('on');
 const closeM = id => $('#'+id).classList.remove('on');
-function show(id){ document.querySelectorAll('.screen').forEach(s => s.classList.toggle('on', s.id === id)); }
+const RM = matchMedia('(prefers-reduced-motion: reduce)');
+let curScr = 'home';
+function show(id){
+  if (id === curScr) return;
+  const prev = curScr; curScr = id;
+  document.querySelectorAll('.screen').forEach(s => { const on = s.id === id; s.classList.toggle('on', on); if (!on) s.classList.remove('enter'); });
+  document.body.dataset.scr = id;
+  const el = document.getElementById(id);
+  if (!RM.matches) { el.classList.remove('enter'); void el.offsetWidth; el.classList.add('enter'); setTimeout(() => el.classList.remove('enter'), 500); }
+  try { window.scrollTo(0, 0); } catch(e){}
+  if (id === 'pick') dealGrid($('#pickGrid'), 0);
+  if (id === 'game' && prev === 'pick') dealGrid($('#gameGrid'), 2000);
+}
+function dealGrid(g, base){
+  if (RM.matches || !g) return;
+  g.classList.remove('dealing'); let i = 0;
+  g.querySelectorAll('.card').forEach(c => { if (!c.classList.contains('off')) c.style.setProperty('--i', i++); });
+  g.style.setProperty('--d', base + 'ms'); void g.offsetWidth; g.classList.add('dealing');
+  clearTimeout(g._dt); g._dt = setTimeout(() => g.classList.remove('dealing'), base + i * 20 + 700);
+}
+function bump(el){ if (!el || RM.matches) return; el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump'); }
+function sweep(text, tries = 0){
+  if (RM.matches) { toast(text); return; }
+  if (!$('#splash').hidden && tries < 12) { setTimeout(() => sweep(text, tries + 1), 250); return; }
+  document.querySelectorAll('.sweep').forEach(x => x.remove());
+  const d = document.createElement('div'); d.className = 'sweep'; d.innerHTML = '<b></b>'; d.firstChild.textContent = text;
+  document.body.appendChild(d); setTimeout(() => d.remove(), 1250);
+}
 function buzz(p){ try { navigator.vibrate && navigator.vibrate(p); } catch(e){} }
 async function copy(text){
   try { await navigator.clipboard.writeText(text); }
   catch(e){ const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); } catch(_){} ta.remove(); }
 }
 function confetti(){
-  const cols = ['#FFC83A','#E23D3A','#3E9D5B','#3B6FD6','#fff'];
-  for (let i = 0; i < 90; i++) {
-    const d = document.createElement('div'); d.className = 'cf';
-    d.style.left = Math.random()*100 + 'vw'; d.style.background = cols[i % cols.length];
-    d.style.animationDuration = (1.8 + Math.random()*1.6) + 's'; d.style.animationDelay = (Math.random()*.5) + 's';
-    d.style.transform = `rotate(${Math.random()*360}deg)`;
-    document.body.appendChild(d); setTimeout(() => d.remove(), 4200);
+  if (RM.matches) return;
+  const cv = document.createElement('canvas'); cv.className = 'fx'; document.body.appendChild(cv);
+  const dpr = Math.min(2, devicePixelRatio || 1), W = innerWidth, H = innerHeight;
+  cv.width = W * dpr; cv.height = H * dpr; const c = cv.getContext('2d'); c.scale(dpr, dpr);
+  const cols = ['#FFD23F','#E8322E','#2358E0','#2E9E57','#FFFFFF','#FF8A3D'], P = [];
+  for (let k = 0; k < 170; k++) {
+    const left = k % 2 === 0, a = (left ? -62 : -118) + (Math.random() - .5) * 38, sp = 9 + Math.random() * 9;
+    P.push({x: left ? -6 : W + 6, y: H * .78, vx: Math.cos(a * Math.PI / 180) * sp, vy: Math.sin(a * Math.PI / 180) * sp,
+      r: Math.random() * 6.28, vr: (Math.random() - .5) * .35, w: 6 + Math.random() * 6, h: 8 + Math.random() * 8,
+      col: cols[k % cols.length], sh: Math.random() < .25 ? 1 : 0, wob: Math.random() * 6.28, life: 0});
   }
+  const t0 = performance.now(); let last = t0;
+  (function step(now){
+    const dt = Math.min(2.2, (now - last) / 16.7); last = now; c.clearRect(0, 0, W, H);
+    const fade = Math.max(0, Math.min(1, (3400 - (now - t0)) / 700));
+    for (const p of P) {
+      p.vy += .32 * dt; p.vx *= Math.pow(.985, dt); p.vy *= Math.pow(.99, dt); p.wob += .12 * dt;
+      p.x += (p.vx + Math.sin(p.wob) * .6) * dt; p.y += p.vy * dt; p.r += p.vr * dt;
+      if (p.y > H + 20) continue;
+      c.save(); c.globalAlpha = fade; c.translate(p.x, p.y); c.rotate(p.r); c.scale(1, Math.cos(p.wob)); c.fillStyle = p.col;
+      if (p.sh) { c.beginPath(); c.arc(0, 0, p.w * .45, 0, 6.28); c.fill(); } else c.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+      c.restore();
+    }
+    if (now - t0 < 3400) requestAnimationFrame(step); else cv.remove();
+  })(t0);
 }
 function faceImg(id){ return `<img src="${FACES[id]}" alt="" decoding="async" draggable="false">`; }
 function makeCard(id){
@@ -2132,9 +2222,12 @@ function renderPick(){
   $('#pickWait').textContent = t('waitPick', {name:oppName()});
 }
 
+let lastSc = '';
 function renderScore(){
   const sc = S.score || {host:0, guest:0}, me = S.p[role], op = S.p[other(role)];
+  const key = [sc[role] || 0, sc[other(role)] || 0, me.av, op.av, op.name, lang, S.target].join('|'); if (key === lastSc) return; const grew = lastSc && lastSc.split('|').slice(0,2).join() !== key.split('|').slice(0,2).join(); lastSc = key;
   $('#scoreLine').innerHTML = `<span class="sc me">${esc(me.av || '')} <span class="nmx">${esc(t('you'))}</span> <b>${sc[role] || 0}</b></span><i>VS</i><span class="sc op"><b>${sc[other(role)] || 0}</b> <span class="nmx">${esc(op.name || t('guest'))}</span> ${esc(op.av || '')}</span><span class="to">${esc(t('firstTo', {n:S.target || 3}))}</span>`;
+  if (grew) $('#scoreLine').querySelectorAll('.sc b').forEach(bump);
 }
 function renderGame(){
   renderScore();
@@ -2145,7 +2238,7 @@ function renderGame(){
   const mine = play && S.turn === role;
   const me = S.p[role], op = S.p[other(role)];
   if (play && S.turn !== lastTurn) {
-    if (mine) { sfx.turn(); buzz(lastTurn === null ? 60 : [60,40,60]); if (lastTurn !== null) toast(t('yourTurnToast')); }
+    if (mine) { sfx.turn(); buzz(lastTurn === null ? 60 : [60,40,60]); if (lastTurn !== null) sweep(t('yourTurnToast')); }
     lastTurn = S.turn; const pl = $('#turnPill'); pl.classList.remove('pop'); void pl.offsetWidth; pl.classList.add('pop');
   }
   if (!mine) guessMode = false;
@@ -2160,7 +2253,7 @@ function renderGame(){
   $('#myQ').textContent = `${me.q}/${S.settings.q}`;
   $('#oppQ').textContent = `${op.q}/${S.settings.q}`;
   $('#myLeft').textContent = N() - down.size;
-  $('#oppLeft').textContent = op.left;
+  { const ol = $('#oppLeft'); if (ol.textContent !== String(op.left)) { const was = ol.textContent; ol.textContent = op.left; if (was !== '' && was !== '0') bump(ol); } }
   $('#timer').hidden = !play || !S.settings.t;
 
   // question log (vs computer)
@@ -2328,7 +2421,7 @@ function renderFootGame(){
   const play = S.phase === 'play', mine = play && S.turn === role;
   const me = S.p[role], op = S.p[other(role)];
   if (play && S.turn !== lastTurn) {
-    if (mine) { sfx.turn(); buzz(lastTurn === null ? 60 : [60,40,60]); if (lastTurn !== null) toast(t('yourTurnToast')); }
+    if (mine) { sfx.turn(); buzz(lastTurn === null ? 60 : [60,40,60]); if (lastTurn !== null) sweep(t('yourTurnToast')); }
     lastTurn = S.turn; const pl = $('#turnPill'); pl.classList.remove('pop'); void pl.offsetWidth; pl.classList.add('pop');
   }
   guessMode = false;
@@ -2454,7 +2547,9 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.se
 window.addEventListener('load', () => setTimeout(() => loadPeer().catch(() => {}), 2500));
 
 /* ---------- init ---------- */
+let leftT = null, tW = -1, tN = -1, tLow = null;
 function init(){
+  document.body.dataset.scr = 'home';
   const hero = $('#hero');
   [0, 9, 17].forEach((id, i) => { const el = makeCard(id); el.tabIndex = -1; if (i === 2) el.classList.add('down'); hero.appendChild(el); });
   for (let id = 0; id < DECK.length; id++) { $('#pickGrid').appendChild(makeCard(id)); $('#gameGrid').appendChild(makeCard(id)); }
@@ -2469,8 +2564,10 @@ function init(){
       openM('confirmM'); return;
     }
     if (down.has(id)) down.delete(id); else down.add(id);
-    sfx.flip(); renderGame();
-    if (S.phase === 'play') act('left', {n:N() - down.size});
+    sfx.flip();
+    const el = $('#gameGrid').querySelector('.card[data-id="' + id + '"]'); if (el) el.classList.toggle('down', down.has(id));
+    const ml = $('#myLeft'); ml.textContent = N() - down.size; bump(ml);
+    clearTimeout(leftT); leftT = setTimeout(() => { if (S && S.phase === 'play') act('left', {n:N() - down.size}); }, 450);
   });
 
   try { const n = localStorage.getItem('laqeetak-name'); if (n) $('#name').value = n; } catch(e){}
@@ -2575,9 +2672,10 @@ function init(){
     if (role === 'host') hostTick();
     if (S && S.phase === 'play' && S.settings.t) {
       const rem = Math.max(0, deadline - Date.now()), sec = Math.ceil(rem / 1000);
-      $('#timerBar').style.width = Math.min(100, rem / (S.settings.t*1000) * 100) + '%';
-      $('#timerNum').textContent = Math.min(sec, S.settings.t);
-      $('#timer').classList.toggle('low', rem < 10000);
+      const w = Math.round(Math.min(1, rem / (S.settings.t*1000)) * 200) / 200, n = Math.min(sec, S.settings.t), low = rem < 10000;
+      if (w !== tW) { tW = w; $('#timerBar').style.transform = 'scaleX(' + w + ')'; }
+      if (n !== tN) { tN = n; $('#timerNum').textContent = n; }
+      if (low !== tLow) { tLow = low; $('#timer').classList.toggle('low', low); }
       if (S.turn === role && sec <= 5 && sec > 0 && sec !== lastTickSec) { lastTickSec = sec; sfx.tick(); }
     }
   }, 200);
