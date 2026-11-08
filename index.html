@@ -76,7 +76,10 @@ html[lang="en"] .logo{font-family:'Baloo Bhaijaan 2',sans-serif;font-weight:800;
 .join{display:flex;gap:10px}
 .join .inp{flex:1;text-align:center;letter-spacing:.3em;text-transform:uppercase;direction:ltr}
 .join .btn{width:auto;flex:0 0 96px}
-.invite{background:var(--sun);color:var(--ink);border:3px solid var(--ink);border-radius:14px;padding:10px 14px;font-weight:700;margin-bottom:16px}
+.invite{background:var(--sun);color:var(--ink);border:3px solid var(--ink);border-radius:14px;padding:12px 14px;font-weight:700;margin-bottom:16px;box-shadow:0 5px 0 var(--ink);animation:sheetIn .45s cubic-bezier(.2,1.35,.4,1)}
+.invite b{display:block;font-size:1.15rem;margin-bottom:2px}
+body.invited .noinv{display:none!important}
+#inviteAct #inviteJoin{font-size:1.25rem;padding:16px}
 .stack>*+*{margin-top:12px}
 
 .h2{font-family:var(--display);font-weight:400;font-size:2.05rem;line-height:1.2}
@@ -472,20 +475,24 @@ html[lang="en"] .sweep b{font-family:'Baloo Bhaijaan 2',sans-serif;font-weight:8
     <p class="tag" data-i18n="tagline"></p>
     <div class="hero" id="hero" hidden></div>
     <div class="stage" id="homeStage" aria-hidden="true"></div>
-    <div class="invite" id="invite" hidden></div>
-    <div class="gt" id="gtHome" role="group"></div>
+    <div class="invite" id="invite" hidden><b id="inviteHead"></b><span id="inviteSub"></span></div>
+    <div class="gt noinv" id="gtHome" role="group"></div>
     <div class="field">
       <label for="name" data-i18n="yourName"></label>
       <input class="inp" id="name" maxlength="16" autocomplete="nickname" data-i18n-ph="namePh">
       <div class="avs" id="avs" role="group" aria-label="avatar"></div>
     </div>
-    <div class="stack">
+    <div class="stack" id="inviteAct" hidden>
+      <button class="btn" id="inviteJoin" data-i18n="inviteJoin"></button>
+      <p class="center"><button class="link" id="inviteOwn" data-i18n="inviteOwn"></button></p>
+    </div>
+    <div class="stack noinv">
       <button class="btn" id="createBtn" data-i18n="createRoom"></button>
       <button class="btn green" id="botBtn" data-i18n="playBot"></button>
       <p class="voice-note center" id="botNote" hidden></p>
     </div>
-    <div class="or" data-i18n="orJoin"></div>
-    <div class="join">
+    <div class="or noinv" data-i18n="orJoin"></div>
+    <div class="join noinv">
       <input class="inp" id="joinCode" maxlength="5" autocomplete="off" autocapitalize="characters" data-i18n-ph="code">
       <button class="btn white" id="joinBtn" data-i18n="join"></button>
     </div>
@@ -504,6 +511,7 @@ html[lang="en"] .sweep b{font-family:'Baloo Bhaijaan 2',sans-serif;font-weight:8
     </div>
     <div class="stage lob" id="lobbyStage" aria-hidden="true"></div>
     <div class="status" id="lobbyStatus"></div>
+    <p class="voice-note center" id="keepOpen" data-i18n="keepOpen" hidden></p>
     <div class="row voice-lobby" id="voiceLobby" hidden>
       <button class="btn green small" id="micLobbyBtn"></button>
       <button class="btn white small" id="spkLobbyBtn" style="flex:0 0 30%"></button>
@@ -1509,6 +1517,16 @@ const LVL = g => g === 'foot' ? FLEVELS : LEVELS;
 const POS = {gk:['حارس مرمى','Goalkeeper'], df:['مدافع','Defender'], mf:['لاعب وسط','Midfielder'], fw:['مهاجم','Forward']};
 const POSS = {gk:['حارس','GK'], df:['دفاع','DF'], mf:['وسط','MF'], fw:['هجوم','FW']};
 
+Object.assign(STR.ar, {inviteHead:'🎉 صاحبك عازمك على الغرفة {code}', inviteSub:'اكتب اسمك واضغط «ادخل الغرفة».', inviteJoin:'ادخل الغرفة', inviteOwn:'لا، بدي أعمل غرفة لحالي',
+  waitHost:'⏳ صاحبك مش فاتح اللعبة هلأ، يمكن طلع للواتساب. بنضل نحاول نوصل كل كم ثانية، خلّيه يرجع لصفحة اللعبة.',
+  slowNet:'⏳ الاتصال بجوال صاحبك بطيء، بنحاول مرة ثانية…',
+  iceFail:'ما قدرنا نوصل لجوال صاحبك. جرّبوا تكونوا على نفس الواي فاي، أو طفّوا نت الجوال وشغّلوه.',
+  keepOpen:'خلّي صفحة اللعبة مفتوحة لحد ما يدخل صاحبك. إذا طلعت للواتساب، ارجع للصفحة.'});
+Object.assign(STR.en, {inviteHead:'🎉 Your friend invited you to room {code}', inviteSub:'Enter your name and tap "Join room".', inviteJoin:'Join room', inviteOwn:'No, I want my own room',
+  waitHost:"⏳ Your friend doesn't have the game open right now (maybe they're in WhatsApp). We'll keep trying every few seconds; ask them to come back to the game.",
+  slowNet:'⏳ The connection to your friend is slow, trying again…',
+  iceFail:"Couldn't reach your friend's phone. Try being on the same Wi-Fi, or turn mobile data off and on.",
+  keepOpen:'Keep this page open until your friend joins. If you switch to WhatsApp, come back here.'});
 Object.assign(STR.ar, {go:'يلا!', rvLost:'راحت عليك!', firstTo:'أول واحد يوصل {n}', matchWon:'🏆 ربحت المباراة!', matchLost:'🏆 {name} ربح المباراة', newMatch:'مباراة جديدة', scoreIs:'النتيجة: إنت {a} – {b} {name}'});
 Object.assign(STR.en, {go:'Go!', rvLost:'So close!', firstTo:'First to {n}', matchWon:'🏆 You won the match!', matchLost:'🏆 {name} won the match', newMatch:'New match', scoreIs:'Score: you {a} – {b} {name}'});
 const AVS = ['😎','🦁','🐸','🐱','🦊','🐼','🐯','🐵','🦄','🐙','👑','⚽'];
@@ -2007,24 +2025,59 @@ function createRoom(isRetry){
   p.on('call', onIncomingCall);
   p.on('open', () => { roomCode = code; connecting = false; S = freshState('normal'); history.replaceState(null, '', location.pathname); render(); });
   p.on('connection', c => {
-    if (conn && conn.open) { c.on('open', () => { c.send({t:'full'}); setTimeout(() => c.close(), 400); }); return; }
+    const same = conn && conn.peer === c.peer, inLobby = S && S.phase === 'lobby' && !S.p.guest.name;
+    if (conn && conn.open && !same && !inLobby) { c.on('open', () => { c.send({t:'full'}); setTimeout(() => c.close(), 400); }); return; }
+    if (conn && conn !== c) { const old = conn; conn = null; try { old.close(); } catch(e){} }
     attach(c);
   });
-  p.on('disconnected', () => { if (!leaving) { try { p.reconnect(); } catch(e){} } });
-  p.on('error', e => { if (e.type === 'unavailable-id') { p.destroy(); createRoom(true); return; } netError(e); });
+  p.on('disconnected', () => { if (!leaving && peer === p) { try { p.reconnect(); } catch(e){} } });
+  p.on('error', e => {
+    if (leaving || peer !== p) return;
+    if (e.type === 'unavailable-id') { if (!roomCode) { p.destroy(); createRoom(true); } else reviveSoon(); return; }
+    if (roomCode && ['network','server-error','socket-error','socket-closed','disconnected'].includes(e.type)) { reviveSoon(); return; }
+    netError(e);
+  });
 }
+let joinTimer = null, joinDeadline = 0, joinWait = 0, sawHost = false, reviveT = null;
 function joinRoom(){
   const code = $('#joinCode').value.trim().toUpperCase();
   if (code.length < 5) { toast(t('codeLen')); $('#joinCode').focus(); return; }
   myName = readName(); if (!myName || !libOk(joinRoom)) return;
   role = 'guest'; mode = 'online'; roomCode = code; leaving = false; connecting = true;
+  joinDeadline = Date.now() + 60000; joinWait = 0; sawHost = false;
+  document.body.classList.remove('invited');
   show('lobby'); renderLobby();
-  peer = new Peer(PEER_OPTS);
-  peer.on('call', onIncomingCall);
-  peer.on('open', () => attach(peer.connect(PREFIX + code, {reliable:true})));
-  peer.on('disconnected', () => { if (!leaving) { try { peer.reconnect(); } catch(e){} } });
-  peer.on('error', e => { if (e.type === 'peer-unavailable') { toast(t('noRoom')); goHome(); return; } netError(e); });
+  const p = new Peer(PEER_OPTS); peer = p;
+  p.on('call', onIncomingCall);
+  p.on('open', () => { if (connecting && !conn) tryConnect(); });
+  p.on('disconnected', () => { if (!leaving && peer === p) { try { p.reconnect(); } catch(e){} } });
+  p.on('error', e => {
+    if (leaving || peer !== p) return;
+    if (e.type === 'peer-unavailable') { if (connecting) retryJoin(1); return; }
+    if (!connecting && ['network','server-error','socket-error','socket-closed','disconnected'].includes(e.type)) { reviveSoon(); return; }
+    netError(e);
+  });
 }
+function tryConnect(){
+  clearTimeout(joinTimer);
+  if (leaving || role !== 'guest' || !peer || peer.destroyed) return;
+  if (peer.disconnected) { try { peer.reconnect(); } catch(e){} joinTimer = setTimeout(tryConnect, 1500); return; }
+  const c = peer.connect(PREFIX + roomCode, {reliable:true}); attach(c);
+  joinTimer = setTimeout(() => { if (connecting && !c.open) { sawHost = true; try { c.close(); } catch(e){} retryJoin(2); } }, 13000);
+}
+function retryJoin(why){
+  clearTimeout(joinTimer);
+  if (leaving || role !== 'guest' || !connecting) return;
+  if (Date.now() > joinDeadline) { toast(sawHost ? t('iceFail') : t('noRoom')); goHome(); return; }
+  if (joinWait !== why) { joinWait = why; renderLobby(); }
+  joinTimer = setTimeout(tryConnect, why === 1 ? 2500 : 600);
+}
+function reviveSoon(){ clearTimeout(reviveT); reviveT = setTimeout(revive, 2500); }
+function revive(){
+  if (leaving || !peer || peer.destroyed || !peer.disconnected) return;
+  try { peer.reconnect(); } catch(e){}
+}
+document.addEventListener('visibilitychange', () => { if (!document.hidden) { revive(); if (role === 'guest' && connecting) tryConnect(); } });
 function attach(c){
   conn = c;
   c.on('open', () => {
@@ -2059,7 +2112,8 @@ function onData(m){
   }
 }
 function applyState(s){
-  connecting = false;
+  connecting = false; if (joinWait) joinWait = 0; clearTimeout(joinTimer);
+  if (location.search) history.replaceState(null, '', location.pathname);
   if (s.round !== localRound) { resetLocal(); localRound = s.round; }
   S = s;
   if (s.phase === 'play') deadline = Date.now() + s.rem;
@@ -2067,6 +2121,7 @@ function applyState(s){
 }
 function onLost(c){
   if (leaving || c !== conn || mode !== 'online') return;
+  if (role === 'guest' && connecting) { conn = null; retryJoin(joinWait === 1 ? 1 : 2); return; }
   if (role === 'host') {
     if (S && S.phase === 'lobby') { S.p.guest.name = ''; render(); return; }
     $('#lostText').textContent = t('lostHost', {name:oppName()}); $('#retryBtn').hidden = true;
@@ -2095,8 +2150,8 @@ function goHome(){
   $('#emoBar').hidden = true; $('#splash').hidden = true; stopFx();
   stopVoice(); renderVoice();
   releaseWake();
-  history.replaceState(null, '', location.pathname);
-  $('#invite').hidden = true;
+  clearTimeout(joinTimer); clearTimeout(reviveT); joinWait = 0;
+  updateInvite();
   show('home');
 }
 
@@ -2192,10 +2247,11 @@ function renderLobby(){
   $('#shareRow').hidden = !host || !S;
   const oppP = S ? (host ? S.p.guest : S.p.host) : null, opp = oppP ? oppP.name : '', oppL = oppP && oppP.av ? oppP.av + ' ' + opp : opp;
   let st;
-  if (!S) st = esc(host ? t('preparing') : t('connecting'));
+  if (!S) st = esc(host ? t('preparing') : joinWait === 1 ? t('waitHost') : joinWait === 2 ? t('slowNet') : t('connecting'));
   else if (host) st = opp ? t('friendIn', {name:esc(oppL)}) : esc(t('waitFriend'));
   else st = t('joinedRoom', {name:esc(oppL)});
   $('#lobbyStatus').innerHTML = st;
+  $('#keepOpen').hidden = !(host && S && !opp);
   const meP = S ? S.p[role] : null;
   setStage($('#lobbyStage'), {av:(meP && meP.av) || myAv, name:myName || t('you')}, oppP && opp ? {av:oppP.av || '🙂', name:opp} : {av:'⏳', name:t('waiting')});
   renderLevels(); renderGt();
@@ -2520,8 +2576,11 @@ function sendFootQ(){
 
 /* ---------- language ---------- */
 function updateInvite(){
-  const room = new URLSearchParams(location.search).get('room');
-  if (room && !S) { $('#invite').hidden = false; $('#invite').textContent = t('invite', {code:room.toUpperCase()}); }
+  const room = (new URLSearchParams(location.search).get('room') || '').toUpperCase().slice(0, 5);
+  const on = room.length === 5 && !S && !role;
+  document.body.classList.toggle('invited', on);
+  $('#invite').hidden = !on; $('#inviteAct').hidden = !on;
+  if (on) { $('#inviteHead').textContent = t('inviteHead', {code:room}); $('#inviteSub').textContent = t('inviteSub'); $('#joinCode').value = room; }
 }
 function applyLang(){
   const h = document.documentElement; h.lang = lang; h.dir = lang === 'ar' ? 'rtl' : 'ltr';
@@ -2583,6 +2642,9 @@ function init(){
   $('#createBtn').onclick = () => createRoom(false);
   $('#botBtn').onclick = () => { renderLevels(); openM('botM'); };
   $('#joinBtn').onclick = joinRoom;
+  $('#inviteJoin').onclick = joinRoom;
+  $('#inviteOwn').onclick = () => { history.replaceState(null, '', location.pathname); $('#joinCode').value = ''; updateInvite(); };
+  $('#name').addEventListener('keydown', e => { if (e.key === 'Enter' && document.body.classList.contains('invited')) { e.preventDefault(); joinRoom(); } });
   $('#joinCode').addEventListener('keydown', e => { if (e.key === 'Enter') joinRoom(); });
   $('#shareBtn').onclick = async () => {
     const url = inviteLink();
