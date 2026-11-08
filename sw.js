@@ -1,5 +1,5 @@
 // لقيتك! service worker: works offline for vs-computer games
-const CACHE = 'laqeetak-v3';
+const CACHE = 'laqeetak-v4';
 const FONTS = ['lalezar-arabic-400','lalezar-latin-400'].concat([400,600,800].flatMap(w => ['arabic','latin'].map(x => 'baloo-bhaijaan-2-' + x + '-' + w))).map(f => './fonts/' + f + '-normal.woff2');
 const CORE = ['./', './index.html', './manifest.webmanifest', './icon2-192.png', './icon2-512.png', './apple-touch-icon2.png', './lib/peerjs.min.js']
   .concat(FONTS, Array.from({length:48}, (_, i) => './faces/' + i + '.webp'));
