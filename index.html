@@ -472,6 +472,7 @@ html[lang="en"] .sweep b{font-family:'Baloo Bhaijaan 2',sans-serif;font-weight:8
     <div class="topline">
       <button class="chip" id="installBtn" hidden data-i18n="install"></button>
       <button class="chip" id="statsBtn" data-i18n="statsBtn"></button>
+      <button class="chip" id="musicBtn" aria-label="music"></button>
       <button class="chip" id="langBtn"></button>
     </div>
     <h1 class="logo" data-i18n="title"></h1>
@@ -697,7 +698,7 @@ html[lang="en"] .sweep b{font-family:'Baloo Bhaijaan 2',sans-serif;font-weight:8
 <script>
 (() => {
 'use strict';
-const DECK = [{"s":"m","dark":false,"hj":false,"bald":true,"curly":false,"tied":false,"hc":"grey","e":"blue","gl":"square","beard":true,"mus":true,"cap":false,"ear":false,"frk":false,"sh":"yellow","n":["أحمد","Ahmad"],"short":false},{"s":"m","dark":true,"hj":false,"bald":true,"curly":false,"tied":false,"hc":null,"e":"brown","gl":"none","beard":false,"mus":false,"cap":false,"ear":false,"frk":false,"sh":"red","n":["محمود","Mahmoud"],"short":false},{"s":"f","dark":false,"hj":false,"bald":false,"curly":false,"tied":false,"hc":"grey","e":"blue","gl":"round","beard":false,"mus":false,"cap":false,"ear":false,"frk":false,"sh":"blue","n":["سارة","Sara"],"short":false},{"s":"m","dark":true,"hj":false,"bald":false,"curly":true,"tied":false,"hc":"grey","e":"brown","gl":"none","beard":false,"mus":true,"cap":false,"ear":false,"frk":false,"sh":"green","n":["يوسف","Yousef"],"short":true},{"s":"m","dark":true,"hj":false,"bald":false,"curly":false,"tied":false,"hc":"black","e":"green","gl":"none","beard":false,"mus":true,"cap":false,"ear":false,"frk":false,"sh":"blue","n":["خالد","Khaled"],"short":true},{"s":"f","dark":true,"hj":true,"bald":false,"curly":false,"tied":false,"hc":null,"e":"brown","gl":"none","beard":false,"mus":false,"cap":false,"ear":false,"frk":false,"sh":"red","n":["ليلى","Layla"],"short":false},{"s":"f","dark":true,"hj":false,"bald":false,"curly":false,"tied":true,"hc":"black","e":"brown","gl":"none","beard":false,"mus":false,"cap":false,"ear":false,"frk":false,"sh":"yellow","n":["نور","Nour"],"short":false},{"s":"m","dark":false,"hj":false,"bald":true,"curly":false,"tied":false,"hc":"grey","e":"green","gl":"square","beard":true,"mus":true,"cap":false,"ear":false,"frk":false,"sh":"green","n":["عمر","Omar"],"short":false},{"s":"m","dark":false,"hj":false,"bald":true,"curly":false,"tied":false,"hc":null,"e":"blue","gl":"none","beard":false,"mus":true,"cap":false,"ear":false,"frk":true,"sh":"green","n":["سامي","Sami"],"short":false},{"s":"m","dark":false,"hj":false,"bald":false,"curly":false,"tied":false,"hc":"blonde","e":"blue","gl":"none","beard":false,"mus":false,"cap":false,"ear":false,"frk":false,"sh":"red","n":["رامي","Rami"],"short":true},{"s":"m","dark":false,"hj":false,"bald":false,"curly":false,"tied":false,"hc":"black","e":"brown","gl":"none","beard":false,"mus":false,"cap":true,"ear":false,"frk":false,"sh":"green","n":["باسل","Basel"],"short":true},{"s":"f","dark":false,"hj":false,"bald":false,"curly":false,"tied":false,"hc":"blonde","e":"blue","gl":"none","beard":false,"mus":false,"cap":false,"ear":false,"frk":false,"sh":"green","n":["هبة","Hiba"],"short":false},{"s":"f","dark":true,"hj":true,"bald":false,"curly":false,"tied":false,"hc":null,"e":"brown","gl":"none","beard":false,"mus":false,"cap":false,"ear":false,"frk":false,"sh":"blue","n":["ريم","Reem"],"short":false},{"s":"f","dark":false,"hj":false,"bald":false,"curly":false,"tied":false,"hc":"brown","e":"brown","gl":"none","beard":false,"mus":false,"cap":false,"ear":true,"frk":true,"sh":"red","n":["دانة","Dana"],"short":false},{"s":"m","dark":false,"hj":false,"bald":false,"curly":false,"tied":true,"hc":"black","e":"brown","gl":"none","beard":true,"mus":true,"cap":false,"ear":false,"frk":false,"sh":"blue","n":["فادي","Fadi"],"short":false},{"s":"m","dark":false,"hj":false,"bald":false,"curly":true,"tied":false,"hc":"red","e":"green","gl":"none","beard":false,"mus":false,"cap":false,"ear":false,"frk":true,"sh":"blue","n":["زياد","Ziad"],"short":true},{"s":"f","dark":false,"hj":true,"bald":false,"curly":false,"tied":false,"hc":"grey","e":"blue","gl":"none","beard":false,"mus":false,"cap":false,"ear":false,"frk":false,"sh":"yellow","n":["لينا","Lina"],"short":false},{"s":"f","dark":true,"hj":false,"bald":false,"curly":false,"tied":true,"hc":"black","e":"green","gl":"none","beard":false,"mus":false,"cap":false,"ear":true,"frk":false,"sh":"blue","n":["مريم","Maryam"],"short":false},{"s":"f","dark":false,"hj":false,"bald":false,"curly":false,"tied":false,"hc":"black","e":"brown","gl":"none","beard":false,"mus":false,"cap":false,"ear":true,"frk":false,"sh":"red","n":["رنا","Rana"],"short":false},{"s":"m","dark":true,"hj":false,"bald":false,"curly":true,"tied":false,"hc":"black","e":"brown","gl":"square","beard":true,"mus":true,"cap":false,"ear":false,"frk":false,"sh":"red","n":["مازن","Mazen"],"short":true},{"s":"m","dark":false,"hj":false,"bald":false,"curly":false,"tied":false,"hc":"blonde","e":"green","gl":"round","beard":false,"mus":true,"cap":false,"ear":false,"frk":false,"sh":"green","n":["طارق","Tareq"],"short":true},{"s":"f","dark":false,"hj":true,"bald":false,"curly":false,"tied":false,"hc":null,"e":"blue","gl":"round","beard":false,"mus":false,"cap":false,"ear":false,"frk":false,"sh":"green","n":["سلمى","Salma"],"short":false},{"s":"f","dark":false,"hj":false,"bald":false,"curly":false,"tied":true,"hc":"red","e":"green","gl":"none","beard":false,"mus":false,"cap":false,"ear":true,"frk":true,"sh":"yellow","n":["جنى","Jana"],"short":false},{"s":"f","dark":true,"hj":false,"bald":false,"curly":true,"tied":false,"hc":"black","e":"green","gl":"none","beard":false,"mus":false,"cap":false,"ear":true,"frk":false,"sh":"red","n":["هالة","Hala"],"short":false},{"s":"f","dark":false,"hj":true,"bald":false,"curly":false,"tied":false,"hc":null,"e":"brown","gl":"none","beard":false,"mus":false,"cap":false,"ear":false,"frk":false,"sh":"yellow","n":["ياسمين","Yasmin"],"short":false},{"s":"f","dark":false,"hj":false,"bald":false,"curly":true,"tied":false,"hc":"red","e":"green","gl":"none","beard":false,"mus":false,"cap":false,"ear":true,"frk":true,"sh":"green","n":["رهف","Rahaf"],"short":false},{"s":"m","dark":false,"hj":false,"bald":false,"curly":true,"tied":false,"hc":"grey","e":"blue","gl":"round","beard":true,"mus":true,"cap":false,"ear":false,"frk":false,"sh":"yellow","n":["نادر","Nader"],"short":true},{"s":"f","dark":false,"hj":false,"bald":false,"curly":false,"tied":false,"hc":"black","e":"brown","gl":"none","beard":false,"mus":false,"cap":false,"ear":true,"frk":false,"sh":"green","n":["دعاء","Duaa"],"short":false},{"s":"f","dark":false,"hj":false,"bald":false,"curly":false,"tied":false,"hc":"brown","e":"brown","gl":"round","beard":false,"mus":false,"cap":false,"ear":true,"frk":false,"sh":"blue","n":["آية","Aya"],"short":false},{"s":"m","dark":false,"hj":false,"bald":false,"curly":false,"tied":false,"hc":"grey","e":"blue","gl":"none","beard":true,"mus":true,"cap":false,"ear":false,"frk":false,"sh":"blue","n":["وسيم","Wasim"],"short":true},{"s":"m","dark":false,"hj":false,"bald":false,"curly":true,"tied":false,"hc":"brown","e":"brown","gl":"round","beard":true,"mus":true,"cap":false,"ear":false,"frk":false,"sh":"red","n":["هاني","Hani"],"short":true},{"s":"m","dark":true,"hj":false,"bald":false,"curly":false,"tied":false,"hc":"black","e":"brown","gl":"none","beard":false,"mus":false,"cap":true,"ear":false,"frk":false,"sh":"yellow","n":["إياد","Iyad"],"short":true},{"s":"m","dark":false,"hj":false,"bald":false,"curly":false,"tied":false,"hc":"blonde","e":"blue","gl":"none","beard":true,"mus":true,"cap":false,"ear":false,"frk":false,"sh":"red","n":["كريم","Karim"],"short":true},{"s":"f","dark":false,"hj":false,"bald":false,"curly":false,"tied":true,"hc":"red","e":"blue","gl":"none","beard":false,"mus":false,"cap":false,"ear":true,"frk":true,"sh":"blue","n":["منى","Mona"],"short":false},{"s":"m","dark":false,"hj":false,"bald":false,"curly":false,"tied":false,"hc":"grey","e":"blue","gl":"square","beard":true,"mus":true,"cap":false,"ear":false,"frk":false,"sh":"yellow","n":["سليم","Salim"],"short":true},{"s":"f","dark":false,"hj":false,"bald":false,"curly":false,"tied":false,"hc":"brown","e":"brown","gl":"none","beard":false,"mus":false,"cap":false,"ear":true,"frk":false,"sh":"green","n":["سماح","Samah"],"short":false},{"s":"f","dark":false,"hj":false,"bald":false,"curly":false,"tied":true,"hc":"grey","e":"blue","gl":"round","beard":false,"mus":false,"cap":false,"ear":true,"frk":false,"sh":"blue","n":["لمى","Lama"],"short":false},{"s":"f","dark":false,"hj":false,"bald":false,"curly":false,"tied":false,"hc":"black","e":"brown","gl":"none","beard":false,"mus":false,"cap":false,"ear":true,"frk":false,"sh":"blue","n":["تالا","Tala"],"short":false},{"s":"m","dark":false,"hj":false,"bald":false,"curly":false,"tied":false,"hc":"brown","e":"brown","gl":"none","beard":true,"mus":true,"cap":false,"ear":false,"frk":false,"sh":"red","n":["جمال","Jamal"],"short":true},{"s":"f","dark":false,"hj":false,"bald":false,"curly":false,"tied":true,"hc":"red","e":"green","gl":"none","beard":false,"mus":false,"cap":false,"ear":true,"frk":true,"sh":"red","n":["رزان","Razan"],"short":false},{"s":"f","dark":false,"hj":false,"bald":false,"curly":false,"tied":false,"hc":"grey","e":"brown","gl":"none","beard":false,"mus":false,"cap":false,"ear":true,"frk":true,"sh":"green","n":["شهد","Shahd"],"short":true},{"s":"m","dark":false,"hj":false,"bald":false,"curly":false,"tied":false,"hc":"grey","e":"blue","gl":"round","beard":false,"mus":false,"cap":false,"ear":false,"frk":false,"sh":"red","n":["ماهر","Maher"],"short":true},{"s":"m","dark":false,"hj":false,"bald":false,"curly":false,"tied":false,"hc":"brown","e":"brown","gl":"none","beard":true,"mus":true,"cap":false,"ear":false,"frk":false,"sh":"yellow","n":["حسن","Hasan"],"short":true},{"s":"m","dark":true,"hj":false,"bald":false,"curly":false,"tied":false,"hc":"black","e":"brown","gl":"none","beard":false,"mus":false,"cap":false,"ear":false,"frk":false,"sh":"red","n":["علي","Ali"],"short":true},{"s":"m","dark":false,"hj":false,"bald":false,"curly":false,"tied":false,"hc":"brown","e":"brown","gl":"none","beard":false,"mus":false,"cap":false,"ear":false,"frk":true,"sh":"red","n":["بلال","Bilal"],"short":true},{"s":"f","dark":true,"hj":true,"bald":false,"curly":false,"tied":false,"hc":null,"e":"blue","gl":"none","beard":false,"mus":false,"cap":false,"ear":false,"frk":false,"sh":"blue","n":["غدير","Ghadeer"],"short":false},{"s":"m","dark":false,"hj":false,"bald":false,"curly":false,"tied":false,"hc":"grey","e":"brown","gl":"none","beard":true,"mus":true,"cap":false,"ear":false,"frk":true,"sh":"red","n":["أنس","Anas"],"short":true},{"s":"f","dark":false,"hj":false,"bald":false,"curly":false,"tied":false,"hc":"grey","e":"blue","gl":"round","beard":false,"mus":false,"cap":false,"ear":true,"frk":false,"sh":"yellow","n":["بيسان","Bisan"],"short":false}];
+const DECK = [{"s":"m","dark":false,"hj":false,"bald":true,"curly":false,"tied":false,"hc":null,"e":"blue","gl":"square","beard":true,"mus":true,"cap":false,"ear":false,"frk":false,"sh":"yellow","n":["أحمد","Ahmad"],"short":false},{"s":"m","dark":true,"hj":false,"bald":true,"curly":false,"tied":false,"hc":null,"e":"brown","gl":"none","beard":false,"mus":false,"cap":false,"ear":false,"frk":false,"sh":"red","n":["محمود","Mahmoud"],"short":false},{"s":"f","dark":false,"hj":false,"bald":false,"curly":false,"tied":false,"hc":"grey","e":"blue","gl":"round","beard":false,"mus":false,"cap":false,"ear":false,"frk":false,"sh":"blue","n":["سارة","Sara"],"short":false},{"s":"m","dark":true,"hj":false,"bald":false,"curly":true,"tied":false,"hc":"grey","e":"brown","gl":"none","beard":false,"mus":true,"cap":false,"ear":false,"frk":false,"sh":"green","n":["يوسف","Yousef"],"short":true},{"s":"m","dark":true,"hj":false,"bald":false,"curly":false,"tied":false,"hc":"black","e":"green","gl":"none","beard":false,"mus":true,"cap":false,"ear":false,"frk":false,"sh":"blue","n":["خالد","Khaled"],"short":true},{"s":"f","dark":true,"hj":true,"bald":false,"curly":false,"tied":false,"hc":null,"e":"brown","gl":"none","beard":false,"mus":false,"cap":false,"ear":false,"frk":false,"sh":"red","n":["ليلى","Layla"],"short":false},{"s":"f","dark":true,"hj":false,"bald":false,"curly":false,"tied":true,"hc":"black","e":"brown","gl":"none","beard":false,"mus":false,"cap":false,"ear":false,"frk":false,"sh":"yellow","n":["نور","Nour"],"short":false},{"s":"m","dark":false,"hj":false,"bald":true,"curly":false,"tied":false,"hc":null,"e":"green","gl":"square","beard":true,"mus":true,"cap":false,"ear":false,"frk":false,"sh":"green","n":["عمر","Omar"],"short":false},{"s":"m","dark":false,"hj":false,"bald":true,"curly":false,"tied":false,"hc":null,"e":"blue","gl":"none","beard":false,"mus":true,"cap":false,"ear":false,"frk":true,"sh":"green","n":["سامي","Sami"],"short":false},{"s":"m","dark":false,"hj":false,"bald":false,"curly":false,"tied":false,"hc":"blonde","e":"blue","gl":"none","beard":false,"mus":false,"cap":false,"ear":false,"frk":false,"sh":"red","n":["رامي","Rami"],"short":true},{"s":"m","dark":false,"hj":false,"bald":false,"curly":false,"tied":false,"hc":null,"e":"brown","gl":"none","beard":false,"mus":false,"cap":true,"ear":false,"frk":false,"sh":"green","n":["باسل","Basel"],"short":false},{"s":"f","dark":false,"hj":false,"bald":false,"curly":false,"tied":false,"hc":"blonde","e":"blue","gl":"none","beard":false,"mus":false,"cap":false,"ear":false,"frk":false,"sh":"green","n":["هبة","Hiba"],"short":false},{"s":"f","dark":true,"hj":true,"bald":false,"curly":false,"tied":false,"hc":null,"e":"brown","gl":"none","beard":false,"mus":false,"cap":false,"ear":false,"frk":false,"sh":"blue","n":["ريم","Reem"],"short":false},{"s":"f","dark":false,"hj":false,"bald":false,"curly":false,"tied":false,"hc":"brown","e":"brown","gl":"none","beard":false,"mus":false,"cap":false,"ear":true,"frk":true,"sh":"red","n":["دانة","Dana"],"short":false},{"s":"m","dark":false,"hj":false,"bald":false,"curly":false,"tied":true,"hc":"black","e":"brown","gl":"none","beard":true,"mus":true,"cap":false,"ear":false,"frk":false,"sh":"blue","n":["فادي","Fadi"],"short":false},{"s":"m","dark":false,"hj":false,"bald":false,"curly":true,"tied":false,"hc":"red","e":"green","gl":"none","beard":false,"mus":false,"cap":false,"ear":false,"frk":true,"sh":"blue","n":["زياد","Ziad"],"short":true},{"s":"f","dark":false,"hj":true,"bald":false,"curly":false,"tied":false,"hc":null,"e":"blue","gl":"none","beard":false,"mus":false,"cap":false,"ear":false,"frk":false,"sh":"yellow","n":["لينا","Lina"],"short":false},{"s":"f","dark":true,"hj":false,"bald":false,"curly":false,"tied":true,"hc":"black","e":"green","gl":"none","beard":false,"mus":false,"cap":false,"ear":true,"frk":false,"sh":"blue","n":["مريم","Maryam"],"short":false},{"s":"f","dark":false,"hj":false,"bald":false,"curly":true,"tied":false,"hc":"black","e":"brown","gl":"none","beard":false,"mus":false,"cap":false,"ear":true,"frk":false,"sh":"red","n":["رنا","Rana"],"short":false},{"s":"m","dark":true,"hj":false,"bald":false,"curly":true,"tied":false,"hc":"black","e":"brown","gl":"square","beard":true,"mus":true,"cap":false,"ear":false,"frk":false,"sh":"red","n":["مازن","Mazen"],"short":true},{"s":"m","dark":false,"hj":false,"bald":false,"curly":false,"tied":false,"hc":"blonde","e":"green","gl":"round","beard":false,"mus":true,"cap":false,"ear":false,"frk":false,"sh":"green","n":["طارق","Tareq"],"short":true},{"s":"f","dark":false,"hj":true,"bald":false,"curly":false,"tied":false,"hc":null,"e":"blue","gl":"round","beard":false,"mus":false,"cap":false,"ear":false,"frk":false,"sh":"green","n":["سلمى","Salma"],"short":false},{"s":"f","dark":false,"hj":false,"bald":false,"curly":false,"tied":true,"hc":"red","e":"green","gl":"none","beard":false,"mus":false,"cap":false,"ear":true,"frk":true,"sh":"yellow","n":["جنى","Jana"],"short":false},{"s":"f","dark":true,"hj":false,"bald":false,"curly":true,"tied":false,"hc":"black","e":"green","gl":"none","beard":false,"mus":false,"cap":false,"ear":true,"frk":false,"sh":"red","n":["هالة","Hala"],"short":false},{"s":"f","dark":false,"hj":true,"bald":false,"curly":false,"tied":false,"hc":null,"e":"brown","gl":"none","beard":false,"mus":false,"cap":false,"ear":false,"frk":false,"sh":"yellow","n":["ياسمين","Yasmin"],"short":false},{"s":"f","dark":false,"hj":false,"bald":false,"curly":true,"tied":false,"hc":"red","e":"green","gl":"none","beard":false,"mus":false,"cap":false,"ear":true,"frk":true,"sh":"green","n":["رهف","Rahaf"],"short":false},{"s":"m","dark":false,"hj":false,"bald":false,"curly":true,"tied":false,"hc":"grey","e":"blue","gl":"round","beard":true,"mus":true,"cap":false,"ear":false,"frk":false,"sh":"yellow","n":["نادر","Nader"],"short":true},{"s":"f","dark":false,"hj":false,"bald":false,"curly":false,"tied":false,"hc":"black","e":"brown","gl":"none","beard":false,"mus":false,"cap":false,"ear":true,"frk":false,"sh":"green","n":["دعاء","Duaa"],"short":false},{"s":"f","dark":false,"hj":false,"bald":false,"curly":false,"tied":false,"hc":"brown","e":"brown","gl":"round","beard":false,"mus":false,"cap":false,"ear":true,"frk":false,"sh":"blue","n":["آية","Aya"],"short":false},{"s":"m","dark":false,"hj":false,"bald":false,"curly":false,"tied":false,"hc":"grey","e":"blue","gl":"none","beard":true,"mus":true,"cap":false,"ear":false,"frk":false,"sh":"blue","n":["وسيم","Wasim"],"short":true},{"s":"m","dark":false,"hj":false,"bald":false,"curly":true,"tied":false,"hc":"brown","e":"brown","gl":"round","beard":true,"mus":true,"cap":false,"ear":false,"frk":false,"sh":"red","n":["هاني","Hani"],"short":true},{"s":"m","dark":true,"hj":false,"bald":false,"curly":false,"tied":false,"hc":null,"e":"brown","gl":"none","beard":false,"mus":false,"cap":true,"ear":false,"frk":false,"sh":"yellow","n":["إياد","Iyad"],"short":false},{"s":"m","dark":false,"hj":false,"bald":false,"curly":false,"tied":false,"hc":"blonde","e":"blue","gl":"none","beard":true,"mus":true,"cap":false,"ear":false,"frk":false,"sh":"red","n":["كريم","Karim"],"short":true},{"s":"f","dark":false,"hj":false,"bald":false,"curly":false,"tied":true,"hc":"red","e":"blue","gl":"none","beard":false,"mus":false,"cap":false,"ear":true,"frk":true,"sh":"blue","n":["منى","Mona"],"short":false},{"s":"m","dark":false,"hj":false,"bald":false,"curly":false,"tied":false,"hc":"grey","e":"blue","gl":"square","beard":true,"mus":true,"cap":false,"ear":false,"frk":false,"sh":"yellow","n":["سليم","Salim"],"short":true},{"s":"f","dark":false,"hj":false,"bald":false,"curly":false,"tied":false,"hc":"brown","e":"brown","gl":"none","beard":false,"mus":false,"cap":false,"ear":true,"frk":false,"sh":"green","n":["سماح","Samah"],"short":false},{"s":"f","dark":false,"hj":false,"bald":false,"curly":false,"tied":true,"hc":"grey","e":"blue","gl":"round","beard":false,"mus":false,"cap":false,"ear":true,"frk":false,"sh":"blue","n":["لمى","Lama"],"short":false},{"s":"f","dark":false,"hj":false,"bald":false,"curly":false,"tied":false,"hc":"black","e":"brown","gl":"none","beard":false,"mus":false,"cap":false,"ear":true,"frk":false,"sh":"blue","n":["تالا","Tala"],"short":false},{"s":"m","dark":false,"hj":false,"bald":false,"curly":false,"tied":false,"hc":"brown","e":"brown","gl":"none","beard":true,"mus":true,"cap":false,"ear":false,"frk":false,"sh":"red","n":["جمال","Jamal"],"short":true},{"s":"f","dark":false,"hj":false,"bald":false,"curly":false,"tied":true,"hc":"red","e":"green","gl":"none","beard":false,"mus":false,"cap":false,"ear":true,"frk":true,"sh":"red","n":["رزان","Razan"],"short":false},{"s":"f","dark":false,"hj":false,"bald":false,"curly":false,"tied":false,"hc":"grey","e":"brown","gl":"none","beard":false,"mus":false,"cap":false,"ear":true,"frk":true,"sh":"green","n":["شهد","Shahd"],"short":true},{"s":"m","dark":false,"hj":false,"bald":false,"curly":false,"tied":false,"hc":"grey","e":"blue","gl":"round","beard":false,"mus":false,"cap":false,"ear":false,"frk":false,"sh":"red","n":["ماهر","Maher"],"short":true},{"s":"m","dark":false,"hj":false,"bald":false,"curly":false,"tied":false,"hc":"brown","e":"brown","gl":"none","beard":true,"mus":true,"cap":false,"ear":false,"frk":false,"sh":"yellow","n":["حسن","Hasan"],"short":true},{"s":"m","dark":true,"hj":false,"bald":false,"curly":false,"tied":false,"hc":"black","e":"brown","gl":"none","beard":false,"mus":false,"cap":false,"ear":false,"frk":false,"sh":"red","n":["علي","Ali"],"short":true},{"s":"m","dark":false,"hj":false,"bald":false,"curly":false,"tied":false,"hc":"brown","e":"brown","gl":"none","beard":false,"mus":false,"cap":false,"ear":false,"frk":true,"sh":"red","n":["بلال","Bilal"],"short":true},{"s":"f","dark":true,"hj":true,"bald":false,"curly":false,"tied":false,"hc":null,"e":"blue","gl":"none","beard":false,"mus":false,"cap":false,"ear":false,"frk":false,"sh":"blue","n":["غدير","Ghadeer"],"short":false},{"s":"m","dark":false,"hj":false,"bald":false,"curly":false,"tied":false,"hc":"grey","e":"brown","gl":"none","beard":true,"mus":true,"cap":false,"ear":false,"frk":true,"sh":"red","n":["أنس","Anas"],"short":true},{"s":"f","dark":false,"hj":false,"bald":false,"curly":true,"tied":false,"hc":"grey","e":"blue","gl":"round","beard":false,"mus":false,"cap":false,"ear":true,"frk":false,"sh":"yellow","n":["بيسان","Bisan"],"short":false}];
 const FACES = Array.from({length:48}, (_, i) => 'faces/' + i + '.webp');
 const STR = {
 ar: {
@@ -818,7 +819,7 @@ const QS = [
   {id:'bald', g:'hair', ar:'أصلع؟', en:'Bald?', f:c=>c.bald},
   {id:'short', g:'hair', ar:'شعره قصير (قصّة قصيرة زي الشباب)؟', en:'Short hair (a short cut)?', f:c=>c.short},
   {id:'curly', g:'hair', ar:'شعره كيرلي؟', en:'Curly hair?', f:c=>c.curly},
-  {id:'tied', g:'hair', ar:'شعره مربوط (كعكة أو جدايل)؟', en:'Hair tied up (bun or braids)?', f:c=>c.tied},
+  {id:'tied', g:'hair', ar:'شعره مربوط (كعكة، ذيل حصان، أو جدايل)؟', en:'Hair tied (bun, ponytail or braids)?', f:c=>c.tied},
   {id:'h_black', g:'hair', ar:'شعره أسود؟', en:'Black hair?', f:c=>c.hc==='black'},
   {id:'h_brown', g:'hair', ar:'شعره بني؟', en:'Brown hair?', f:c=>c.hc==='brown'},
   {id:'h_blonde', g:'hair', ar:'شعره أشقر؟', en:'Blonde hair?', f:c=>c.hc==='blonde'},
@@ -1580,33 +1581,112 @@ const nm = id => isFoot() ? IT[id].n[lang === 'ar' ? 0 : 1] : dn(id);
 const qtext = id => QMAP[id][lang];
 
 /* ---------- sound ---------- */
-const SND = { on:true, ctx:null };
-try { SND.on = localStorage.getItem('lq-sound') !== '0'; } catch(e){}
+const SND = { on:true, music:true, ctx:null, bus:null, fx:null, mus:null, noise:null, voice:{} };
+try { SND.on = localStorage.getItem('lq-sound') !== '0'; SND.music = localStorage.getItem('lq-music') !== '0'; } catch(e){}
 function audio(){
-  if (!SND.ctx) { const C = window.AudioContext || window.webkitAudioContext; if (!C) return null; SND.ctx = new C(); }
+  if (!SND.ctx) {
+    const C = window.AudioContext || window.webkitAudioContext; if (!C) return null;
+    const c = SND.ctx = new C();
+    const comp = c.createDynamicsCompressor(); comp.threshold.value = -16; comp.ratio.value = 4; comp.attack.value = .004; comp.release.value = .2;
+    const master = c.createGain(); master.gain.value = .9; comp.connect(master); master.connect(c.destination);
+    SND.bus = c.createGain(); SND.bus.connect(comp);
+    const rv = c.createConvolver(), len = c.sampleRate * 1.3, ir = c.createBuffer(2, len, c.sampleRate);
+    for (let ch = 0; ch < 2; ch++) { const d = ir.getChannelData(ch); for (let k = 0; k < len; k++) d[k] = (Math.random() * 2 - 1) * Math.pow(1 - k / len, 3.2); }
+    rv.buffer = ir; SND.fx = c.createGain(); SND.fx.gain.value = .22; SND.fx.connect(rv); rv.connect(comp);
+    SND.mus = c.createGain(); SND.mus.gain.value = 0; SND.mus.connect(comp);
+    const nb = c.createBuffer(1, c.sampleRate, c.sampleRate), nd = nb.getChannelData(0); for (let k = 0; k < nd.length; k++) nd[k] = Math.random() * 2 - 1; SND.noise = nb;
+  }
   if (SND.ctx.state === 'suspended') SND.ctx.resume();
   return SND.ctx;
 }
-function tone(f, d = .12, type = 'sine', v = .15, when = 0, to){
-  if (!SND.on) return; const c = audio(); if (!c) return;
+function out(g, wet){ g.connect(SND.bus); if (wet) { const w = SND.ctx.createGain(); w.gain.value = wet; g.connect(w); w.connect(SND.fx); } }
+function tone(f, d = .12, type = 'sine', v = .15, when = 0, to, wet = .25, dest){
+  if (!SND.on && !dest) return; const c = audio(); if (!c) return;
   const s = c.currentTime + when, o = c.createOscillator(), g = c.createGain();
   o.type = type; o.frequency.setValueAtTime(f, s); if (to) o.frequency.exponentialRampToValueAtTime(to, s + d);
-  g.gain.setValueAtTime(.0001, s); g.gain.exponentialRampToValueAtTime(v, s + .012); g.gain.exponentialRampToValueAtTime(.0001, s + d);
-  o.connect(g); g.connect(c.destination); o.start(s); o.stop(s + d + .03);
+  g.gain.setValueAtTime(.0001, s); g.gain.exponentialRampToValueAtTime(v, s + .01); g.gain.exponentialRampToValueAtTime(.0001, s + d);
+  o.connect(g); if (dest) g.connect(dest); else out(g, wet); o.start(s); o.stop(s + d + .05);
 }
+function bell(f, d = .5, v = .12, when = 0){
+  if (!SND.on) return; const c = audio(); if (!c) return;
+  const s = c.currentTime + when, car = c.createOscillator(), mod = c.createOscillator(), mg = c.createGain(), g = c.createGain();
+  car.frequency.value = f; mod.frequency.value = f * 3.5; mg.gain.setValueAtTime(f * 1.6, s); mg.gain.exponentialRampToValueAtTime(1, s + d);
+  mod.connect(mg); mg.connect(car.frequency);
+  g.gain.setValueAtTime(.0001, s); g.gain.exponentialRampToValueAtTime(v, s + .005); g.gain.exponentialRampToValueAtTime(.0001, s + d);
+  car.connect(g); out(g, .45); car.start(s); mod.start(s); car.stop(s + d + .05); mod.stop(s + d + .05);
+}
+function noise(d = .1, v = .2, when = 0, f0 = 2000, f1, q = 1, type = 'bandpass', wet = .1, dest){
+  if (!SND.on && !dest) return; const c = audio(); if (!c) return;
+  const s = c.currentTime + when, src = c.createBufferSource(), fl = c.createBiquadFilter(), g = c.createGain();
+  src.buffer = SND.noise; fl.type = type; fl.Q.value = q; fl.frequency.setValueAtTime(f0, s); if (f1) fl.frequency.exponentialRampToValueAtTime(f1, s + d);
+  g.gain.setValueAtTime(.0001, s); g.gain.exponentialRampToValueAtTime(v, s + Math.min(.015, d / 3)); g.gain.exponentialRampToValueAtTime(.0001, s + d);
+  src.connect(fl); fl.connect(g); if (dest) g.connect(dest); else out(g, wet); src.start(s, Math.random() * .5); src.stop(s + d + .05);
+}
+const chord = (fs, d, type, v, when, wet) => fs.forEach((f, k) => { tone(f, d, type, v, when, null, wet); tone(f * 1.006, d, type, v * .6, when, null, wet); });
 const sfx = {
-  flip:()=>tone(900,.08,'triangle',.12,0,380),
-  turn:()=>{ tone(660,.12,'sine',.14); tone(990,.18,'sine',.14,.11); },
-  tick:()=>tone(1400,.04,'square',.04),
-  ask:()=>tone(520,.12,'sine',.12,0,820),
-  yes:()=>{ tone(700,.1,'sine',.13); tone(1050,.14,'sine',.13,.09); },
-  no:()=>tone(330,.22,'triangle',.13,0,220),
-  win:()=>[523,659,784,1047].forEach((f,i)=>tone(f,.24,'triangle',.16,i*.12)),
-  lose:()=>[440,370,311,262].forEach((f,i)=>tone(f,.26,'sawtooth',.06,i*.15)),
-  hint:()=>[880,1175,1568].forEach((f,i)=>tone(f,.14,'sine',.1,i*.08)),
-  pick:()=>tone(1200,.05,'triangle',.08)
+  flip:()=>{ noise(.09, .32, 0, 3200, 900, 1.2); tone(520, .06, 'triangle', .07, .02, 300, .05); },
+  unflip:()=>{ noise(.08, .25, 0, 900, 3000, 1.2); tone(380, .06, 'triangle', .06, .02, 560, .05); },
+  turn:()=>{ bell(784, .55, .1); bell(1175, .7, .09, .1); },
+  tick:()=>{ tone(1800, .025, 'square', .025, 0, null, 0); noise(.02, .08, 0, 6000, null, 3, 'highpass', 0); },
+  ask:()=>{ tone(440, .16, 'sine', .14, 0, 880, .3); tone(880, .1, 'sine', .06, .12, 1320, .3); },
+  yes:()=>{ chord([659, 831, 988], .35, 'triangle', .07, 0, .35); bell(1319, .5, .07, .08); },
+  no:()=>{ tone(196, .32, 'sawtooth', .07, 0, 147, .15); tone(207, .32, 'sawtooth', .05, 0, 155, .15); noise(.18, .06, 0, 400, 200, 1, 'lowpass', 0); },
+  maybe:()=>{ tone(523, .14, 'triangle', .1, 0, null, .3); tone(494, .2, 'triangle', .1, .14, 587, .3); },
+  win:()=>{
+    const N = [523, 659, 784, 1047]; N.forEach((f, k) => { tone(f, .2, 'square', .045, k * .1, null, .3); tone(f, .2, 'triangle', .08, k * .1, null, .3); });
+    chord([523, 659, 784, 1047], 1.1, 'sawtooth', .025, .42, .5); chord([523, 659, 784], 1.1, 'triangle', .06, .42, .5);
+    noise(.9, .12, .42, 8000, 3000, .7, 'highpass', .4);
+    [1568, 2093, 2637, 3136].forEach((f, k) => bell(f, .5, .05, .55 + k * .09));
+  },
+  lose:()=>{ [392, 370, 349].forEach((f, k) => tone(f, .32, 'sawtooth', .06, k * .3, f * .97, .25)); tone(330, .9, 'sawtooth', .06, .9, 247, .3); },
+  hint:()=>[1319, 1568, 2093, 2637].forEach((f, k) => bell(f, .45, .06, k * .07)),
+  pick:()=>{ tone(880, .07, 'sine', .12, 0, 1400, .2); noise(.04, .1, 0, 5000, null, 2, 'bandpass', 0); },
+  pop:()=>{ tone(600, .09, 'sine', .14, 0, 1500, .2); },
+  whoosh:()=>{ noise(.45, .22, 0, 400, 5000, .8, 'bandpass', .3); },
+  count:k=>{ tone(740 + k * 60, .16, 'square', .04, 0, null, .2); tone(740 + k * 60, .16, 'sine', .12, 0, null, .2); },
+  go:()=>{ chord([587, 740, 880, 1175], .6, 'sawtooth', .03, 0, .4); chord([587, 740, 880], .6, 'triangle', .07, 0, .4); noise(.3, .15, 0, 6000, 2000, .8, 'highpass', .3); },
+  tap:()=>{ noise(.025, .1, 0, 2600, null, 2, 'bandpass', 0); }
 };
-document.addEventListener('pointerdown', () => { if (SND.on) audio(); }, {once:true});
+/* voice lines (recorded), with a synth fallback */
+const VLINES = ['win', 'lose', 'turn', 'go'];
+function loadVoices(){
+  const c = audio(); if (!c || SND.voice._loaded) return; SND.voice._loaded = true;
+  VLINES.forEach(k => ['ar', 'en'].forEach(L => {
+    fetch('voice/' + k + '-' + L + '.mp3').then(r => r.ok ? r.arrayBuffer() : Promise.reject()).then(b => c.decodeAudioData(b)).then(buf => { SND.voice[k + '-' + L] = buf; }).catch(() => {});
+  }));
+}
+function say(k, delay = 0){
+  if (!SND.on) return false; const c = audio(); const buf = c && SND.voice[k + '-' + lang]; if (!buf) return false;
+  const src = c.createBufferSource(), g = c.createGain(); src.buffer = buf; g.gain.value = 1.1; src.connect(g); out(g, .12); src.start(c.currentTime + delay); return true;
+}
+/* background music for menus: a light game-show groove */
+const MUSIC = { on:false, t:null, step:0, next:0 };
+const PROG = [[262, 330, 392], [220, 262, 330], [175, 220, 262], [196, 247, 294]], BASS = [131, 110, 87, 98];
+function musicTick(){
+  const c = SND.ctx; if (!c || !MUSIC.on) return;
+  const spb = 60 / 112 / 2;
+  while (MUSIC.next < c.currentTime + .25) {
+    const st = MUSIC.step, bar = Math.floor(st / 8) % 4, k = st % 8, w = MUSIC.next - c.currentTime, d = SND.mus;
+    if (k % 4 === 0) tone(BASS[bar], spb * 1.8, 'triangle', .22, w, null, 0, d);
+    if (k === 6) tone(BASS[bar] * 1.5, spb * .9, 'triangle', .14, w, null, 0, d);
+    if (k === 2 || k === 6) PROG[bar].forEach(f => tone(f * 2, spb * .7, 'square', .022, w, null, 0, d));
+    noise(.03, k % 2 ? .05 : .09, w, 9000, null, 1, 'highpass', 0, d);
+    if (k === 4) noise(.12, .12, w, 1800, 900, 1, 'bandpass', 0, d);
+    if (st % 32 === 28) [784, 988, 1175].forEach((f, q) => tone(f, spb * .8, 'triangle', .03, w + q * spb * .5, null, 0, d));
+    MUSIC.step++; MUSIC.next += spb;
+  }
+}
+function setMusic(want){
+  const c = audio(); if (!c) return;
+  want = want && SND.music && SND.on && !document.hidden;
+  if (want === MUSIC.on) return; MUSIC.on = want;
+  const g = SND.mus.gain, now = c.currentTime; g.cancelScheduledValues(now); g.setValueAtTime(g.value, now);
+  if (want) { MUSIC.next = now + .05; MUSIC.step = 0; g.linearRampToValueAtTime(.55, now + 1.2); clearInterval(MUSIC.t); MUSIC.t = setInterval(musicTick, 90); }
+  else { g.linearRampToValueAtTime(0, now + .5); setTimeout(() => { if (!MUSIC.on) clearInterval(MUSIC.t); }, 600); }
+}
+const musicWanted = () => ['home', 'lobby'].includes(curScr);
+document.addEventListener('visibilitychange', () => { if (SND.ctx) setMusic(musicWanted()); });
+document.addEventListener('pointerdown', () => { if (SND.on) { audio(); loadVoices(); setMusic(musicWanted()); } }, {once:true});
 
 /* ---------- ui helpers ---------- */
 let splashT;
@@ -1622,7 +1702,7 @@ function showSplash(top, q, ans, note, ms){
 }
 let toastT;
 function toast(m){ const el = $('#toast'); el.textContent = m; el.classList.add('on'); clearTimeout(toastT); toastT = setTimeout(() => el.classList.remove('on'), 2400); }
-const openM = id => $('#'+id).classList.add('on');
+const openM = id => { const m = $('#'+id); if (!m.classList.contains('on')) { m.classList.add('on'); if (id !== 'overM') sfx.pop(); } };
 const closeM = id => $('#'+id).classList.remove('on');
 const RM = matchMedia('(prefers-reduced-motion: reduce)');
 let curScr = 'home';
@@ -1631,6 +1711,7 @@ function show(id){
   const prev = curScr; curScr = id;
   document.querySelectorAll('.screen').forEach(s => { const on = s.id === id; s.classList.toggle('on', on); if (!on) s.classList.remove('enter'); });
   document.body.dataset.scr = id;
+  if (SND.ctx) setMusic(musicWanted());
   const el = document.getElementById(id);
   if (!RM.matches) { el.classList.remove('enter'); void el.offsetWidth; el.classList.add('enter'); setTimeout(() => el.classList.remove('enter'), 500); }
   try { window.scrollTo(0, 0); } catch(e){}
@@ -1651,6 +1732,7 @@ function sweep(text, tries = 0){
   document.querySelectorAll('.sweep').forEach(x => x.remove());
   const d = document.createElement('div'); d.className = 'sweep'; d.innerHTML = '<b></b>'; d.firstChild.textContent = text;
   document.body.appendChild(d); setTimeout(() => d.remove(), 1250);
+  sfx.whoosh(); say('turn', .2);
 }
 function buzz(p){ try { navigator.vibrate && navigator.vibrate(p); } catch(e){} }
 async function copy(text){
@@ -1764,7 +1846,7 @@ function showEmo(e, mine){
   const d = document.createElement('div'); d.className = 'emo-fly ' + (mine ? 'me' : 'opp');
   d.innerHTML = `<span class="e">${e}</span>${mine ? '' : `<span class="who">${esc(oppName())}</span>`}`;
   document.body.appendChild(d); setTimeout(() => d.remove(), 2600);
-  if (!mine) { buzz(30); tone(880,.09,'sine',.1); tone(1320,.1,'sine',.08,.07); }
+  sfx.pop(); if (!mine) { buzz(30); tone(1320,.1,'sine',.08,.07); }
 }
 function sendEmo(e){
   if (!EMOS.includes(e) || !S) return;
@@ -2344,7 +2426,7 @@ function countdown(){
     const go = i === seq.length - 1;
     sp.textContent = seq[i]; sp.className = go ? 'go' : '';
     sp.style.animation = 'none'; void sp.offsetWidth; sp.style.animation = '';
-    if (go) sfx.turn(); else tone(620 + i*90, .12, 'sine', .13);
+    if (go) { sfx.go(); say('go'); } else sfx.count(i);
     buzz(go ? 60 : 20); i++; cdTimer = setTimeout(step, 750);
   };
   step();
@@ -2362,7 +2444,7 @@ function playReveal(){
   rvTimers.push(setTimeout(() => { openFlip(rv); sfx.flip(); }, 380));
   rvTimers.push(setTimeout(() => {
     rv.classList.add('go');
-    if (won) { sfx.win(); confetti(); buzz([80,60,80,60,160]); } else { sfx.lose(); buzz(200); }
+    if (won) { sfx.win(); say('win', .25); confetti(); buzz([80,60,80,60,160]); } else { sfx.lose(); say('lose', .2); buzz(200); }
   }, 1100));
   rvTimers.push(setTimeout(() => { rv.hidden = true; rvState = 3; if (S) render(); }, 3000));
 }
@@ -2647,7 +2729,7 @@ function renderFootGame(){
     lg.hidden = false; lg.classList.remove('y', 'n', 'm'); lg.classList.add(L.a);
     if (L.n !== seenLog) {
       seenLog = L.n;
-      if (L.by === role) { showSplash(t('splashMe'), q, L.a, '', 2600); setTimeout(() => (L.a === 'y' ? sfx.yes : sfx.no)(), 0); buzz(L.a === 'y' ? [30,40,30] : 140); }
+      if (L.by === role) { showSplash(t('splashMe'), q, L.a, '', 2600); setTimeout(() => (L.a === 'y' ? sfx.yes : L.a === 'm' ? sfx.maybe : sfx.no)(), 0); buzz(L.a === 'y' ? [30,40,30] : 140); }
       else toast(t('fAnswered'));
       lg.classList.remove('flash'); void lg.offsetWidth; lg.classList.add('flash');
     }
@@ -2769,8 +2851,7 @@ function init(){
       $('#confirmTitle').textContent = t('confirmTitle', {name:nm(id)});
       openM('confirmM'); return;
     }
-    if (down.has(id)) down.delete(id); else down.add(id);
-    sfx.flip();
+    if (down.has(id)) { down.delete(id); sfx.unflip(); } else { down.add(id); sfx.flip(); }
     const el = $('#gameGrid').querySelector('.card[data-id="' + id + '"]'); if (el) el.classList.toggle('down', down.has(id));
     const ml = $('#myLeft'); ml.textContent = N() - down.size; bump(ml);
     clearTimeout(leftT); leftT = setTimeout(() => { if (S && S.phase === 'play') act('left', {n:N() - down.size}); }, 450);
@@ -2856,7 +2937,16 @@ function init(){
   $('#fAskInp').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); sendFootQ(); } });
   $('#fSearch').addEventListener('input', renderFootResults);
   $('#fRes').addEventListener('click', e => { const b = e.target.closest('[data-pl]'); if (b) pickFootGuess(+b.dataset.pl); });
-  $('#soundBtn').onclick = () => { SND.on = !SND.on; try { localStorage.setItem('lq-sound', SND.on ? '1' : '0'); } catch(e){} if (SND.on) audio(); renderGame(); };
+  $('#soundBtn').onclick = () => { SND.on = !SND.on; try { localStorage.setItem('lq-sound', SND.on ? '1' : '0'); } catch(e){} if (SND.on) { audio(); loadVoices(); } setMusic(musicWanted()); renderGame(); renderMusicBtn(); };
+  const renderMusicBtn = () => { $('#musicBtn').textContent = SND.music && SND.on ? '🎵' : '🔇'; };
+  renderMusicBtn();
+  $('#musicBtn').onclick = () => {
+    if (!SND.on) { SND.on = true; SND.music = true; try { localStorage.setItem('lq-sound', '1'); } catch(e){} }
+    else SND.music = !SND.music;
+    try { localStorage.setItem('lq-music', SND.music ? '1' : '0'); } catch(e){}
+    audio(); loadVoices(); setMusic(musicWanted()); renderMusicBtn();
+  };
+  document.addEventListener('click', e => { if (e.target.closest('.btn, .chip, .lvl, .gt button, .cats button, .avs button, .chips button')) sfx.tap(); }, true);
 
   $('#againBtn').onclick = () => act('rematch');
   $('#viewBoardBtn').onclick = () => { overHidden = true; closeM('overM'); };
