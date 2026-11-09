@@ -1,0 +1,28 @@
+name: fetch-faces
+on:
+  push:
+    paths: ['tools/faces-urls.txt']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download generated images
+        run: |
+          mkdir -p gen
+          while read -r name url; do
+            [ -z "$url" ] && continue
+            curl -sSfL --retry 3 -o "gen/$name.png" "$url" || echo "failed $name"
+          done < tools/faces-urls.txt
+          ls -la gen
+      - name: Commit
+        run: |
+          git config user.name "mohammed10alholi-stack"
+          git config user.email "297350082+mohammed10alholi-stack@users.noreply.github.com"
+          git add gen
+          git commit -m "Fetch generated images" || exit 0
+          git pull --rebase origin main
+          git push origin HEAD:main
