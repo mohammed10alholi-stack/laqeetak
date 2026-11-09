@@ -15,7 +15,7 @@ jobs:
           mkdir -p gen
           while read -r name url; do
             [ -z "$url" ] && continue
-            curl -sSfL --retry 3 -o "gen/$name.png" "$url" || echo "failed $name"
+            curl -sSfL --retry 3 -o "gen/$name.${url##*.}" "$url" || echo "failed $name"
           done < tools/faces-urls.txt
           ls -la gen
       - name: Commit
